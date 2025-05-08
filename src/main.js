@@ -18,10 +18,12 @@ import {
     Rating, Row, Select,
     SelectButton, Tag, Textarea, Toast, Toolbar
 } from "primevue";
+import i18n from "./i18n.js";
 
 const app = createApp(App)
 
-app.use(PrimeVue,{
+app.use(i18n)
+    .use(PrimeVue,{
         theme:{
             preset: Aura,
             ripple: true,

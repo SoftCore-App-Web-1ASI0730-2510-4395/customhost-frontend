@@ -1,0 +1,17 @@
+{
+  "title": "Welcome!",
+  "test": "hola",
+  "sidebar_items":{
+    "profile":"Profile",
+    "preferences": "Preferences",
+    "book": "Book",
+    "my-bookings": "My bookings",
+    "customer-service": "Customer service",
+    "admin": "Admin",
+    "iot-devices": "IoT devices",
+    "customer-requests": "Customer requests",
+    "bookings-tracker": "Bookings tracker",
+    "request-staff": "Request Staff"
+    }
+
+}

@@ -1,30 +1,30 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
+<script>
+import SidebarComponent from "./public/components/sidebarComponent.vue";
+import HeaderBar from "./public/components/headerComponent.vue";
+export default {
+  name: "App",
+  components: {HeaderBar, SideBar: SidebarComponent},
+  methods:{
+
+  },
+  data() {
+    return {
+      isAuthPath: false,
+      isSideBarVisible: true
+    }
+  },
+
+};
 </script>
 
 <template>
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <header-bar v-if="!isAuthPath" v-model:visible="isSideBarVisible"/>
+    <side-bar v-if="!isAuthPath" v-model:visible="isSideBarVisible" />
   </div>
-  <HelloWorld msg="Vite + Vue" />
-</template>
 
+  <router-view />
+</template>
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
 </style>

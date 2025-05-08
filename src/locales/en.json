@@ -11,7 +11,7 @@
     "iot-devices": "IoT devices",
     "customer-requests": "Customer requests",
     "bookings-tracker": "Bookings tracker",
-    "request-staff": "Request Staff"
-    }
-
+    "request-staff": "Request Staff",
+    "home": "Home"
+  }
 }

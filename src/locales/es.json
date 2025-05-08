@@ -2,19 +2,16 @@
   "title": "¡Bienvenido!",
   "test": "hola",
   "sidebar_items": {
-  "profile":"Perfil",
-  "preferences": "Preferencias",
-  "book": "Reservar",
-  "my-bookings": "Mis reservas",
-  "customer-service": "Atención al cliente",
-  "admin": "Administración",
-  "iot-devices": "Dispositivos IoT",
-  "customer-requests": "Solicitudes de clientes",
-  "bookings-tracker": "Rastreador de reservas",
-  "request-staff": "Solicitar personal"
+    "profile":"Perfil",
+    "preferences": "Preferencias",
+    "book": "Reservar",
+    "my-bookings": "Mis reservas",
+    "customer-service": "Atención al cliente",
+    "admin": "Administración",
+    "iot-devices": "Dispositivos IoT",
+    "customer-requests": "Solicitudes de clientes",
+    "bookings-tracker": "Rastreador de reservas",
+    "request-staff": "Solicitar personal",
+    "home": "Inicio"
   }
-
-
-
-
 }

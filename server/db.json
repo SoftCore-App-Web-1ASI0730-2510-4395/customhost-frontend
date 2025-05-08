@@ -8,7 +8,8 @@
       "phone": "+34900111222",
       "status": "active",
       "createdAt": "2024-01-10T08:00:00",
-      "subscriptionId": 1
+      "subscriptionId": 1,
+      "adminId": 3
     },
     {
       "id": 2,
@@ -18,7 +19,8 @@
       "phone": "+34900333444",
       "status": "active",
       "createdAt": "2024-02-15T10:30:00",
-      "subscriptionId": 2
+      "subscriptionId": 2,
+      "adminId": 6
     }
   ],
   "subscriptions": [

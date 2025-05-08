@@ -22,7 +22,7 @@ const routes = [
         path: '/home',
         name: 'Home',
         component: HomeComponent,
-        meta: { title: 'Login' }
+        meta: { title: 'Home' }
     },
     {
         path: '/auth',

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import profileComponent from "../profiles/pages/profileComponent.vue";
+import HomeComponent from "../public/pages/homeComponent.vue";
 
 const preferencesComponent = () => import("../profiles/pages/preferencesComponent.vue");
 const bookComponent = () => import("../crm/pages/bookComponent.vue");
@@ -8,105 +8,143 @@ const myBookingsComponent = () => import("../crm/pages/myBookingsComponent.vue")
 const iotDevicesComponent = () => import("../guest-experience/pages/iotDevicesComponent.vue");
 const requestStaffComponent = () => import("../crm/pages/requestStaffComponent.vue");
 const customerRequestsComponent = () => import("../crm/pages/customerRequestsComponent.vue");
-const adminComponent = () => import("../auth/pages/adminComponent.vue");
+const adminComponent = () => import("../billing/pages/adminComponent.vue");
 const bookingsTrackerComponent = () => import("../crm/pages/bookingsTrackerComponent.vue");
 const customerServiceComponent = () => import("../crm/pages/customerServiceComponent.vue");
 const loginComponent = () => import("../auth/pages/loginComponent.vue");
 const registerComponent = () => import("../auth/pages/registerComponent.vue");
+const notFoundComponent = () => import("../public/pages/notFoundComponent.vue");
+const profileComponent = () => import("../profiles/pages/profileComponent.vue");
 
-
+// Rutas organizadas por dominio (bounded contexts)
 const routes = [
     {
-        name: "Auth",
-        path: "/auth",
+        path: '/home',
+        name: 'Home',
+        component: HomeComponent,
+        meta: { title: 'Login' }
+    },
+    {
+        path: '/auth',
+        name: 'Auth',
+        redirect: '/auth/login',
         children: [
             {
-                name: "Login",
-                path: "/auth/login",
+                path: 'login',
+                name: 'Login',
                 component: loginComponent,
                 meta: { title: 'Login' }
             },
             {
-                name: "Register",
-                path: "/auth/register",
+                path: 'register',
+                name: 'Register',
                 component: registerComponent,
                 meta: { title: 'Register' }
             }
         ]
     },
     {
-        name: "Profile",
-        path: '/home',
-        component: profileComponent,
-        meta: { title: 'Home' }
+        path: '/profiles',
+        name: 'Profiles',
+        redirect: '/home',
+        children: [
+            {
+                path: 'profile',
+                name: 'Profile',
+                component: profileComponent,
+                meta: { title: 'Profile' }
+            },
+            {
+                path: '/preferences',
+                name: 'Preferences',
+                component: preferencesComponent,
+                meta: { title: 'Preferences' }
+            }
+        ]
     },
     {
-        name: "Admin",
-        path: '/admin',
-        component: adminComponent,
-        meta: { title: 'Admin' }
+        path: '/crm',
+        name: 'CRM',
+        redirect: '/home',
+        children: [
+            {
+                path: 'book',
+                name: 'Book',
+                component: bookComponent,
+                meta: { title: 'Book' }
+            },
+            {
+                path: 'my-bookings',
+                name: 'MyBookings',
+                component: myBookingsComponent,
+                meta: { title: 'My Bookings' }
+            },
+            {
+                path: 'customer-service',
+                name: 'CustomerService',
+                component: customerServiceComponent,
+                meta: { title: 'Customer Service' }
+            },
+            {
+                path: 'customer-requests',
+                name: 'CustomerRequests',
+                component: customerRequestsComponent,
+                meta: { title: 'Customer Requests' }
+            },
+            {
+                path: 'request-staff',
+                name: 'RequestStaff',
+                component: requestStaffComponent,
+                meta: { title: 'Request Staff' }
+            },
+            {
+                path: 'bookings-tracker',
+                name: 'BookingsTracker',
+                component: bookingsTrackerComponent,
+                meta: { title: 'Bookings Tracker' }
+            }
+        ]
     },
-    {
-        name: "Preferences",
-        path: '/preferences',
-        component: preferencesComponent,
-        meta: { title: 'Preferences' }
-    },
-    {
-        name: "Book",
-        path: '/book',
-        component: bookComponent,
-        meta: { title: 'Book' }
-    },
-    {
-        name: "MyBookings",
-        path: '/my-bookings',
-        component: myBookingsComponent,
-        meta: { title: 'My Bookings' }
-    },
-    {
-        name: "CustomerService",
-        path: '/customer-service',
-        component: customerServiceComponent,
-        meta: { title: 'Customer Service' }
-    },
-    {
-        name: "IotDevices",
-        path: '/iot-devices',
-        component: iotDevicesComponent,
-        meta: { title: 'IoT Devices' }
-    },
-    {
-        name: "BookingsTracker",
-        path: '/bookings-tracker',
-        component: bookingsTrackerComponent,
-        meta: { title: 'Bookings Tracker' }
-    },
-    {
-        name: "CustomerRequests",
-        path: '/customer-requests',
-        component: customerRequestsComponent,
-        meta: { title: 'Customer Requests' }
-    },
-    {
-        name: "RequestStaff",
-        path: '/request-staff',
-        component: requestStaffComponent,
-        meta: { title: 'Request Staff' }
-    },
-    {
-        path: '/', redirect: '/home',
-    },
-    //Todo: Not found component
-    // {
-    //     name: "NotFound",
-    //     path: "/:pathMatch(.*)*",
-    //     component: notFoundComponent,
-    //
-    // }
 
+    // Guest Experience context
+    {
+        path: '/guest-experience',
+        name: 'GuestExperience',
+        redirect: '/home',
+        children: [
+            {
+                path: 'iot-devices',
+                name: 'IotDevices',
+                component: iotDevicesComponent,
+                meta: { title: 'IoT Devices' }
+            }
+        ]
+    },
+    {
+        path: '/billing',
+        name: 'Billing',
+        redirect: '/home',
+        children: [
+            {
+                path: 'admin',
+                name: 'Admin',
+                component: adminComponent,
+                meta: { title: 'Admin' }
+            }
+        ]
+    },
+    {
+        path: '/',
+        redirect: '/home'
+    },
+    {
+        path: "/:pathMatch(.*)*",
+        name: "NotFound",
+        component: notFoundComponent,
+        meta: { title: 'Page Not Found' }
+    }
+];
 
-]
 
 export const router = createRouter({
     history: createWebHistory(),

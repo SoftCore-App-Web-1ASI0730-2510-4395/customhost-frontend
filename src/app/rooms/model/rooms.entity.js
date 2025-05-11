@@ -1,4 +1,4 @@
-export default class Room {
+export default class Rooms {
     constructor({ id, number, type, status, price, floor, description }) {
         this.id = id
         this.number = number

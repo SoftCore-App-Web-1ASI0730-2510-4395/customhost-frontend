@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import HomeComponent from "../public/pages/homeComponent.vue";
+import RoomsListComponent from "../rooms/pages/rooms-listComponent.vue";
 
 const preferencesComponent = () => import("../profiles/pages/preferencesComponent.vue");
 const bookComponent = () => import("../crm/pages/bookComponent.vue");
@@ -23,6 +24,12 @@ const routes = [
         name: 'Home',
         component: HomeComponent,
         meta: { title: 'Home' }
+    },
+    {
+        path: '/rooms',
+        name: 'Rooms',
+        component: RoomsListComponent,
+        meta: { title: 'Rooms' }
     },
     {
         path: '/auth',
@@ -62,6 +69,7 @@ const routes = [
             }
         ]
     },
+
     {
         path: '/crm',
         name: 'CRM',

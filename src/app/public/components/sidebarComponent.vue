@@ -26,6 +26,13 @@ export default {
           icon: 'pi pi-home',
         },
         {
+          name: 'Rooms',
+          path: '/rooms',
+          type: 'both',
+          icon: 'pi pi-building', // Mejor icono para habitaciones
+        },
+
+        {
           name: this.$t('sidebar_items.profile'),
           path: '/profiles/profile',
           type: 'both',

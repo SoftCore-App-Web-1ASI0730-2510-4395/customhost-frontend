@@ -170,48 +170,93 @@
   "rooms": [
     {
       "id": 101,
-      "hotelId": 1,
-      "type": "standard",
-      "capacity": 2,
+      "number": "101",
+      "type": "Double",
+      "status": "Available",
+      "price": 80.00,
       "floor": 1,
-      "status": "occupied",
-      "currentUserId": 1
+      "description": "Sea view, double bed"
     },
     {
       "id": 102,
-      "hotelId": 1,
-      "type": "standard",
-      "capacity": 2,
+      "number": "102",
+      "type": "Single",
+      "status": "Occupied",
+      "price": 60.00,
       "floor": 1,
-      "status": "available",
-      "currentUserId": null
+      "description": "City view, single bed"
     },
     {
-      "id": 201,
-      "hotelId": 1,
-      "type": "deluxe",
-      "capacity": 3,
+      "id": 103,
+      "number": "103",
+      "type": "Suite",
+      "status": "Cleaning",
+      "price": 150.00,
       "floor": 2,
-      "status": "occupied",
-      "currentUserId": 2
+      "description": "Jacuzzi, king-size bed"
     },
     {
-      "id": 301,
-      "hotelId": 1,
-      "type": "suite",
-      "capacity": 4,
+      "id": 104,
+      "number": "104",
+      "type": "Double",
+      "status": "Maintenance",
+      "price": 85.00,
+      "floor": 2,
+      "description": "Ocean view, balcony"
+    },
+    {
+      "id": 105,
+      "number": "105",
+      "type": "Single",
+      "status": "Available",
+      "price": 65.00,
       "floor": 3,
-      "status": "maintenance",
-      "currentUserId": null
+      "description": "Mountain view, single bed"
     },
     {
-      "id": 101,
-      "hotelId": 2,
-      "type": "standard",
-      "capacity": 2,
-      "floor": 1,
-      "status": "available",
-      "currentUserId": null
+      "id": 106,
+      "number": "106",
+      "type": "Suite",
+      "status": "Occupied",
+      "price": 160.00,
+      "floor": 3,
+      "description": "Private lounge, minibar"
+    },
+    {
+      "id": 107,
+      "number": "107",
+      "type": "Double",
+      "status": "Cleaning",
+      "price": 90.00,
+      "floor": 4,
+      "description": "Corner room, large windows"
+    },
+    {
+      "id": 108,
+      "number": "108",
+      "type": "Single",
+      "status": "Available",
+      "price": 70.00,
+      "floor": 4,
+      "description": "Interior view, quiet"
+    },
+    {
+      "id": 109,
+      "number": "109",
+      "type": "Double",
+      "status": "Occupied",
+      "price": 95.00,
+      "floor": 5,
+      "description": "King bed, modern decor"
+    },
+    {
+      "id": 110,
+      "number": "110",
+      "type": "Suite",
+      "status": "Available",
+      "price": 180.00,
+      "floor": 5,
+      "description": "Luxury suite with terrace"
     }
   ],
   "bookings": [

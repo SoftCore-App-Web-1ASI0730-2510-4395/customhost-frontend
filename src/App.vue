@@ -1,6 +1,6 @@
 <script>
-import SidebarComponent from "./public/components/sidebarComponent.vue";
-import HeaderBar from "./public/components/headerComponent.vue";
+import SidebarComponent from "./app/public/components/sidebarComponent.vue";
+import HeaderBar from "./app/public/components/headerComponent.vue";
 export default {
   name: "App",
   components: {HeaderBar, SideBar: SidebarComponent},

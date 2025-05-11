@@ -19,7 +19,7 @@ import {
     SelectButton, Tag, Textarea, Toast, Toolbar
 } from "primevue";
 import i18n from "./i18n.js";
-import router from "./router/index.js";
+import router from "./app/router/index.js";
 
 const app = createApp(App)
 

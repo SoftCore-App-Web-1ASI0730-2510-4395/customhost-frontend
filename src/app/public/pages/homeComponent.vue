@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <h2 class="mb-4">Panel de Administración Hotelera</h2>
+    <h2 class="mb-4 text-black">Panel de Administración Hotelera</h2>
 
     <!-- Tarjetas resumen -->
     <div class="grid justify-content-center">
@@ -41,7 +41,7 @@
 
     <!-- Lista opcional de dispositivos inactivos -->
     <div v-if="showInactiveDevices && inactiveIotList.length > 0" class="card p-4 surface-card mt-4">
-      <h4>Lista de Dispositivos Inactivos</h4>
+      <h4 class="text-black">Lista de Dispositivos Inactivos</h4>
       <ul class="list-none pl-0">
         <li v-for="device in inactiveIotList" :key="device.id" class="py-2 border-bottom-1 border-gray-300 text-black">
           {{ device.name }} - {{ device.type }}
@@ -50,7 +50,7 @@
     </div>
 
     <!-- Gráfico: Reservas en los últimos 30 días -->
-    <h3 class="mt-5 mb-3">Reservas en los últimos 30 días</h3>
+    <h3 class="mt-5 mb-3 text-black">Reservas en los últimos 30 días</h3>
     <div class="card p-4 surface-card" style="min-height: 400px; width: 100%">
       <Chart type="line" :data="bookingsChartData" :options="chartOptions" />
     </div>

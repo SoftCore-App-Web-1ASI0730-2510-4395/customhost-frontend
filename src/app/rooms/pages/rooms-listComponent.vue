@@ -18,7 +18,6 @@
         </template>
       </Column>
     </DataTable>
-
     <!-- Dialog -->
     <Dialog v-model:visible="roomDialog" modal header="Room Form" :style="{ width: '400px' }">
       <form @submit.prevent="saveRoom">

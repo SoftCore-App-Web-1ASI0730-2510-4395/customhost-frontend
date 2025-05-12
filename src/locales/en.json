@@ -1,17 +1,25 @@
 {
-  "title": "Welcome!",
-  "test": "hola",
-  "sidebar_items":{
-    "profile":"Profile",
-    "preferences": "Preferences",
-    "book": "Book",
-    "my-bookings": "My bookings",
-    "customer-service": "Customer service",
-    "admin": "Admin",
-    "iot-devices": "IoT devices",
-    "customer-requests": "Customer requests",
-    "bookings-tracker": "Bookings tracker",
-    "request-staff": "Request Staff",
-    "home": "Home"
+  "dashboard": {
+    "title": "Hotel Admin Dashboard",
+    "summary_cards": {
+      "occupied_rooms": "Occupied Rooms",
+      "bookings_today": "Bookings Today",
+      "urgent_requests": "Urgent Requests"
+    },
+    "charts": {
+      "iot_devices_status": "IoT Devices Status",
+      "labels": {
+        "online": "Online",
+        "maintenance": "Maintenance",
+        "inactive": "Inactive"
+      }
+    },
+    "guests_table": {
+      "title": "Current Guests",
+      "roomNumber": "Room",
+      "name": "Name",
+      "checkIn": "Check-in",
+      "checkOut": "Check-out"
+    }
   }
 }

@@ -33,12 +33,6 @@ export default {
         },
 
         {
-          name: this.$t('sidebar_items.profile'),
-          path: '/profiles/profile',
-          type: 'both',
-          icon: 'pi pi-user'
-        },
-        {
           name: this.$t('sidebar_items.preferences'),
           path: '/profiles/preferences',
           type: 'guest',
@@ -91,6 +85,13 @@ export default {
           path: '/crm/request-staff',
           type: 'staff',
           icon: 'pi pi-users'
+        },
+
+        {
+          name: this.$t('sidebar_items.profile'),
+          path: '/profiles/profile',
+          type: 'both',
+          icon: 'pi pi-user'
         },
       ];
     },

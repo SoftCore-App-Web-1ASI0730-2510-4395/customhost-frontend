@@ -1,17 +1,25 @@
 {
-  "title": "¡Bienvenido!",
-  "test": "hola",
-  "sidebar_items": {
-    "profile":"Perfil",
-    "preferences": "Preferencias",
-    "book": "Reservar",
-    "my-bookings": "Mis reservas",
-    "customer-service": "Atención al cliente",
-    "admin": "Administración",
-    "iot-devices": "Dispositivos IoT",
-    "customer-requests": "Solicitudes de clientes",
-    "bookings-tracker": "Rastreador de reservas",
-    "request-staff": "Solicitar personal",
-    "home": "Inicio"
+  "dashboard": {
+    "title": "Panel de Administración Hotelera",
+    "summary_cards": {
+      "occupied_rooms": "Habitaciones ocupadas",
+      "bookings_today": "Reservas de hoy",
+      "urgent_requests": "Solicitudes urgentes"
+    },
+    "charts": {
+      "iot_devices_status": "Estado de dispositivos IoT",
+      "labels": {
+        "online": "Online",
+        "maintenance": "Mantenimiento",
+        "inactive": "Inactivo"
+      }
+    },
+    "guests_table": {
+      "title": "Huéspedes actuales",
+      "roomNumber": "Habitación",
+      "name": "Nombre",
+      "checkIn": "Check-in",
+      "checkOut": "Check-out"
+    }
   }
 }

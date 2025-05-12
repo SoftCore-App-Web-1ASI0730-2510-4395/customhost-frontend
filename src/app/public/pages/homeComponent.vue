@@ -1,6 +1,7 @@
 <template>
   <div class="p-4">
-    <h2 class="mb-4 text-black">Panel de Administración Hotelera</h2>
+    <h2 class="text-black">{{ t('dashboard.title') }}</h2>
+
 
     <!-- Tarjetas resumen -->
     <div class="grid justify-content-center">
@@ -67,6 +68,8 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 import { ref, onMounted } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'

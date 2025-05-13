@@ -20,16 +20,6 @@
       "checkOut": "Check-out"
     },
 
-
-    "rooms_management": {
-      "room": "Room #",
-      "type": "Type",
-      "status": "Status",
-      "price": "Price",
-      "floor": "Floor",
-      "actions": "Actions"
-    },
-
     "charts": {
       "iot_devices_status": "IoT Devices Status",
       "labels": {

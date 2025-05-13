@@ -1,7 +1,10 @@
 <template>
   <div class="p-4">
-    <h2 class="m-0 mb-4">Personal del Hotel</h2>
-
+    <div class="flex justify-content-between align-items-center mb-4">
+      <div class="hotel-title text-xl font-bold">
+        Hotel Cheraton - Personal del Hotel
+      </div>
+    </div>
     <DataTable :value="staffList" paginator :rows="10" class="p-datatable-sm">
       <!-- Nombre -->
       <Column field="fullName" header="Nombre">
@@ -79,4 +82,13 @@ const assignTask = (member) => {
 .p-column-title {
   font-weight: bold;
 }
+
+.hotel-title {
+  color: #1a237e; /* Azul oscuro elegante */
+  letter-spacing: 1px;
+}
+.text-primary {
+  color: #2196f3;
+}
+
 </style>

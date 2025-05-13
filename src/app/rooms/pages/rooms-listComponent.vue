@@ -1,7 +1,9 @@
 <template>
   <div class="p-4">
     <div class="flex justify-content-between align-items-center mb-3">
-      <h2 class="m-0">Rooms Management</h2>
+      <div class="hotel-title text-xl font-bold">
+        Hotel Cheraton - Cuartos
+      </div>
       <Button label="Add Room" icon="pi pi-plus" @click="openNewRoomForm" />
     </div>
 
@@ -123,3 +125,13 @@ const saveRoom = async () => {
 
 onMounted(fetchRooms)
 </script>
+
+<style scoped>
+.hotel-title {
+  color: #1a237e; /* Azul oscuro elegante */
+  letter-spacing: 1px;
+}
+.text-primary {
+  color: #2196f3;
+}
+</style>

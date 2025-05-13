@@ -1,4 +1,5 @@
 <script>
+
 import {SelectButton as PvSelectButton, Toolbar as PvToolbar} from "primevue";
 import LanguageSwitcher from "./languageSwitcher.component.vue";
 
@@ -12,12 +13,14 @@ export default {
       required: true,
     }
   },
+
   methods:{
     toggleMenu() {
       this.$emit('update:visible', true);
     }
   }
 }
+
 </script>
 
 <template>

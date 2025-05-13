@@ -1,7 +1,9 @@
 <template>
   <div class="p-4">
     <div class="flex justify-content-between align-items-center mb-3">
-      <h2 class="m-0">Reservas</h2>
+      <div class="hotel-title text-xl font-bold">
+        Hotel Cheraton - Reservas
+      </div>
       <Button label="Nueva Reserva" icon="pi pi-plus" @click="openNewBookingForm" />
     </div>
 
@@ -202,4 +204,13 @@ const formatDate = (date) => {
 .p-column-title {
   font-weight: bold;
 }
+
+.hotel-title {
+  color: #1a237e; /* Azul oscuro elegante */
+  letter-spacing: 1px;
+}
+.text-primary {
+  color: #2196f3;
+}
+
 </style>

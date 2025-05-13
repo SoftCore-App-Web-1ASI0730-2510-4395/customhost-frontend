@@ -2,8 +2,8 @@
   "hotels": [
     {
       "id": 1,
-      "name": "Hotel Madrid Center",
-      "address": "Calle Gran Vía 123, Madrid",
+      "name": "Hotel Cheraton Center",
+      "address": "Calle Gran Vía 123, Lima",
       "email": "info@hotelmc.com",
       "phone": "+34900111222",
       "status": "active",
@@ -136,10 +136,10 @@
     {
       "id": 3,
       "hotelId": 1,
-      "firstName": "Carlos",
-      "lastName": "Rodríguez",
-      "email": "carlos.rodriguez@hotel.com",
-      "password": "carlos123",
+      "firstName": "Juan ",
+      "lastName": "Perez",
+      "email": "juan.perez@hotel.com",
+      "password": "juan123",
       "phone": "+34600111222",
       "role": "admin",
       "department": "Management",
@@ -853,6 +853,15 @@
       "properties": {},
       "customizable": true,
       "hotelId": null
+    },
+    {
+      "id": "2f3e",
+      "roomId": 103,
+      "type": "sensor",
+      "name": "sensor",
+      "status": "inactive",
+      "properties": {},
+      "customizable": true
     }
   ],
   "bookings": [

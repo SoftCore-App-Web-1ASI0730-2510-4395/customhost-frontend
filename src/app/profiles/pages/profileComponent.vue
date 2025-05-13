@@ -1,6 +1,9 @@
 <template>
-  <div v-if="admin" class="p-4">
-    <h2>Perfil del Administrador</h2>
+  <div class="p-4" v-if="admin">
+    <!-- Título -->
+    <div class="hotel-title text-xl font-bold mb-4">
+      {{ admin.hotelName }} - Perfil del Administrador
+    </div>
 
     <!-- Información personal -->
     <Card class="mb-5">
@@ -34,8 +37,8 @@
       <template #content>
         <ul class="list-none p-0 m-0">
           <li class="flex align-items-center mb-3">
-            <i class="pi pi-check-circle text-xl mr-3 text-success"></i>
-            <span><strong>Estado:</strong> {{ admin.hotelStatus }}</span>
+            <i :class="getHotelStatusIcon(admin.hotelStatus)" class="text-xl mr-3" :style="{ color: getHotelStatusColor(admin.hotelStatus) }"></i>
+            <span><strong>Estado del hotel:</strong> {{ formatHotelStatus(admin.hotelStatus) }}</span>
           </li>
           <li class="flex align-items-center mb-3">
             <i class="pi pi-home text-xl mr-3 text-info"></i>
@@ -57,22 +60,82 @@
       </template>
     </Card>
   </div>
-  <div v-else class="p-4 text-center">
-    <ProgressSpinner />
-    <p>Cargando perfil...</p>
-  </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import Card from 'primevue/card'
-import ProgressSpinner from 'primevue/progressspinner'
-import { getAdminProfile } from '../services/hotel-admin.service.js'
 
-const admin = ref(null)
-
-onMounted(async () => {
-  const profile = await getAdminProfile(3) // Aquí puedes pasar ID dinámico desde auth
-  admin.value = profile
+const admin = ref({
+  id: 3,
+  firstName: 'Juan',
+  lastName: 'Perez',
+  email: 'juan.perez@hotel.com',
+  phone: '+34600111222',
+  department: 'Management',
+  hotelName: 'Hotel Cheraton Center',
+  hotelAddress: 'Calle Gran Vía 123, Lima',
+  hotelStatus: 'active',
+  totalRooms: 6,
+  occupiedRooms: 2,
+  availableRooms: 3,
+  cleaningRooms: 1,
+  maintenanceRooms: 1
 })
+
+// Métodos auxiliares
+const formatHotelStatus = (status) => {
+  const statuses = {
+    active: 'Activo',
+    inactive: 'Inactivo',
+    maintenance: 'Mantenimiento',
+    pending: 'Pendiente'
+  }
+  return statuses[status] || status
+}
+
+const getHotelStatusIcon = (status) => {
+  const icons = {
+    active: 'pi-check-circle',
+    inactive: 'pi-times-circle',
+    maintenance: 'pi-exclamation-triangle',
+    pending: 'pi-clock'
+  }
+  return icons[status] || 'pi-question'
+}
+
+const getHotelStatusColor = (status) => {
+  const colors = {
+    active: '#4caf50',
+    inactive: '#f44336',
+    maintenance: '#ff9800',
+    pending: '#2196f3'
+  }
+  return colors[status] || '#9e9e9e'
+}
 </script>
+
+<style scoped>
+.hotel-title {
+  color: #1a237e;
+  letter-spacing: 1px;
+}
+.text-primary {
+  color: #2196f3;
+}
+.text-success {
+  color: #4caf50;
+}
+.text-info {
+  color: #2196f3;
+}
+.text-danger {
+  color: #f44336;
+}
+.text-warning {
+  color: #ff9800;
+}
+.text-secondary {
+  color: #9e9e9e;
+}
+</style>

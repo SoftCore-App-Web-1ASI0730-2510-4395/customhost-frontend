@@ -1,17 +1,14 @@
 <template>
   <div class="p-4">
     <div class="flex justify-content-between align-items-center mb-4">
-      <h2>IoT Devices by Room</h2>
-      <Button
-          label="Add Device"
-          icon="pi pi-plus"
-          class="p-button-sm"
-          @click="openAddDeviceDialog"
-      />
+      <div class="hotel-title text-xl font-bold">
+        Hotel Cheraton - IoT Devices
+      </div>
+      <Button label="Add Device" icon="pi pi-plus" class="p-button-sm" @click="openAddDeviceDialog" />
     </div>
 
     <div class="grid">
-      <!-- Card for each room -->
+      <!-- Tarjeta por habitación -->
       <div v-for="room in rooms" :key="room.id" class="col-12 md:col-6 lg:col-4 mb-4">
         <div class="card p-3 border-round shadow-2 h-full">
           <div class="flex justify-content-between align-items-center mb-3">
@@ -23,7 +20,7 @@
 
           <h4 class="mb-3">Devices</h4>
 
-          <!-- Devices list -->
+          <!-- Lista de dispositivos -->
           <div v-if="getRoomDevices(room.id).length > 0" class="device-list">
             <div
                 v-for="device in getRoomDevices(room.id)"
@@ -52,7 +49,7 @@
       </div>
     </div>
 
-    <!-- Add device dialog -->
+    <!-- Diálogo para añadir dispositivo -->
     <Dialog v-model:visible="addDeviceDialog" header="Add Device" :style="{ width: '450px' }">
       <div class="p-fluid">
         <div class="field mb-3">
@@ -91,7 +88,7 @@
       </template>
     </Dialog>
 
-    <!-- Device settings dialog -->
+    <!-- Diálogo de configuración de dispositivo -->
     <Dialog v-model:visible="deviceSettingsDialog" header="Settings" :style="{ width: '500px' }">
       <div v-if="selectedDevice" class="p-fluid">
         <div class="field mb-3">
@@ -140,10 +137,9 @@ import Dropdown from 'primevue/dropdown'
 import InputText from 'primevue/inputtext'
 import axios from 'axios'
 
-// Data
+// Datos reactivos
 const devices = ref([])
 const rooms = ref([])
-const selectedDevice = ref(null)
 const newDevice = ref({
   roomId: null,
   type: null,
@@ -151,32 +147,38 @@ const newDevice = ref({
   status: 'working',
   properties: {}
 })
+const selectedDevice = ref(null)
 
-// UI State
+// UI states
 const addDeviceDialog = ref(false)
 const deviceSettingsDialog = ref(false)
 
-// Options
+// Opciones
 const deviceTypes = ['sensor', 'actuator']
 const deviceStatusOptions = ['working', 'maintenance', 'inactive']
 
-// Load initial data
+// Cargar datos iniciales
 onMounted(async () => {
   try {
     const [roomsResponse, devicesResponse] = await Promise.all([
       axios.get('http://localhost:3001/rooms'),
       getDevices()
     ])
-    rooms.value = roomsResponse.data
-    devices.value = devicesResponse
+
+    // Asegúrate de que los IDs sean del mismo tipo (string o number)
+    rooms.value = roomsResponse.data.map(r => ({ ...r }))
+    devices.value = devicesResponse.map(d => ({ ...d }))
+
+    console.log('Rooms:', rooms.value)
+    console.log('Devices:', devices.value)
   } catch (error) {
-    console.error('Error loading initial data:', error)
+    console.error('Error loading data:', error.message)
   }
 })
 
-// Computed methods
+// Métodos auxiliares
 const getRoomDevices = (roomId) => {
-  return devices.value.filter(device => device.roomId === roomId)
+  return devices.value.filter(device => String(device.roomId) === String(roomId))
 }
 
 const getDeviceIcon = (type) => {
@@ -184,24 +186,24 @@ const getDeviceIcon = (type) => {
 }
 
 const getRoomStatusSeverity = (status) => {
-  const statusMap = {
-    'operational': 'success',
-    'maintenance': 'warning',
-    'inactive': 'danger'
+  const map = {
+    operational: 'success',
+    maintenance: 'warning',
+    inactive: 'danger'
   }
-  return statusMap[status] || 'info'
+  return map[status] || 'info'
 }
 
 const getDeviceStatusSeverity = (status) => {
-  const statusMap = {
-    'working': 'success',
-    'maintenance': 'warning',
-    'inactive': 'danger'
+  const map = {
+    working: 'success',
+    maintenance: 'warning',
+    inactive: 'danger'
   }
-  return statusMap[status] || 'info'
+  return map[status] || 'info'
 }
 
-// Device management methods
+// Acciones
 const openAddDeviceDialog = () => {
   newDevice.value = {
     roomId: null,
@@ -269,6 +271,11 @@ const handleUpdateDevice = async () => {
 
 .card h3 {
   color: #333333;
+}
+
+.hotel-title {
+  color: #1a237e; /* Azul oscuro elegante */
+  letter-spacing: 1px;
 }
 
 .card h4 {

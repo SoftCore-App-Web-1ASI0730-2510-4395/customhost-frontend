@@ -1,6 +1,11 @@
 <template>
   <div class="p-4">
-    <h2 class="mb-4">Panel de Administración Hotelera</h2>
+    <!-- Header Section with Hotel Name -->
+    <div class="flex justify-content-between align-items-center mb-4">
+      <div class="hotel-title text-xl font-bold">
+        Hotel Cheraton - Dashboard
+      </div>
+    </div>
 
     <!-- Tarjetas resumen -->
     <div class="grid justify-content-center">
@@ -198,5 +203,17 @@ onMounted(async () => {
 
 .p-button-text:hover {
   background-color: #e3f2fd;
+}
+
+/* New styles for hotel title */
+.hotel-title {
+  color: #1a237e; /* Dark blue to match header/footer */
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 1rem;
+  z-index: 1;
 }
 </style>

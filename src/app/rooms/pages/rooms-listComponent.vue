@@ -1,7 +1,8 @@
 <template>
   <div class="p-4">
     <div class="flex justify-content-between align-items-center mb-3">
-      <h2 class="m-0">Rooms Management</h2>
+      <h2 class="m-0" style="color: black">Rooms Management</h2>
+
       <Button label="Add Room" icon="pi pi-plus" @click="openNewRoomForm" />
     </div>
 

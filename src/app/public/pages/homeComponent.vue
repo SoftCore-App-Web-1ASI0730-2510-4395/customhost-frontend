@@ -14,7 +14,8 @@
           <div class="flex flex-column align-items-center gap-2 text-center">
             <i :class="card.icon" class="text-4xl text-primary"></i>
             <div class="text-2xl font-bold text-black">{{ card.value }}</div>
-            <div class="text-md text-color-secondary">{{ card.title }}</div>
+            <div class="text-md text-color-secondary">{{ t(card.titleKey) }}</div>
+
             <Badge
                 v-if="card.badge"
                 :value="card.badge"
@@ -33,8 +34,8 @@
           <div class="flex flex-column align-items-center gap-2 text-center">
             <i class="pi pi-wifi text-4xl text-inactive"></i>
             <div class="text-2xl font-bold text-black">{{ inactiveIotCount }}</div>
-            <div class="text-md text-color-secondary">Dispositivos IoT Inactivos</div>
-            <Button v-if="inactiveIotCount > 0" label="Ver detalles" icon="pi pi-search" class="p-button-text p-button-sm mt-2" @click="showInactiveDevices = !showInactiveDevices" />
+            <div class="text-md text-color-secondary">{{ t( 'dashboard.iot_devices' ) }}</div>
+            <Button v-if="inactiveIotCount > 0" :label= "t('dashboard.view_details')" icon="pi pi-search" class="p-button-text p-button-sm mt-2" @click="showInactiveDevices = !showInactiveDevices" />
           </div>
         </div>
       </div>
@@ -42,7 +43,7 @@
 
     <!-- Lista opcional de dispositivos inactivos -->
     <div v-if="showInactiveDevices && inactiveIotList.length > 0" class="card p-4 surface-card mt-4">
-      <h4 class="text-black">Lista de Dispositivos Inactivos</h4>
+      <h4 class="text-black">{{ t('dashboard.inactive_devices_list') }}</h4>
       <ul class="list-none pl-0">
         <li v-for="device in inactiveIotList" :key="device.id" class="py-2 border-bottom-1 border-gray-300 text-black">
           {{ device.name }} - {{ device.type }}
@@ -51,18 +52,18 @@
     </div>
 
     <!-- Gráfico: Reservas en los últimos 30 días -->
-    <h3 class="mt-5 mb-3 text-black">Reservas en los últimos 30 días</h3>
+    <h3 class="mt-5 mb-3 text-black">{{ t('dashboard.last_month_bookings')}}</h3>
     <div class="card p-4 surface-card" style="min-height: 400px; width: 100%">
       <Chart type="line" :data="bookingsChartData" :options="chartOptions" />
     </div>
 
     <!-- Tabla de huéspedes -->
-    <h3 class="mt-5 mb-3">Huéspedes actuales</h3>
+    <h3 class="mt-5 mb-3 text-black">{{ t('dashboard.current_guests.title')}}</h3>
     <DataTable :value="guests" class="p-datatable-sm">
-      <Column field="roomNumber" header="Habitación" />
-      <Column field="name" header="Nombre" />
-      <Column field="checkIn" header="Check-in" />
-      <Column field="checkOut" header="Check-out" />
+      <Column field="roomNumber" :header= "t('dashboard.current_guests.roomNumber')" />
+      <Column field="name" :header= "t('dashboard.current_guests.name')"  />
+      <Column field="checkIn" :header= "t('dashboard.current_guests.checkIn')"  />
+      <Column field="checkOut" :header= "t('dashboard.current_guests.checkOut')"  />
     </DataTable>
   </div>
 </template>

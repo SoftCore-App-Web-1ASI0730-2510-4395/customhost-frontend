@@ -7,17 +7,31 @@
       "urgent_requests": "Solicitudes urgentes",
       "pending_checkouts": "Check-outs pendientes"
     },
+
     "iot_devices": "Dispositivos Iot Inactivos",
     "inactive_devices_list": "Lista de dispositivos inactivos",
     "view_details": "Ver Detalles",
     "last_month_bookings": "Reservas en los últimos 30 días",
+
     "current_guests":{
-        "title": "Huéspedes actuales",
-        "roomNumber": "Habitación",
-        "name": "Nombre",
-        "checkIn": "Check-in",
-        "checkOut": "Check-out"
+      "title": "Huéspedes actuales",
+      "roomNumber": "Habitación",
+      "name": "Nombre",
+      "checkIn": "Check-in",
+      "checkOut": "Check-out"
     },
+
+
+    "rooms_management": {
+      "room": "# Cuarto",
+      "type": "Tipo",
+      "status": "Estado",
+      "price": "Precio",
+      "floor": "Piso",
+      "actions": "Acciones"
+    },
+
+
 
 
     "charts": {

@@ -14,12 +14,12 @@ const currentYear = ref(new Date().getFullYear())
 
 <style scoped>
 .footer {
-  background-color: #1a237e; /* Mismo azul oscuro que el header */
-  padding: 1.5rem;
+  background-color: var(--color-secondary); /* Mismo fondo que el header */
+  color: var(--color-primary-light); /* Mismo color de texto que el header */
+  padding: 1rem 1.5rem;
   text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil claro */
+  border-top: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
   font-size: 0.9rem;
-  color: #ffffff; /* Texto blanco para contraste */
 }
 
 .footer-content {
@@ -28,13 +28,13 @@ const currentYear = ref(new Date().getFullYear())
 }
 
 .footer a {
-  color: #bbdefb; /* Azul claro para enlaces (si los añades) */
+  color: var(--color-primary-light);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .footer a:hover {
-  color: #ffffff; /* Blanco al hacer hover */
+  color: #ffffff;
   text-decoration: underline;
 }
 </style>

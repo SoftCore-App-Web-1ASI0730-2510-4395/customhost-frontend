@@ -78,10 +78,10 @@ export const getHotelDashboardStats = async () => {
 
         return {
             summaryCards: [
-                { title: 'Habitaciones ocupadas', value: `${occupiedRooms} / ${totalRooms}`, icon: 'pi pi-home' },
-                { title: 'Reservas de hoy', value: String(checkInsToday), icon: 'pi pi-calendar-plus' },
-                { title: 'Solicitudes urgentes', value: String(urgentRequests), icon: 'pi pi-wrench', badge: 'Urgente' },
-                { title: 'Check-outs pendientes', value: '0', icon: 'pi pi-sign-out' }
+                { titleKey: 'dashboard.summary_cards.occupied_rooms', value: `${occupiedRooms} / ${totalRooms}`, icon: 'pi pi-home' },
+                { titleKey: 'dashboard.summary_cards.bookings_today', value: String(checkInsToday), icon: 'pi pi-calendar-plus' },
+                { titleKey: 'dashboard.summary_cards.urgent_requests', value: String(urgentRequests), icon: 'pi pi-wrench', badge: 'Urgente' },
+                { titleKey: 'dashboard.summary_cards.pending_checkouts', value: '0', icon: 'pi pi-sign-out' }
             ],
             guests: currentGuests,
             inactiveIot,

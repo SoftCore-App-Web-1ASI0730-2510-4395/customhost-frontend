@@ -1,9 +1,14 @@
 <template>
   <div class="p-4">
     <div class="flex justify-content-between align-items-center mb-3">
+
+      <h2 class="m-0" style="color: black">Rooms Management</h2>
+
+
       <div class="hotel-title text-xl font-bold">
         Hotel Cheraton - Cuartos
       </div>
+
       <Button label="Add Room" icon="pi pi-plus" @click="openNewRoomForm" />
     </div>
 

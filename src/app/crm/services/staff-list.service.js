@@ -2,8 +2,8 @@
 import axios from 'axios'
 import StaffMember from '../model/staff-list.entity.js'
 
-const API_URL = 'http://localhost:3001/users'
-const REQUESTS_URL = 'http://localhost:3001/serviceRequests'
+const API_URL = 'https://api-chafa.vercel.app/api/v1/users'
+const REQUESTS_URL = 'https://api-chafa.vercel.app/api/v1/serviceRequests'
 
 /**
  * Obtiene todo el personal y une con las peticiones asignadas

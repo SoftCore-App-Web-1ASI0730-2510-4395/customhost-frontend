@@ -282,7 +282,7 @@ onMounted(async () => {
     requests.value = allRequests
 
     // Obtener todas las habitaciones
-    const response = await fetch('http://localhost:3001/rooms') // Ajusta según tu API
+    const response = await fetch('https://api-chafa.vercel.app/api/v1/rooms') // Ajusta según tu API
     const roomData = await response.json()
     rooms.value = roomData
   } catch (error) {

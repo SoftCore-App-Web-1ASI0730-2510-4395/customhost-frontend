@@ -2,7 +2,7 @@
 import axios from 'axios'
 import CustomerRequest from '../model/customer-request.entity.js'
 
-const API_URL = 'http://localhost:3001/serviceRequests' // ajustar según tu db.json
+const API_URL = 'https://api-chafa.vercel.app/api/v1/serviceRequests' // ajustar según tu db.json
 
 export const getCustomerRequests = async () => {
     const response = await axios.get(API_URL)

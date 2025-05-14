@@ -132,11 +132,11 @@ onMounted(async () => {
     bookings.value = await getBookingsWithDetails()
 
     // Cargamos solo los huéspedes (role: "guest")
-    const usersResponse = await fetch('http://localhost:3001/users').then(res => res.json())
+    const usersResponse = await fetch('https://api-chafa.vercel.app/api/v1/users').then(res => res.json())
     guests.value = usersResponse.filter(u => u.role === 'guest')
 
     // Cargamos todas las habitaciones
-    const roomsResponse = await fetch('http://localhost:3001/rooms').then(res => res.json())
+    const roomsResponse = await fetch('https://api-chafa.vercel.app/api/v1/rooms').then(res => res.json())
     rooms.value = roomsResponse
   } catch (error) {
     console.error('Error al cargar datos:', error)

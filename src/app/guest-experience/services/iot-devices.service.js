@@ -1,8 +1,8 @@
 import axios from 'axios'
 import IotDevice from '../model/iot-devices.entity.js'
 
-const API_URL = 'http://localhost:3001/iotDevices'
-const ROOMS_URL = 'http://localhost:3001/rooms'
+const API_URL = 'https://api-chafa.vercel.app/api/v1/iotDevices'
+const ROOMS_URL = 'https://api-chafa.vercel.app/api/v1/rooms'
 
 // Obtener todos los dispositivos
 export const getDevices = async () => {

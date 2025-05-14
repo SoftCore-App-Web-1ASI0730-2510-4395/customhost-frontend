@@ -161,7 +161,7 @@ const deviceStatusOptions = ['working', 'maintenance', 'inactive']
 onMounted(async () => {
   try {
     const [roomsResponse, devicesResponse] = await Promise.all([
-      axios.get('http://localhost:3001/rooms'),
+      axios.get('https://api-chafa.vercel.app/api/v1/rooms'),
       getDevices()
     ])
 

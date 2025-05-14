@@ -20,5 +20,5 @@ export const updateRoom = async (id, roomData) => {
 }
 
 export const deleteRoom = async (id) => {
-    await axios.delete($`{API_URL}/${id}`)
+    await axios.delete(`${API_URL}/${id}`)
 }

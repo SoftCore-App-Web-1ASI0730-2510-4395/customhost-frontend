@@ -16,7 +16,26 @@
 
   /*background: var(--color-background);*/
 }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  /* Consider overflow-x: hidden; if horizontal scroll is an issue */
+}
 
+#app { /* Vue mounting point */
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 
 a{

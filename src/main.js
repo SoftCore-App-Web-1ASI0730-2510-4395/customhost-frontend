@@ -39,6 +39,7 @@ import 'primeflex/primeflex.css'        // Layout utilities
 // i18n y router
 import i18n from "./i18n.js"
 import router from "./app/router/index.js"
+import {Message, Password} from "primevue";
 
 // Crear aplicación
 const app = createApp(App)
@@ -84,6 +85,11 @@ app
     .component('pv-textarea', Textarea)
     .component('pv-toolbar', Toolbar)
     .component('pv-toast', Toast)
+    .component('pv-input-text', InputText)
+    .component('pv-password', Password)
+    .component('pv-card', Card)
+    .component('pv-toast', Toast)
+    .component('pv-message', Message)
 
 // Montar aplicación
 app.mount('#app')

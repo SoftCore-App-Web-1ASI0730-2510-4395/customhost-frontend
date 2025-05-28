@@ -14,9 +14,17 @@ export default {
   data() {
     return {
       isAuthPath: false,
-      isSideBarVisible: true
+      isSideBarVisible: !this.isAuthPath,
     };
-  }
+  },
+  watch: {
+    '$route.path': {
+      immediate: true,
+      handler(newPath) {
+        this.isAuthPath = newPath.includes('iam/');
+      }
+    }
+  },
 };
 </script>
 

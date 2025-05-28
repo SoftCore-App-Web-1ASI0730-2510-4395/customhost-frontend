@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from "../public/pages/homeComponent.vue";
 import RoomsListComponent from "../rooms/pages/rooms-listComponent.vue";
 
+
 const preferencesComponent = () => import("../profiles/pages/preferencesComponent.vue");
 const bookComponent = () => import("../crm/pages/bookComponent.vue");
 const myBookingsComponent = () => import("../crm/pages/myBookingsComponent.vue");
@@ -12,11 +13,11 @@ const customerRequestsComponent = () => import("../crm/pages/customerRequestsCom
 const adminComponent = () => import("../billing/pages/adminComponent.vue");
 const bookingsTrackerComponent = () => import("../crm/pages/bookingsTrackerComponent.vue");
 const customerServiceComponent = () => import("../crm/pages/customerServiceComponent.vue");
-const loginComponent = () => import("../auth/pages/loginComponent.vue");
-const registerComponent = () => import("../auth/pages/registerComponent.vue");
+const loginComponent = () => import("../iam/pages/login.component.vue");
+const registerComponent = () => import("../iam/pages/register.component.vue");
 const notFoundComponent = () => import("../public/pages/notFoundComponent.vue");
 const profileComponent = () => import("../profiles/pages/profileComponent.vue");
-
+const registerHotelComponent = () => import("../iam/pages/registerHotel.component.vue");
 // Rutas organizadas por dominio (bounded contexts)
 const routes = [
     {
@@ -32,9 +33,9 @@ const routes = [
         meta: { title: 'Rooms' }
     },
     {
-        path: '/auth',
-        name: 'Auth',
-        redirect: '/auth/login',
+        path: '/iam',
+        name: 'Iam',
+        redirect: '/iam/login',
         children: [
             {
                 path: 'login',
@@ -47,6 +48,12 @@ const routes = [
                 name: 'Register',
                 component: registerComponent,
                 meta: { title: 'Register' }
+            },
+            {
+                path: 'register-hotel',
+                name: 'RegisterHotel',
+                component: registerHotelComponent,
+                meta: { title: 'Register Hotel' }
             }
         ]
     },

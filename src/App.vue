@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       isAuthPath: false,
-      isSideBarVisible: true
+      isSideBarVisible: !this.isAuthPath,
     };
   },
   watch: {

@@ -33,10 +33,6 @@ export const createCustomerRequest = async (requestData) => {
     return new CustomerRequest(response.data)
 }
 
-export const updateCustomerRequest = async (id, requestData) => {
-    const response = await axios.put(`${API_URL}/${id}`, requestData)
-    return new CustomerRequest(response.data)
-}
 
 export const deleteCustomerRequest = async (id) => {
     await axios.delete(`${API_URL}/${id}`)

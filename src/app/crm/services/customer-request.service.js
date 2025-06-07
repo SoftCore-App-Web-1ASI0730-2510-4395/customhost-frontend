@@ -1,4 +1,3 @@
-// customer-request.service.js
 import axios from 'axios'
 import CustomerRequest from '../model/customer-request.entity.js'
 

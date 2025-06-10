@@ -35,17 +35,17 @@ export default class CustomerRequest {
      */
     assignStaff(staffId) {
         this.assignedTo = staffId;
-        this.status = 'En progreso';
-        this.addHistoryEntry('Asignado', `Petición asignada al personal ${staffId}`);
+        this.status = 'In progress';
+        this.addHistoryEntry('Assigned', `Petition assigned to the personal ${staffId}`);
     }
 
     /**
      * Marca la solicitud como resuelta
      */
     resolve() {
-        this.status = 'Resuelto';
+        this.status = 'Resolved';
         this.completedAt = new Date().toISOString();
-        this.addHistoryEntry('Resuelto', 'La petición ha sido completada');
+        this.addHistoryEntry('Resolved', 'The task has been completed successfully');
     }
 
     /**

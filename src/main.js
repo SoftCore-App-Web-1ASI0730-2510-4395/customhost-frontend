@@ -18,7 +18,8 @@ import Dialog from 'primevue/dialog'
 import Drawer from 'primevue/drawer'
 import FileUpload from 'primevue/fileupload'
 import FloatLabel from 'primevue/floatlabel'
-import IconField from 'primevue/iconfield' // ✅ Importación corregida
+import IconField from 'primevue/iconfield'
+import Badge from "primevue/badge";// ✅ Importación corregida
 import InputIcon from 'primevue/inputicon'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
@@ -89,6 +90,7 @@ app
     .component('pv-password', Password)
     .component('pv-card', Card)
     .component('pv-toast', Toast)
+    .component('pv-badge', Badge)
     .component('pv-message', Message)
 
 // Montar aplicación

@@ -1,12 +1,26 @@
-// customer-request.service.js
 import axios from 'axios'
 import CustomerRequest from '../model/customer-request.entity.js'
 
-const API_URL = 'https://api-chafa.vercel.app/api/v1/serviceRequests' // ajustar según tu db.json
+const API_URL = 'http://localhost:3001/serviceRequests'
 
+// Helper para evitar repetición
+const getAndModifyRequest = async (id, modifyFn) => {
+    const response = await axios.get(`${API_URL}/${id}`)
+    const request = new CustomerRequest(response.data)
+    modifyFn(request)
+    const updated = await axios.put(`${API_URL}/${id}`, request.toJSON())
+    return new CustomerRequest(updated.data)
+}
+
+// --- Métodos públicos ---
 export const getCustomerRequests = async () => {
-    const response = await axios.get(API_URL)
-    return response.data.map(request => new CustomerRequest(request))
+    try {
+        const response = await axios.get(API_URL)
+        return response.data.map(request => new CustomerRequest(request))
+    } catch (error) {
+        console.error('Error fetching customer requests:', error)
+        throw new Error('Could not load service requests')
+    }
 }
 
 export const createCustomerRequest = async (requestData) => {
@@ -18,27 +32,15 @@ export const createCustomerRequest = async (requestData) => {
     return new CustomerRequest(response.data)
 }
 
-export const updateCustomerRequest = async (id, requestData) => {
-    const response = await axios.put(`${API_URL}/${id}`, requestData)
-    return new CustomerRequest(response.data)
-}
 
 export const deleteCustomerRequest = async (id) => {
     await axios.delete(`${API_URL}/${id}`)
 }
 
 export const assignStaffToRequest = async (id, staffId) => {
-    const response = await axios.get(`${API_URL}/${id}`)
-    const request = new CustomerRequest(response.data)
-    request.assignStaff(staffId)
-    const updated = await axios.put(`${API_URL}/${id}`, request.toJSON())
-    return new CustomerRequest(updated.data)
+    return getAndModifyRequest(id, request => request.assignStaff(staffId))
 }
 
 export const resolveCustomerRequest = async (id) => {
-    const response = await axios.get(`${API_URL}/${id}`)
-    const request = new CustomerRequest(response.data)
-    request.resolve()
-    const updated = await axios.put(`${API_URL}/${id}`, request.toJSON())
-    return new CustomerRequest(updated.data)
+    return getAndModifyRequest(id, request => request.resolve())
 }

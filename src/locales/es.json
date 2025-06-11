@@ -20,20 +20,18 @@
       "checkIn": "Check-in",
       "checkOut": "Check-out"
     },
-
-
     "rooms_management": {
+      "hotelId": "Id del Hotel",
       "room": "# Cuarto",
       "type": "Tipo",
       "status": "Estado",
       "price": "Precio",
       "floor": "Piso",
-      "actions": "Acciones"
+      "actions": "Acciones",
+      "rooms_management": "Gestión de Habitaciones",
+      "rooms": "Habitaciones",
+      "add_room": "Agregar Habitación"
     },
-
-
-
-
     "charts": {
       "iot_devices_status": "Estado de dispositivos IoT",
       "labels": {

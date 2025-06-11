@@ -27,7 +27,7 @@ export default {
         },
         {
           name: 'Rooms',
-          path: '/rooms',
+          path: '/crm/rooms',
           type: 'both',
           icon: 'pi pi-building', // Mejor icono para habitaciones
         },

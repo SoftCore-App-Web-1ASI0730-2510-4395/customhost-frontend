@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-<h1>My bookings page from user!</h1>
+<h1>My bookings page from user xdd!</h1>
 </template>
 
 <style scoped>

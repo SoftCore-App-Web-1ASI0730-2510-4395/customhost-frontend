@@ -49,5 +49,18 @@
       "checkIn": "Check-in",
       "checkOut": "Check-out"
     }
+  },
+  "sidebar_items": {
+    "home": "Inicio",
+    "preferences": "Preferencias",
+    "book": "Reservar",
+    "my-bookings": "Mis Reservas",
+    "customer-service": "Atención al Huésped",
+    "admin": "Administración",
+    "iot-devices": "Dispositivos IoT",
+    "customer-requests": "Solicitudes",
+    "bookings-tracker": "Seguimiento",
+    "request-staff": "Llamar Staff",
+    "profile": "Perfil"
   }
 }

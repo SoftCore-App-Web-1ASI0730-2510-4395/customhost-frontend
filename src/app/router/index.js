@@ -7,7 +7,7 @@ import RoomsListComponent from "../rooms/pages/rooms-listComponent.vue";
 const preferencesComponent = () => import("../profiles/pages/preferencesComponent.vue");
 const bookComponent = () => import("../crm/pages/bookComponent.vue");
 const myBookingsComponent = () => import("../crm/pages/myBookingsComponent.vue");
-const iotDevicesComponent = () => import("../guest-experience/pages/iotDevicesComponent.vue");
+const iotDevicesComponent = () => import("../guest-experience/pages/iot-room-configuration.vue");
 const requestStaffComponent = () => import("../crm/pages/requestStaffComponent.vue");
 const customerRequestsComponent = () => import("../crm/pages/customerRequestsComponent.vue");
 const adminComponent = () => import("../billing/pages/adminComponent.vue");

@@ -31,9 +31,6 @@
       "actions": "Acciones"
     },
 
-
-
-
     "charts": {
       "iot_devices_status": "Estado de dispositivos IoT",
       "labels": {
@@ -50,17 +47,18 @@
       "checkOut": "Check-out"
     }
   },
+  "title": "Dashboard",
   "sidebar_items": {
     "home": "Inicio",
     "preferences": "Preferencias",
     "book": "Reservar",
     "my-bookings": "Mis Reservas",
-    "customer-service": "Atención al Huésped",
-    "admin": "Administración",
+    "customer-service": "Servicio al Cliente",
+    "admin": "Administrador",
     "iot-devices": "Dispositivos IoT",
-    "customer-requests": "Solicitudes",
-    "bookings-tracker": "Seguimiento",
-    "request-staff": "Llamar Staff",
+    "customer-requests": "Solicitudes de Huéspedes",
+    "bookings-tracker": "Seguimiento de Reservas",
+    "request-staff": "Solicitud de Personal",
     "profile": "Perfil"
   }
 }

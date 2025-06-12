@@ -21,9 +21,6 @@
     },
 
 
-
-
-
     "rooms_management": {
       "room": "Room #",
       "type": "Type",
@@ -49,7 +46,7 @@
       "checkOut": "Check-out"
     }
   },
-
+  "title": "Dashboard",
   "sidebar_items": {
     "home": "Home",
     "preferences": "Preferences",

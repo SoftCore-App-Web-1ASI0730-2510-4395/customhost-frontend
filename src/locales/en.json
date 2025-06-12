@@ -19,17 +19,18 @@
       "checkIn": "Check-in",
       "checkOut": "Check-out"
     },
-
-
     "rooms_management": {
+      "hotelId": "Hotel Id",
       "room": "Room #",
       "type": "Type",
       "status": "Status",
       "price": "Price",
       "floor": "Floor",
-      "actions": "Actions"
+      "actions": "Actions",
+      "rooms_management": "Rooms Management",
+      "rooms": "Rooms",
+      "add_room": "Add Room"
     },
-
     "charts": {
       "iot_devices_status": "IoT Devices Status",
       "labels": {

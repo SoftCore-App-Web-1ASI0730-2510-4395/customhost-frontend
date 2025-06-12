@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import HomeComponent from "../public/pages/homeComponent.vue";
-import RoomsListComponent from "../rooms/pages/rooms-listComponent.vue";
-
 
 const preferencesComponent = () => import("../profiles/pages/preferencesComponent.vue");
 const bookComponent = () => import("../crm/pages/bookComponent.vue");
@@ -18,6 +16,7 @@ const registerComponent = () => import("../iam/pages/register.component.vue");
 const notFoundComponent = () => import("../public/pages/notFoundComponent.vue");
 const profileComponent = () => import("../profiles/pages/profileComponent.vue");
 const registerHotelComponent = () => import("../iam/pages/registerHotel.component.vue");
+const RoomsListComponent = () => import("../crm/pages/rooms-listComponent.vue");
 // Rutas organizadas por dominio (bounded contexts)
 const routes = [
     {
@@ -25,12 +24,6 @@ const routes = [
         name: 'Home',
         component: HomeComponent,
         meta: { title: 'Home' }
-    },
-    {
-        path: '/rooms',
-        name: 'Rooms',
-        component: RoomsListComponent,
-        meta: { title: 'Rooms' }
     },
     {
         path: '/iam',
@@ -117,6 +110,12 @@ const routes = [
                 name: 'BookingsTracker',
                 component: bookingsTrackerComponent,
                 meta: { title: 'Bookings Tracker' }
+            },
+            {
+                path: 'rooms',
+                name: 'Rooms',
+                component: RoomsListComponent,
+                meta: { title: 'Rooms' }
             }
         ]
     },

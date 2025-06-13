@@ -132,41 +132,21 @@
       "id": 4
     }
   ],
-  "roomIotDevices": [
+  "roomIotDevices": [],
+  "iotDevices": [],
+  "bookings": [],
+  "staffMembers": [
     {
-      "id": 1,
-      "roomId": 101,
-      "iotDeviceId": 1
-    },
-    {
-      "id": 2,
-      "roomId": 101,
-      "iotDeviceId": 2
-    }
-  ],
-  "iotDevices": [
-    {
-      "id": 1,
-      "name": "Temperature Sensor",
-      "type": "sensor",
-      "deviceType": "climate",
-      "roomId": 101,
-      "status": "online"
-    },
-    {
-      "id": 2,
-      "name": "Smart Light",
-      "type": "actuator",
-      "deviceType": "lighting",
-      "roomId": 101,
-      "status": "online"
-    }
-  ],
-  "bookings": [
-    {
-      "id": 1,
-      "userId": 1,
+      "id": 4,
       "hotelId": 1,
+      "firstName": "Ana",
+      "lastName": "López",
+      "email": "ana.lopez@hotel.com",
+      "phone": "+34600333444",
+      "status": "active",
+      "department": "Housekeeping",
+      "createdAt": "2024-06-15T08:30:00"
+
       "roomId": 1,
       "checkInDate": "2025-05-01T14:00:00",
       "checkOutDate": "2025-05-05T12:00:00",
@@ -226,33 +206,18 @@
       ]
     },
     {
-      "id": 3,
-      "userId": 1,
+      "id": 5,
       "hotelId": 1,
-      "roomId": 101,
-      "type": "Reparación",
-      "description": "",
-      "status": "Resolved",
-      "priority": "Urgente",
-      "createdAt": "2025-06-01T22:01:23.982Z",
-      "assignedTo": 4,
-      "completedAt": "2025-06-02T21:38:27.996Z",
-      "history": [
-        {
-          "timestamp": "2025-06-01T22:01:27.920Z",
-          "action": "Assigned",
-          "changedBy": 4,
-          "notes": "Task assigned to the personal 4"
-        },
-        {
-          "timestamp": "2025-06-02T21:38:27.996Z",
-          "action": "Completed",
-          "changedBy": 4,
-          "notes": "The task has been completed"
-        }
-      ]
+      "firstName": "David",
+      "lastName": "Martínez",
+      "email": "david.martinez@hotel.com",
+      "phone": "+34600555666",
+      "status": "active",
+      "department": "Technical Support",
+      "createdAt": "2024-07-20T10:15:00"
     }
   ],
+  "serviceRequests": [],
   "userDevicePreferences": [
     {
       "id": 1,

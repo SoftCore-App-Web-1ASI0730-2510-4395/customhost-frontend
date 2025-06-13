@@ -81,6 +81,17 @@
       "phone": "+34600789012",
       "role": "guest",
       "createdAt": "2025-02-02T14:15:00"
+    },
+    {
+      "id": 3,
+      "hotelId": 2,
+      "firstName": "Kelly",
+      "lastName": "Campos",
+      "email": "kelly.campos@email.com",
+      "password": "kelly123",
+      "phone": "+34600564893",
+      "role": "guest",
+      "createdAt": "2025-03-01T20:15:00"
     }
   ],
   "rooms": [
@@ -135,6 +146,64 @@
       "status": "active",
       "department": "Housekeeping",
       "createdAt": "2024-06-15T08:30:00"
+
+      "roomId": 1,
+      "checkInDate": "2025-05-01T14:00:00",
+      "checkOutDate": "2025-05-05T12:00:00",
+      "status": "Active",
+      "totalPrice": 480,
+      "paymentStatus": "Paid"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "hotelId": 1,
+      "roomId": 2,
+      "checkInDate": "2025-05-02T15:30:00",
+      "checkOutDate": "2025-05-07T11:00:00",
+      "status": "Active",
+      "totalPrice": 480,
+      "paymentStatus": "Paid"
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "hotelId": 2,
+      "roomId": 3,
+      "checkInDate": "2025-06-12T15:30:00",
+      "checkOutDate": "2025-06-20T11:00:00",
+      "status": "Active",
+      "totalPrice": 480,
+      "paymentStatus": "Paid"
+    }
+  ],
+  "serviceRequests": [
+    {
+      "id": 1,
+      "userId": 1,
+      "hotelId": 1,
+      "roomId": 101,
+      "type": "Limpieza",
+      "description": "Necesito toallas adicionales",
+      "status": "Resolved",
+      "priority": "normal",
+      "createdAt": "2025-05-02T09:15:00",
+      "assignedTo": 5,
+      "completedAt": "2025-06-07T17:58:59.379Z",
+      "history": [
+        {
+          "timestamp": "2025-06-01T22:00:04.578Z",
+          "action": "Assigned",
+          "changedBy": 5,
+          "notes": "Task assigned to the personal 5"
+        },
+        {
+          "timestamp": "2025-06-07T17:58:59.381Z",
+          "action": "Resolved",
+          "changedBy": 5,
+          "notes": "The task has been completed successfully"
+        }
+      ]
     },
     {
       "id": 5,

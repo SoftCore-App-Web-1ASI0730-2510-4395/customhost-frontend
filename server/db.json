@@ -167,12 +167,12 @@
       "id": 1,
       "userId": 1,
       "hotelId": 1,
-      "roomId": 101,
+      "roomId": 1,
       "checkInDate": "2025-05-01T14:00:00",
       "checkOutDate": "2025-05-05T12:00:00",
-      "status": "active",
+      "status": "Active",
       "totalPrice": 480,
-      "paymentStatus": "paid"
+      "paymentStatus": "Paid"
     },
     {
       "id": 2,

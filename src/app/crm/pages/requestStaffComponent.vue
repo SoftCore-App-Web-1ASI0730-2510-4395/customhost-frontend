@@ -88,11 +88,6 @@ const handleCancelDelete = () => {
 
 const handleSave = async (updatedData) => {
   try {
-    const updatedMember = await staffService.updateStaffMember(
-        currentStaffMember.value.id,
-        updatedData
-    );
-
     // Actualiza la lista local sin necesidad de recargar
     const index = staffMembers.value.findIndex(m => m.id === currentStaffMember.value.id);
     if (index !== -1) {

@@ -132,36 +132,8 @@
       "id": 4
     }
   ],
-  "roomIotDevices": [
-    {
-      "id": 1,
-      "roomId": 101,
-      "iotDeviceId": 1
-    },
-    {
-      "id": 2,
-      "roomId": 101,
-      "iotDeviceId": 2
-    }
-  ],
-  "iotDevices": [
-    {
-      "id": 1,
-      "name": "Temperature Sensor",
-      "type": "sensor",
-      "deviceType": "climate",
-      "roomId": 101,
-      "status": "online"
-    },
-    {
-      "id": 2,
-      "name": "Smart Light",
-      "type": "actuator",
-      "deviceType": "lighting",
-      "roomId": 101,
-      "status": "online"
-    }
-  ],
+  "roomIotDevices": [],
+  "iotDevices": [],
   "bookings": [
     {
       "id": 1,
@@ -221,62 +193,7 @@
       "createdAt": "2024-07-20T10:15:00"
     }
   ],
-  "serviceRequests": [
-    {
-      "id": 1,
-      "userId": 1,
-      "hotelId": 1,
-      "roomId": 101,
-      "type": "Limpieza",
-      "description": "Necesito toallas adicionales",
-      "status": "Resolved",
-      "priority": "normal",
-      "createdAt": "2025-05-02T09:15:00",
-      "assignedTo": 5,
-      "completedAt": "2025-06-07T17:58:59.379Z",
-      "history": [
-        {
-          "timestamp": "2025-06-01T22:00:04.578Z",
-          "action": "Assigned",
-          "changedBy": 5,
-          "notes": "Task assigned to the personal 5"
-        },
-        {
-          "timestamp": "2025-06-07T17:58:59.381Z",
-          "action": "Resolved",
-          "changedBy": 5,
-          "notes": "The task has been completed successfully"
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "userId": 1,
-      "hotelId": 1,
-      "roomId": 101,
-      "type": "Reparación",
-      "description": "",
-      "status": "Resolved",
-      "priority": "Urgente",
-      "createdAt": "2025-06-01T22:01:23.982Z",
-      "assignedTo": 4,
-      "completedAt": "2025-06-02T21:38:27.996Z",
-      "history": [
-        {
-          "timestamp": "2025-06-01T22:01:27.920Z",
-          "action": "Assigned",
-          "changedBy": 4,
-          "notes": "Task assigned to the personal 4"
-        },
-        {
-          "timestamp": "2025-06-02T21:38:27.996Z",
-          "action": "Completed",
-          "changedBy": 4,
-          "notes": "The task has been completed"
-        }
-      ]
-    }
-  ],
+  "serviceRequests": [],
   "userDevicePreferences": [
     {
       "id": 1,

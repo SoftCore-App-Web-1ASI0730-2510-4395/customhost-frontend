@@ -13,6 +13,8 @@ import CustomerRequestFormDialog from '../components/customer-request-form-dialo
 import CustomerRequestRoomsTable from '../components/customer-request-rooms-table.component.vue'
 import CustomerRequestPetitionsTable from '../components/customer-request-petitions-table.component.vue'
 
+import {staffService} from "../services/request-staff.service.js";
+
 const API_URL = 'http://localhost:3001'
 
 // Reactive data
@@ -25,11 +27,7 @@ const requestTypes = ref(['Toallas/Ropa', 'Limpieza', 'Reparación', 'Room Servi
 const priorityOptions = ref(['Baja', 'Media', 'Alta', 'Urgente'])
 const selectedRoom = ref(null)
 const requestDialog = ref(false)
-
-const staffMembers = ref([
-  { id: 4, name: 'Ana López', role: 'Housekeeping' },
-  { id: 5, name: 'David Martínez', role: 'Technical Support' }
-])
+const staffMembers = ref([])
 
 // Computed
 const filteredRequests = computed(() => {
@@ -46,10 +44,10 @@ const getRoomRequests = (roomId) => {
 
 const getStatusSeverity = (status) => {
   switch (status) {
-    case 'available': return 'success'
-    case 'occupied': return 'warn'
-    case 'cleaning': return 'info'
-    case 'maintenance': return 'danger'
+    case 'Available': return 'success'
+    case 'Occupied': return 'warn'
+    case 'Cleaning': return 'info'
+    case 'Maintenance': return 'danger'
     default: return null
   }
 }
@@ -57,7 +55,7 @@ const getStatusSeverity = (status) => {
 const getRequestSeverity = (status) => {
   switch (status) {
     case 'Pending': return 'danger'
-    case 'In process': return 'warn'
+    case 'In progress': return 'warn'
     case 'Resolved': return 'success'
     default: return 'info'
   }
@@ -107,11 +105,24 @@ const resolveRequest = async (id) => {
   refreshData()
 }
 
+const fetchStaffForAssignment = async () => {
+  try {
+    const staff = await staffService.getAllStaffMembers()
+    staffMembers.value = staff.map(member => ({
+      id: member.id,
+      name: `${member.firstName} ${member.lastName}`
+    }))
+  } catch (error) {
+    console.error('Error cargando personal:', error)
+    staffMembers.value = []
+  }
+}
+
 const fetchData = async () => {
   try {
     const [roomsRes, requestsRes] = await Promise.all([
       axios.get(`${API_URL}/rooms`),
-      getCustomerRequests()
+      getCustomerRequests(),
     ]);
 
     rooms.value = roomsRes.data?.map(room => ({
@@ -146,17 +157,14 @@ const refreshData = () => {
 
 onMounted(() => {
   fetchData()
+  fetchStaffForAssignment()
 })
 </script>
 
 <template>
   <div class="customer-request-view">
     <div class="flex justify-content-between align-items-center mb-3">
-      <div class="hotel-title text-xl font-bold">
-        <h1>
-          Hotel Cheraton - Peticiones del Huésped
-        </h1>
-      </div>
+        <h1>Hotel Cheraton - Peticiones del Huésped</h1>
       <pv-button label="Nueva Petición" icon="pi pi-plus" @click="openNewRequestForm" />
     </div>
     <div class="grid">
@@ -201,11 +209,7 @@ onMounted(() => {
 <style scoped>
 .customer-request-view {
   margin: 0;
-  position: static;
-  padding: 1.5rem;
-  top: 1.5rem;
-  left: 1.5rem;
-  right: 1.5rem;
+  padding: 1.2rem;
 }
 
 :deep(.p-datatable .p-datatable-thead > tr > th),

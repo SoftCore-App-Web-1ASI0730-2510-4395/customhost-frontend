@@ -1,94 +1,169 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import StaffMembersTable from '../components/request-staff-members-table.component.vue'
+import StaffMemberDialog from '../components/request-staff-member-edit.component.vue';
+import AddStaffMemberDialog from '../components/request-staff-member-add.component.vue';
+import DeleteConfirmDialog from '../components/request-staff-member-delete.component.vue';
+import {staffService} from "../services/request-staff.service.js";
+
+const API_URL = 'http://localhost:3001'
+const staffMembers = ref([])
+const activeRequests = ref([])
+const loading = ref(true)
+const editDialogVisible = ref(false);
+const currentStaffMember = ref(null);
+const deleteDialogVisible = ref(false);
+const staffToDelete = ref(null);
+
+const departments = ref([
+  { label: 'Housekeeping', value: 'Housekeeping' },
+  { label: 'Technical Support', value: 'Technical Support' },
+  { label: 'Reception', value: 'Reception' },
+  { label: 'Management', value: 'Management' },
+  { label: 'Room Service', value: 'Room Service' }
+]);
+
+const fetchData = async () => {
+  try {
+    const [staffRes, requestsRes] = await Promise.all([
+      axios.get(`${API_URL}/staffMembers`),
+      axios.get(`${API_URL}/serviceRequests?status_ne=Resolved`)
+    ])
+
+    staffMembers.value = staffRes.data
+    activeRequests.value = requestsRes.data
+  } catch (error) {
+    console.error('Error fetching data:', error)
+  } finally {
+    loading.value = false
+  }
+}
+
+const addDialogVisible = ref(false);
+
+const handleAdd = () => {
+  addDialogVisible.value = true;
+};
+
+const handleDeleteClick = (staff) => {
+  staffToDelete.value = staff;
+  deleteDialogVisible.value = true;
+};
+
+const confirmDelete = async () => {
+  try {
+    await staffService.deleteStaffMember(staffToDelete.value.id);
+    staffMembers.value = staffMembers.value.filter(
+        m => m.id !== staffToDelete.value.id
+    );
+    console.log(`${staffToDelete.value.firstName} eliminado correctamente`);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    deleteDialogVisible.value = false;
+  }
+};
+
+const handleSaveNewStaff = async (newStaffData) => {
+  try {
+    const createdStaff = await staffService.createStaffMember(newStaffData);
+    staffMembers.value.push(createdStaff);
+    addDialogVisible.value = false;
+    console.log('Personal agregado exitosamente');
+  } catch (error) {
+    console.error('Error al agregar personal');
+    console.error(error);
+  }
+};
+
+const handleEdit = (staffMember) => {
+  currentStaffMember.value = staffMember;
+  editDialogVisible.value = true;
+};
+
+const handleCancelDelete = () => {
+  deleteDialogVisible.value = false;
+};
+
+const handleSave = async (updatedData) => {
+  try {
+    const updatedMember = await staffService.updateStaffMember(
+        currentStaffMember.value.id,
+        updatedData
+    );
+
+    // Actualiza la lista local sin necesidad de recargar
+    const index = staffMembers.value.findIndex(m => m.id === currentStaffMember.value.id);
+    if (index !== -1) {
+      // Mantenemos todas las propiedades existentes y solo actualizamos las modificadas
+      staffMembers.value[index] = {
+        ...staffMembers.value[index],
+        ...updatedData,
+        status: updatedData.status || staffMembers.value[index].status
+      };
+    }
+
+    editDialogVisible.value = false;
+    console.log('Estado actualizado correctamente');
+  } catch (error) {
+    console.error('Error updating staff member:', error);
+    console.error('Error al actualizar el estado');
+  }
+};
+
+onMounted(() => {
+  fetchData()
+})
+</script>
+
 <template>
-  <div class="p-4">
-    <div class="flex justify-content-between align-items-center mb-4">
-      <div class="hotel-title text-xl font-bold">
-        Hotel Cheraton - Personal del Hotel
-      </div>
+  <div class="staff-members-view">
+    <div class="flex justify-content-between align-items-center mb-3">
+      <h1>Hotel Cheraton - Staff Member</h1>
+      <pv-button label="Agregar Personal"
+                 icon="pi pi-plus"
+                 @click="handleAdd"
+                 class="add-button"
+      />
+
+      <AddStaffMemberDialog
+          v-model:visible="addDialogVisible"
+          :departments="departments"
+          @save="handleSaveNewStaff"
+      />
     </div>
-    <DataTable :value="staffList" paginator :rows="10" class="p-datatable-sm">
-      <!-- Nombre -->
-      <Column field="fullName" header="Nombre">
-        <template #body="{ data }">
-          <i class="pi pi-user text-blue-500 mr-2"></i>
-          {{ data.fullName }}
-        </template>
-      </Column>
 
-      <!-- Departamento -->
-      <Column field="department" header="Departamento"></Column>
+    <StaffMembersTable
+        :staff-members="staffMembers"
+        :active-requests="activeRequests"
+        @edit="handleEdit"
+        @delete-click="handleDeleteClick"
+    />
 
-      <!-- Teléfono -->
-      <Column field="phone" header="Teléfono"></Column>
+    <DeleteConfirmDialog
+        :visible="deleteDialogVisible"
+        @update:visible="handleCancelDelete"
+        :staff-name="staffToDelete ? `${staffToDelete.firstName} ${staffToDelete.lastName}` : ''"
+        @confirm="confirmDelete"
+    />
 
-      <!-- Estado -->
-      <Column field="available" header="Estado">
-        <template #body="{ data }">
-          <Tag :value="data.available" :severity="getAvailabilitySeverity(data)" />
-        </template>
-      </Column>
 
-      <!-- Cantidad de tareas -->
-      <Column field="currentRequests" header="Peticiones Activas">
-        <template #body="{ data }">
-          <Badge :value="data.currentRequests.length" severity="danger" v-if="data.currentRequests.length > 0" />
-          <span v-else>Ninguna</span>
-        </template>
-      </Column>
+    <StaffMemberDialog
+        :visible="editDialogVisible"
+        :staff-member="currentStaffMember"
+        :departments="departments"
+        @update:visible="editDialogVisible = $event"
+        @save="handleSave"
+    />
 
-      <!-- Acciones -->
-      <Column header="Acciones">
-        <template #body="{ data }">
-          <Button icon="pi pi-eye" class="p-button-rounded p-button-text p-button-secondary" title="Ver detalles" />
-          <Button icon="pi pi-briefcase" class="p-button-rounded p-button-text p-button-success" title="Asignar tarea" @click="assignTask(data)" />
-        </template>
-      </Column>
-    </DataTable>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
-import Tag from 'primevue/tag'
-import Badge from 'primevue/badge'
-import Button from 'primevue/button'
-import { getStaffWithRequests } from '../services/staff-list.service.js'
-
-const staffList = ref([])
-
-onMounted(async () => {
-  try {
-    staffList.value = await getStaffWithRequests()
-  } catch (error) {
-    console.error('Error al cargar personal:', error)
-  }
-})
-
-const getAvailabilitySeverity = (member) => {
-  return member.isAvailable ? 'success' : 'warning'
-}
-
-const assignTask = (member) => {
-  // Aquí puedes abrir un diálogo para asignar una nueva petición
-  alert(`Asignar tarea a: ${member.fullName}`)
-}
-</script>
-
 <style scoped>
-.p-card {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-.p-column-title {
-  font-weight: bold;
+.staff-members-view {
+  padding: 1.2rem;
 }
 
-.hotel-title {
-  color: #1a237e; /* Azul oscuro elegante */
-  letter-spacing: 1px;
-}
-.text-primary {
-  color: #2196f3;
-}
 
 </style>

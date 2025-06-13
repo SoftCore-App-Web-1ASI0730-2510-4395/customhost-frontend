@@ -81,6 +81,17 @@
       "phone": "+34600789012",
       "role": "guest",
       "createdAt": "2025-02-02T14:15:00"
+    },
+    {
+      "id": 3,
+      "hotelId": 2,
+      "firstName": "Kelly",
+      "lastName": "Campos",
+      "email": "kelly.campos@email.com",
+      "password": "kelly123",
+      "phone": "+34600564893",
+      "role": "guest",
+      "createdAt": "2025-03-01T20:15:00"
     }
   ],
   "rooms": [
@@ -162,6 +173,28 @@
       "status": "active",
       "totalPrice": 480,
       "paymentStatus": "paid"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "hotelId": 1,
+      "roomId": 2,
+      "checkInDate": "2025-05-02T15:30:00",
+      "checkOutDate": "2025-05-07T11:00:00",
+      "status": "Active",
+      "totalPrice": 480,
+      "paymentStatus": "Paid"
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "hotelId": 2,
+      "roomId": 3,
+      "checkInDate": "2025-06-12T15:30:00",
+      "checkOutDate": "2025-06-20T11:00:00",
+      "status": "Active",
+      "totalPrice": 480,
+      "paymentStatus": "Paid"
     }
   ],
   "serviceRequests": [

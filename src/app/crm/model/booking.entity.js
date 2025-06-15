@@ -15,14 +15,6 @@ export default class Booking {
                     preferences = {},
                     appliedDevicePreferences = []
                 }) {
-        if (!id) throw new Error("Booking must have an ID");
-
-        function isValidDate(dateString) {
-            const date = new Date(dateString);
-            return !isNaN(date.getTime()) && date instanceof Date;
-        }
-        if (!checkInDate || !isValidDate(checkInDate)) throw new Error("Invalid check-in date");
-        if (!checkOutDate || !isValidDate(checkOutDate)) throw new Error("Invalid check-out date");
 
         this.id = id;
         this.userId = userId;
@@ -37,10 +29,27 @@ export default class Booking {
         this.createdAt = new Date(createdAt);
         this.preferences = preferences;
         this.appliedDevicePreferences = appliedDevicePreferences;
-
-        // Relaciones externas (opcional, se cargan desde servicios)
+        // Estos campos vienen del servicio, no de aquí
         this.user = null;
         this.room = null;
+        toJSON()
+        {
+            return {
+                id: this.id,
+                userId: this.userId,
+                hotelId: this.hotelId,
+                roomId: this.roomId,
+                checkInDate: this.checkInDate.toISOString(),
+                checkOutDate: this.checkOutDate.toISOString(),
+                status: this.status,
+                totalPrice: this.totalPrice,
+                paymentStatus: this.paymentStatus,
+                specialRequests: this.specialRequests,
+                createdAt: this.createdAt.toISOString(),
+                preferences: this.preferences,
+                appliedDevicePreferences: this.appliedDevicePreferences
+            };
+        }
     }
 
     get guestName() {
@@ -50,17 +59,5 @@ export default class Booking {
     get roomNumber() {
         return this.room?.number || 'N/A';
     }
-
-    get daysOfStay() {
-        const diff = Math.abs(this.checkOutDate - this.checkInDate);
-        return Math.ceil(diff / (1000 * 60 * 60 * 24));
-    }
-
-    get pricePerNight() {
-        return this.daysOfStay > 0 ? (this.totalPrice / this.daysOfStay).toFixed(2) : 0;
-    }
-
-    get isActive() {
-        return this.status === 'active';
-    }
+    
 }

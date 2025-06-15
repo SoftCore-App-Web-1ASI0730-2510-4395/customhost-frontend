@@ -18,7 +18,7 @@ const profileComponent = () => import("../profiles/pages/profileComponent.vue");
 const registerHotelComponent = () => import("../iam/pages/registerHotel.component.vue");
 const RoomsListComponent = () => import("../crm/pages/rooms-listComponent.vue");
 const hotelroomselection = () => import("../crm/pages/guests/hotel-rooms-selection.component.vue");
-
+const roompreferencesComponent = () => import("../guest-experience/pages/room-preference.component.vue");
 
 // Rutas organizadas por dominio (bounded contexts)
 const routes = [
@@ -147,6 +147,12 @@ const routes = [
                 name: 'IotDevices',
                 component: iotDevicesComponent,
                 meta: { title: 'IoT Devices' }
+            },
+            {
+                path: 'preferences',
+                name: 'preferences',
+                component: roompreferencesComponent,
+                meta: { title: 'preferences' }
             }
         ]
     },

@@ -85,6 +85,13 @@ export default {
           type: 'guest',
           icon: 'pi pi-comments'
         },
+        {
+          name: this.$t('sidebar_items.notifications'),
+          path: '/crm/guest/notifications',
+          type: 'guest',
+          icon: 'pi pi-cog'
+        },
+
           //admin
         {
           name: this.$t('sidebar_items.admin'),

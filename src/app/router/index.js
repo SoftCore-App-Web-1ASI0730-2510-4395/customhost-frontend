@@ -18,6 +18,8 @@ const registerHotelComponent = () => import("../iam/pages/registerHotel.componen
 const RoomsListComponent = () => import("../crm/pages/rooms-listComponent.vue");
 const HotelRoomSelection = () => import("../crm/pages/guests/hotel-rooms-selection.component.vue");
 const RoomPreferencesComponent = () => import("../guest-experience/pages/room-preference.component.vue");
+const notificationComponent = () => import("../crm/pages/guests/notification.component.vue");
+
 
 // Rutas organizadas por dominio (bounded contexts)
 const routes = [
@@ -95,6 +97,13 @@ const routes = [
                 name: 'MyBookings',
                 component: MyBookingsComponent,
                 meta: { title: 'My Bookings' }
+            },
+
+            {
+                path: 'guest/notifications',
+                name: 'notifications',
+                component: notificationComponent,
+                meta: { title: 'notifications' }
             },
             {
                 path: 'customer-service',

@@ -3,6 +3,7 @@
 import { getBookings, getBookingById } from '../services/booking.service.js';
 import { getUserById } from '../../profiles/services/user.service.js';
 import { getServiceRequests, createServiceRequest } from '../services/service-request.service.js';
+import { getNotificationsByUserId } from '../services/notification.service.js';
 
 /**
  * Coordina información entre contextos para mostrar reservas con detalles del huésped
@@ -95,7 +96,19 @@ export default {
             console.error('Error enviando solicitud:', error);
             throw error;
         }
-    }
+    },
 
+    /**
+     * Obtiene las notificaciones del huésped
+     */
+    async getGuestNotifications(userId) {
+        try {
+            const notifications = await getNotificationsByUserId(userId);
+            return notifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        } catch (error) {
+            console.error('Error obteniendo notificaciones:', error);
+            return [];
+        }
+    },
 
 };

@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from "../public/pages/homeComponent.vue";
 
 const preferencesComponent = () => import("../profiles/pages/preferencesComponent.vue");
-const myBookingsComponent = () => import("../crm/pages/myBookingsComponent.vue");
+const mybookingsComponent = () => import("../crm/pages/mybooking.component.vue");
 const iotDevicesComponent = () => import("../guest-experience/pages/iotDevicesComponent.vue");
 const requestStaffComponent = () => import("../crm/pages/requestStaffComponent.vue");
 const customerRequestsComponent = () => import("../crm/pages/customerRequestsComponent.vue");
@@ -84,16 +84,16 @@ const routes = [
                 meta: { title: 'rooms' }
             },
             {
-                path: 'guest/hotelroomselection',
-                name: 'hotelroomselection',
+                path: 'guest/hotel-room-selection',
+                name: 'hotel-room-selection',
                 component: hotelroomselection,
-                meta: { title: 'hotelroomselection' }
+                meta: { title: 'hotel-room-selection' }
             },
 
             {
                 path: 'my-bookings',
                 name: 'MyBookings',
-                component: myBookingsComponent,
+                component: mybookingsComponent,
                 meta: { title: 'My Bookings' }
             },
             {

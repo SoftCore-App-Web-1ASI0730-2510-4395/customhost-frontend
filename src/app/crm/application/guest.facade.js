@@ -1,24 +1,24 @@
 // src/crm/application/guest.facade.js
 
-import { getBookingsWithDetails } from '../services/booking.service.js';
+import { getBookings, getBookingById } from '../services/booking.service.js';
 import { getUserById } from '../../profiles/services/user.service.js';
 
 /**
- * Obtiene las reservas del huésped y le añade el nombre del usuario
+ * Coordina información entre contextos para mostrar reservas con detalles del huésped
  */
 export default {
     /**
-     * Devuelve todas las reservas con detalles del huésped
+     * Devuelve todas las reservas con información del huésped
      *
      * @param {number} userId - ID del huésped
-     * @returns {Promise<Array>} - Array de reservas con información del huésped
-     * @throws {Error} - Si ocurre un error al obtener las reservas o el usuario
+     * @returns {Promise<Array>} - Array de reservas con nombre del huésped
+     * @throws {Error} - Si hay fallos al obtener los datos
      */
     async getGuestBookings(userId) {
         try {
             // Obtener reservas y usuario en paralelo
             const [bookings, user] = await Promise.all([
-                getBookingsWithDetails(userId),
+                getBookings(),
                 getUserById(userId)
             ]);
 
@@ -40,12 +40,14 @@ export default {
      * @param {number} bookingId - ID de la reserva
      * @param {number} userId - ID del huésped
      * @returns {Promise<Object>} - Reserva con información del huésped
-     * @throws {Error} - Si la reserva no existe o si el usuario no tiene permisos
+     * @throws {Error} - Si la reserva no existe o el usuario no tiene permiso
      */
     async getGuestBookingById(bookingId, userId) {
         try {
             const booking = await getBookingById(bookingId);
+
             if (!booking || booking.userId !== userId) {
+                // noinspection ExceptionCaughtLocallyJS
                 throw new Error("Reserva no encontrada o no autorizada");
             }
 
@@ -61,4 +63,5 @@ export default {
             throw error;
         }
     }
+
 };

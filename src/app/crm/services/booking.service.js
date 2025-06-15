@@ -3,41 +3,30 @@ import axios from 'axios';
 import Booking from '../model/booking.entity';
 
 const API_URL = 'http://localhost:3000/bookings';
-const USERS_URL = 'http://localhost:3000/users';
-const ROOMS_URL = 'http://localhost:3000/rooms';
 
 /**
- * Obtiene todas las reservas + usuarios + habitaciones y une los datos
+ * Obtiene todas las reservas y las instancias con el modelo Booking
  */
-export const getBookingsWithDetails = async () => {
+export const getBookings = async () => {
     try {
-        // Llamamos a todas las API en paralelo
-        const [bookingsRes, usersRes, roomsRes] = await Promise.all([
-            axios.get(API_URL),
-            axios.get(USERS_URL),
-            axios.get(ROOMS_URL)
-        ]);
-
-        // Mapeamos las reservas usando la clase Booking
-        const bookings = bookingsRes.data.map(b => new Booking(b));
-        const users = usersRes.data;
-        const rooms = roomsRes.data;
-
-        // Asociamos usuario y cuarto a cada reserva
-        return bookings.map(booking => {
-            const user = users.find(u => u.id === booking.userId);
-            const room = rooms.find(r => r.id === booking.roomId);
-
-            // Asignamos relaciones externas
-            booking.user = user;
-            booking.room = room;
-
-            return booking;
-        });
-
+        const response = await axios.get(API_URL);
+        return response.data.map(b => new Booking(b));
     } catch (error) {
-        console.error('Error al cargar reservas:', error);
+        console.error('Error al obtener reservas:', error);
         return [];
+    }
+};
+
+/**
+ * Obtiene una reserva por ID
+ */
+export const getBookingById = async (bookingId) => {
+    try {
+        const response = await axios.get(`${API_URL}/${bookingId}`);
+        return new Booking(response.data);
+    } catch (error) {
+        console.error('Error al obtener reserva por ID:', error);
+        throw error;
     }
 };
 
@@ -78,3 +67,4 @@ export const deleteBooking = async (id) => {
         throw error;
     }
 };
+

@@ -33,7 +33,7 @@ export default {
         },
 
         {
-          name: 'Rooms-Guests',
+          name: this.$t('sidebar_rooms.guests'),
           path: '/crm/guest/hotelroomselection',
           type: 'guest',
           icon: 'pi pi-building', // Mejor icono para habitaciones
@@ -44,12 +44,6 @@ export default {
           path: '/guest-experience/preferences',
           type: 'guest',
           icon: 'pi pi-cog'
-        },
-        {
-          name: this.$t('sidebar_items.book'),
-          path: '/crm/book',
-          type: 'guest',
-          icon: 'pi pi-calendar-plus'
         },
         {
           name: this.$t('sidebar_items.my-bookings'),

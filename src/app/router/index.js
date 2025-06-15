@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from "../public/pages/homeComponent.vue";
 
 const preferencesComponent = () => import("../profiles/pages/preferencesComponent.vue");
-const bookComponent = () => import("../crm/pages/bookComponent.vue");
 const myBookingsComponent = () => import("../crm/pages/myBookingsComponent.vue");
 const iotDevicesComponent = () => import("../guest-experience/pages/iotDevicesComponent.vue");
 const requestStaffComponent = () => import("../crm/pages/requestStaffComponent.vue");
@@ -78,12 +77,6 @@ const routes = [
         name: 'CRM',
         redirect: '/home',
         children: [
-            {
-                path: 'book',
-                name: 'Book',
-                component: bookComponent,
-                meta: { title: 'Book' }
-            },
             {
                 path: 'rooms',
                 name: 'rooms',

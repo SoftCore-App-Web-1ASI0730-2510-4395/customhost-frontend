@@ -218,26 +218,6 @@
           "notes": "The task has been completed"
         }
       ]
-    },
-    {
-      "type": "",
-      "description": "",
-      "priority": "normal",
-      "userId": 1,
-      "hotelId": 1,
-      "roomId": 101,
-      "status": "Pending",
-      "id": 4
-    },
-    {
-      "type": "",
-      "description": "",
-      "priority": "normal",
-      "userId": 1,
-      "hotelId": 1,
-      "roomId": 101,
-      "status": "Pending",
-      "id": 5
     }
   ],
   "userDevicePreferences": [

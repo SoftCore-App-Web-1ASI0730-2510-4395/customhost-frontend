@@ -13,7 +13,7 @@ export default {
   emits: ['update:visible'],
   data() {
     return {
-      userType: 'guest' //  'guest', 'staff' o 'admin'
+      userType: 'staff' //  'guest', 'staff' o 'admin'
     }
   },
   computed: {

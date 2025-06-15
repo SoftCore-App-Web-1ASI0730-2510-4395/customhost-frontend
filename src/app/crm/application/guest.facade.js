@@ -2,6 +2,7 @@
 
 import { getBookings, getBookingById } from '../services/booking.service.js';
 import { getUserById } from '../../profiles/services/user.service.js';
+import { getServiceRequests, createServiceRequest } from '../services/service-request.service.js';
 
 /**
  * Coordina información entre contextos para mostrar reservas con detalles del huésped
@@ -62,6 +63,39 @@ export default {
             console.error('Error obteniendo detalle de reserva:', error);
             throw error;
         }
+    },
+
+    /**
+     * Obtiene todas las solicitudes del huésped
+     */
+    async getGuestServiceRequests(userId) {
+        try {
+            const requests = await getServiceRequests();
+            const user = await getUserById(userId);
+
+            return requests
+                .filter(r => r.userId === userId)
+                .map(r => ({
+                    ...r,
+                    guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido'
+                }));
+        } catch (error) {
+            console.error('Error obteniendo solicitudes:', error);
+            return [];
+        }
+    },
+
+    /**
+     * Crea una nueva solicitud de servicio
+     */
+    async submitServiceRequest(requestData) {
+        try {
+            return await createServiceRequest(requestData);
+        } catch (error) {
+            console.error('Error enviando solicitud:', error);
+            throw error;
+        }
     }
+
 
 };

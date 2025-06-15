@@ -1,4 +1,4 @@
-<!-- src/app/crm/pages/mybooking.component.vue -->
+<!-- src/app/crm/pages/my-booking.component.vue -->
 <template>
   <div class="surface-section px-4 py-8">
     <div class="text-3xl font-bold text-center mb-6">Mis Reservas</div>

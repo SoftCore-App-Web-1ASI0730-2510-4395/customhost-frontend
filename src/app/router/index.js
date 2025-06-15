@@ -3,20 +3,24 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from "../public/pages/homeComponent.vue";
 
 const preferencesComponent = () => import("../profiles/pages/preferencesComponent.vue");
-const bookComponent = () => import("../crm/pages/bookComponent.vue");
-const myBookingsComponent = () => import("../crm/pages/myBookingsComponent.vue");
+const MyBookingsComponent = () => import("../crm/pages/my-booking.component.vue");
 const iotDevicesComponent = () => import("../guest-experience/pages/iotDevicesComponent.vue");
 const requestStaffComponent = () => import("../crm/pages/requestStaffComponent.vue");
 const customerRequestsComponent = () => import("../crm/pages/customerRequestsComponent.vue");
 const adminComponent = () => import("../billing/pages/adminComponent.vue");
 const bookingsTrackerComponent = () => import("../crm/pages/bookingsTrackerComponent.vue");
-const customerServiceComponent = () => import("../crm/pages/customerServiceComponent.vue");
+const customerServiceComponent = () => import("../crm/pages/guests/create-service-request.component.vue");
 const loginComponent = () => import("../iam/pages/login.component.vue");
 const registerComponent = () => import("../iam/pages/register.component.vue");
 const notFoundComponent = () => import("../public/pages/notFoundComponent.vue");
 const profileComponent = () => import("../profiles/pages/profileComponent.vue");
 const registerHotelComponent = () => import("../iam/pages/registerHotel.component.vue");
 const RoomsListComponent = () => import("../crm/pages/rooms-listComponent.vue");
+const HotelRoomSelection = () => import("../crm/pages/guests/hotel-rooms-selection.component.vue");
+const RoomPreferencesComponent = () => import("../guest-experience/pages/room-preference.component.vue");
+const notificationComponent = () => import("../crm/pages/guests/notification.component.vue");
+
+
 // Rutas organizadas por dominio (bounded contexts)
 const routes = [
     {
@@ -76,16 +80,30 @@ const routes = [
         redirect: '/home',
         children: [
             {
-                path: 'book',
-                name: 'Book',
-                component: bookComponent,
-                meta: { title: 'Book' }
+                path: 'rooms',
+                name: 'rooms',
+                component: RoomsListComponent,
+                meta: { title: 'rooms' }
             },
+            {
+                path: 'guest/hotel-room-selection',
+                name: 'hotel-room-selection',
+                component: HotelRoomSelection,
+                meta: { title: 'hotel-room-selection' }
+            },
+
             {
                 path: 'my-bookings',
                 name: 'MyBookings',
-                component: myBookingsComponent,
+                component: MyBookingsComponent,
                 meta: { title: 'My Bookings' }
+            },
+
+            {
+                path: 'guest/notifications',
+                name: 'notifications',
+                component: notificationComponent,
+                meta: { title: 'notifications' }
             },
             {
                 path: 'customer-service',
@@ -131,6 +149,12 @@ const routes = [
                 name: 'IotDevices',
                 component: iotDevicesComponent,
                 meta: { title: 'IoT Devices' }
+            },
+            {
+                path: 'preferences',
+                name: 'preferences',
+                component: RoomPreferencesComponent,
+                meta: { title: 'preferences' }
             }
         ]
     },

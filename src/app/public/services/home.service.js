@@ -1,7 +1,7 @@
 // src/services/home.service.js
 import axios from 'axios'
 
-const API_URL = 'https://localhost:3001'
+const API_URL = 'https://localhost:3000'
 
 export const getHotelDashboardStats = async () => {
     try {

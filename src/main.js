@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
-
 // PrimeVue
 import PrimeVue from 'primevue/config'
 import Aura from '@primeuix/themes/aura' // Tema moderno de PrimeVue 3
@@ -19,7 +18,7 @@ import Drawer from 'primevue/drawer'
 import FileUpload from 'primevue/fileupload'
 import FloatLabel from 'primevue/floatlabel'
 import IconField from 'primevue/iconfield'
-import Badge from "primevue/badge";// ✅ Importación corregida
+import Badge from "primevue/badge";
 import InputIcon from 'primevue/inputicon'
 import InputText from 'primevue/inputtext'
 import InputNumber from 'primevue/inputnumber'
@@ -32,6 +31,7 @@ import Tag from 'primevue/tag'
 import Textarea from 'primevue/textarea'
 import Toast from 'primevue/toast'
 import Toolbar from 'primevue/toolbar'
+import ProgressSpinner from 'primevue/progressspinner';
 
 // Estilos globales
 import 'primeicons/primeicons.css'      // Iconos
@@ -63,6 +63,7 @@ app.use(i18n)
 
 // Registrar componentes globalmente (según uso)
 app
+    .component('pv-progress-spinner', ProgressSpinner )
     .component('pv-button', Button)
     .component('pv-card', Card)
     .component('pv-checkbox', Checkbox)
@@ -73,7 +74,7 @@ app
     .component('pv-drawer', Drawer)
     .component('pv-file-upload', FileUpload)
     .component('pv-float-label', FloatLabel)
-    .component('pv-icon-field', IconField) // ✅ Registrado correctamente
+    .component('pv-icon-field', IconField)
     .component('pv-input-icon', InputIcon)
     .component('pv-input-text', InputText)
     .component('pv-input-number', InputNumber)

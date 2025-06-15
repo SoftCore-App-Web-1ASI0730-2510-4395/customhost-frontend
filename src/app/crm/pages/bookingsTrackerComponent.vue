@@ -19,11 +19,14 @@ import { useI18n } from 'vue-i18n'
 import { getBookingsWithDetails } from '../services/bookings-tracker.service.js'
 import BookingsTrackerTable from '../components/bookings-tracker-table.component.vue'
 
-const { t } = useI18n()
+
+// Datos reactivos
+const {t} = useI18n()
 const bookings = ref([])
 
 onMounted(async () => {
   try {
+    // Cargamos las reservas con detalles de huésped y habitación
     bookings.value = await getBookingsWithDetails()
 
     const usersResponse = await fetch('http://localhost:3001/api/v1/users').then(res => res.json())

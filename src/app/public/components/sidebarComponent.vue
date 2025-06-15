@@ -13,54 +13,26 @@ export default {
   emits: ['update:visible'],
   data() {
     return {
-      userType: 'guest' //  'guest', 'staff' o 'admin'
+      userType: 'staff' //  'guest', 'staff' o 'admin'
     }
   },
   computed: {
     sidebar_items() {
       return [
+          //ambos
         {
           name: this.$t('sidebar_items.home'),
           path: '/home',
           type: 'both',
           icon: 'pi pi-home',
         },
-        {
-          name: 'Rooms',
-          path: '/crm/rooms',
-          type: 'both',
-          icon: 'pi pi-building', // Mejor icono para habitaciones
-        },
 
+          //staff
         {
-          name: this.$t('sidebar_items.preferences'),
-          path: '/profiles/preferences',
-          type: 'guest',
-          icon: 'pi pi-cog'
-        },
-        {
-          name: this.$t('sidebar_items.book'),
-          path: '/crm/book',
-          type: 'guest',
-          icon: 'pi pi-calendar-plus'
-        },
-        {
-          name: this.$t('sidebar_items.my-bookings'),
-          path: '/crm/my-bookings',
-          type: 'guest',
-          icon: 'pi pi-list'
-        },
-        {
-          name: this.$t('sidebar_items.customer-service'),
-          path: '/crm/customer-service',
-          type: 'guest',
-          icon: 'pi pi-comments'
-        },
-        {
-          name: this.$t('sidebar_items.admin'),
-          path: '/billing/admin',
-          type: 'admin',
-          icon: 'pi pi-shield'
+          name: this.$t('rooms'),
+          path: '/crm/rooms',
+          type: 'staff',
+          icon: 'pi pi-building',
         },
         {
           name: this.$t('sidebar_items.iot-devices'),
@@ -87,6 +59,49 @@ export default {
           icon: 'pi pi-users'
         },
 
+
+        //guest
+        {
+          name: this.$t('sidebar_rooms.guests'),
+          path: '/crm/guest/hotel-room-selection',
+          type: 'guest',
+          icon: 'pi pi-building', // Mejor icono para habitaciones
+        },
+        {
+          name: this.$t('sidebar_items.preferences'),
+          path: '/guest-experience/preferences',
+          type: 'guest',
+          icon: 'pi pi-cog'
+        },
+        {
+          name: this.$t('sidebar_items.my-bookings'),
+          path: '/crm/my-bookings',
+          type: 'guest',
+          icon: 'pi pi-list'
+        },
+        {
+          name: this.$t('sidebar_items.customer-service'),
+          path: '/crm/customer-service',
+          type: 'guest',
+          icon: 'pi pi-comments'
+        },
+        {
+          name: this.$t('sidebar_items.notifications'),
+          path: '/crm/guest/notifications',
+          type: 'guest',
+          icon: 'pi pi-cog'
+        },
+
+          //admin
+        {
+          name: this.$t('sidebar_items.admin'),
+          path: '/billing/admin',
+          type: 'admin',
+          icon: 'pi pi-shield'
+        },
+
+          //ambos
+
         {
           name: this.$t('sidebar_items.profile'),
           path: '/profiles/profile',
@@ -112,7 +127,7 @@ export default {
     }
   },
   created() {
-    //En teoria aca deberíamos obtener el rol del usuario, en caso se use algun "store" en vue.
+    //En teoría aca deberíamos obtener el rol del usuario, en caso se use algún "store" en vue.
   }
 }
 </script>

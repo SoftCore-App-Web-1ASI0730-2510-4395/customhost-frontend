@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Rooms from '../model/rooms-list.entity.js'
+import Rooms from '../model/rooms.entity.js'
 
 const API_URL = 'http://localhost:3001/api/v1/rooms'
 

@@ -81,6 +81,17 @@
       "phone": "+34600789012",
       "role": "guest",
       "createdAt": "2025-02-02T14:15:00"
+    },
+    {
+      "id": 3,
+      "hotelId": 2,
+      "firstName": "Kelly",
+      "lastName": "Campos",
+      "email": "kelly.campos@email.com",
+      "password": "kelly123",
+      "phone": "+34600564893",
+      "role": "guest",
+      "createdAt": "2025-03-01T20:15:00"
     }
   ],
   "rooms": [
@@ -121,105 +132,68 @@
       "id": 4
     }
   ],
-  "roomIotDevices": [
-    {
-      "id": 1,
-      "roomId": 101,
-      "iotDeviceId": 1
-    },
-    {
-      "id": 2,
-      "roomId": 101,
-      "iotDeviceId": 2
-    }
-  ],
-  "iotDevices": [
-    {
-      "id": 1,
-      "name": "Temperature Sensor",
-      "type": "sensor",
-      "deviceType": "climate",
-      "roomId": 101,
-      "status": "online"
-    },
-    {
-      "id": 2,
-      "name": "Smart Light",
-      "type": "actuator",
-      "deviceType": "lighting",
-      "roomId": 101,
-      "status": "online"
-    }
-  ],
+  "roomIotDevices": [],
+  "iotDevices": [],
   "bookings": [
     {
       "id": 1,
       "userId": 1,
       "hotelId": 1,
-      "roomId": 101,
+      "roomId": 1,
       "checkInDate": "2025-05-01T14:00:00",
       "checkOutDate": "2025-05-05T12:00:00",
-      "status": "active",
+      "status": "Active",
       "totalPrice": 480,
-      "paymentStatus": "paid"
-    }
-  ],
-  "serviceRequests": [
+      "paymentStatus": "Paid"
+    },
     {
-      "id": 1,
-      "userId": 1,
+      "id": 2,
+      "userId": 2,
       "hotelId": 1,
-      "roomId": 101,
-      "type": "Limpieza",
-      "description": "Necesito toallas adicionales",
-      "status": "Resolved",
-      "priority": "normal",
-      "createdAt": "2025-05-02T09:15:00",
-      "assignedTo": 5,
-      "completedAt": "2025-06-07T17:58:59.379Z",
-      "history": [
-        {
-          "timestamp": "2025-06-01T22:00:04.578Z",
-          "action": "Assigned",
-          "changedBy": 5,
-          "notes": "Task assigned to the personal 5"
-        },
-        {
-          "timestamp": "2025-06-07T17:58:59.381Z",
-          "action": "Resolved",
-          "changedBy": 5,
-          "notes": "The task has been completed successfully"
-        }
-      ]
+      "roomId": 2,
+      "checkInDate": "2025-05-02T15:30:00",
+      "checkOutDate": "2025-05-07T11:00:00",
+      "status": "Active",
+      "totalPrice": 480,
+      "paymentStatus": "Paid"
     },
     {
       "id": 3,
-      "userId": 1,
-      "hotelId": 1,
-      "roomId": 101,
-      "type": "Reparación",
-      "description": "",
-      "status": "Resolved",
-      "priority": "Urgente",
-      "createdAt": "2025-06-01T22:01:23.982Z",
-      "assignedTo": 4,
-      "completedAt": "2025-06-02T21:38:27.996Z",
-      "history": [
-        {
-          "timestamp": "2025-06-01T22:01:27.920Z",
-          "action": "Assigned",
-          "changedBy": 4,
-          "notes": "Task assigned to the personal 4"
-        },
-        {
-          "timestamp": "2025-06-02T21:38:27.996Z",
-          "action": "Completed",
-          "changedBy": 4,
-          "notes": "The task has been completed"
-        }
-      ]
+      "userId": 3,
+      "hotelId": 2,
+      "roomId": 3,
+      "checkInDate": "2025-06-12T15:30:00",
+      "checkOutDate": "2025-06-20T11:00:00",
+      "status": "Active",
+      "totalPrice": 480,
+      "paymentStatus": "Paid"
     }
   ],
+  "staffMembers": [
+    {
+      "id": 4,
+      "hotelId": 1,
+      "firstName": "Ana",
+      "lastName": "López",
+      "email": "ana.lopez@hotel.com",
+      "phone": "+34600333444",
+      "status": "active",
+      "department": "Housekeeping",
+      "createdAt": "2024-06-15T08:30:00"
+    },
+    {
+      "id": 5,
+      "hotelId": 1,
+      "firstName": "David",
+      "lastName": "Martínez",
+      "email": "david.martinez@hotel.com",
+      "phone": "+34600555666",
+      "status": "active",
+      "department": "Technical Support",
+      "createdAt": "2024-07-20T10:15:00"
+    }
+  ],
+  "serviceRequests": [],
   "userDevicePreferences": [
     {
       "id": 1,

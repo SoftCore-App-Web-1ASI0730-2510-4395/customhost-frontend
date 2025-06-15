@@ -43,3 +43,6 @@ export const getRoomsByHotelId = async (hotelId) => {
         return [];
     }
 };
+
+export class room {
+}

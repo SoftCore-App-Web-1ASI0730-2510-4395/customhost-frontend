@@ -13,7 +13,7 @@ export default {
   emits: ['update:visible'],
   data() {
     return {
-      userType: 'guest' //  'guest', 'staff' o 'admin'
+      userType: 'staff' //  'guest', 'staff' o 'admin'
     }
   },
   computed: {
@@ -26,9 +26,16 @@ export default {
           icon: 'pi pi-home',
         },
         {
-          name: 'Rooms',
+          name: 'rooms',
           path: '/crm/rooms',
-          type: 'both',
+          type: 'staff',
+          icon: 'pi pi-building', // Mejor icono para habitaciones
+        },
+
+        {
+          name: 'Rooms-Guests',
+          path: '/crm/guest/hotelroomselection',
+          type: 'guest',
           icon: 'pi pi-building', // Mejor icono para habitaciones
         },
 

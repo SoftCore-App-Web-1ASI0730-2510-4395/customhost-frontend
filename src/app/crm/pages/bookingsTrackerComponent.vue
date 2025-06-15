@@ -105,7 +105,7 @@ import Calendar from 'primevue/calendar'
 import Textarea from 'primevue/textarea'
 
 // Importamos el servicio
-import { getBookingsWithDetails } from '../services/booking.service.js'
+import { getBookings } from '../services/booking.service.js'
 
 // Datos reactivos
 const bookings = ref([])
@@ -129,7 +129,7 @@ const currentBooking = ref({
 onMounted(async () => {
   try {
     // Cargamos las reservas con detalles de huésped y habitación
-    bookings.value = await getBookingsWithDetails()
+    bookings.value = await getBookings()
 
     // Cargamos solo los huéspedes (role: "guest")
     const usersResponse = await fetch('https://api-chafa.vercel.app/api/v1/users').then(res => res.json())

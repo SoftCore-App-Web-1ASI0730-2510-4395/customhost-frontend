@@ -46,19 +46,5 @@
       "checkIn": "Check-in",
       "checkOut": "Check-out"
     }
-  },
-  "title": "Dashboard",
-  "sidebar_items": {
-    "home": "Home",
-    "preferences": "Preferences",
-    "book": "Book",
-    "my-bookings": "My Bookings",
-    "customer-service": "Customer Service",
-    "admin": "Admin",
-    "iot-devices": "IoT Devices",
-    "customer-requests": "Guest Requests",
-    "bookings-tracker": "Bookings Tracker",
-    "request-staff": "Request Staff",
-    "profile": "Profile"
   }
 }

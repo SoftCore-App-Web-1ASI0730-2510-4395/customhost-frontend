@@ -17,6 +17,9 @@ const notFoundComponent = () => import("../public/pages/notFoundComponent.vue");
 const profileComponent = () => import("../profiles/pages/profileComponent.vue");
 const registerHotelComponent = () => import("../iam/pages/registerHotel.component.vue");
 const RoomsListComponent = () => import("../crm/pages/rooms-listComponent.vue");
+const hotelroomselection = () => import("../crm/pages/guests/hotel-rooms-selection.component.vue");
+
+
 // Rutas organizadas por dominio (bounded contexts)
 const routes = [
     {
@@ -81,6 +84,19 @@ const routes = [
                 component: bookComponent,
                 meta: { title: 'Book' }
             },
+            {
+                path: 'rooms',
+                name: 'rooms',
+                component: RoomsListComponent,
+                meta: { title: 'rooms' }
+            },
+            {
+                path: 'guest/hotelroomselection',
+                name: 'hotelroomselection',
+                component: hotelroomselection,
+                meta: { title: 'hotelroomselection' }
+            },
+
             {
                 path: 'my-bookings',
                 name: 'MyBookings',

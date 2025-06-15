@@ -1,72 +1,67 @@
-<!-- src/views/BookingPage.vue -->
 <template>
-  <div class="booking-page">
-    <pv-card class="mb-4">
-      <template #title> Mis Reservas </template>
-      <template #content>
-        <pv-data-table :value="bookings" responsiveLayout="scroll">
-          <pv-column field="hotelId" header="Hotel ID"></pv-column>
-          <pv-column field="roomId" header="Habitación"></pv-column>
-          <pv-column field="checkInDate" header="Entrada">
-            <template #body="{ data }">
-              {{ formatDate(data.checkInDate) }}
-            </template>
-          </pv-column>
-          <pv-column field="checkOutDate" header="Salida">
-            <template #body="{ data }">
-              {{ formatDate(data.checkOutDate) }}
-            </template>
-          </pv-column>
-          <pv-column field="status" header="Estado"></pv-column>
-          <pv-column field="paymentStatus" header="Pago"></pv-column>
-          <pv-column header="Acciones">
-            <template #body="{ data }">
-              <pv-button icon="pi pi-pencil" rounded severity="info" @click="editBooking(data.id)" />
-              <pv-button icon="pi pi-trash" rounded severity="danger" @click="deleteBooking(data.id)" class="ml-2" />
-            </template>
-          </pv-column>
-        </pv-data-table>
-      </template>
-    </pv-card>
+  <div class="book-room-page">
+    <h1>Reservar Habitación</h1>
 
-    <pv-card>
-      <template #title> Nueva Reserva </template>
-      <template #content>
-        <BookingForm @on-save="loadBookings" />
-      </template>
-    </pv-card>
+    <!-- Componente del formulario de reserva -->
+    <BookingForm/>
+
+    <!-- Mostrar historial de reservas (ejemplo) -->
+    <div class="booking-history" v-if="bookings.length">
+      <h2>Mis Reservas</h2>
+      <ul>
+        <li v-for="booking in bookings" :key="booking.id">
+          {{ booking.roomId }} - {{ formatDate(booking.checkInDate) }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 import BookingForm from '../components/booking.component.vue';
-import bookingService from '../services/book.service.js';
+import BookingService from '../services/book.service.js'; // Asegúrate de que la ruta sea correcta
 
-const router = useRouter();
+import { ref, onMounted } from 'vue';
+
+// Instancia del servicio
+const bookingService = new BookingService();
+
+// Estado reactivo para almacenar las reservas
 const bookings = ref([]);
 
-async function loadBookings() {
-  bookings.value = await bookingService.getAll();
-}
-
-function editBooking(id) {
-  router.push(`/bookings/edit/${id}`);
-}
-
-async function deleteBooking(id) {
-  await bookingService.deleteById(id);
-  loadBookings();
-}
-
-onMounted(() => {
-  loadBookings();
+// Cargar reservas al montar la página
+onMounted(async () => {
+  try {
+    bookings.value = await bookingService.getAll();
+  } catch (error) {
+    console.error('Error al cargar las reservas:', error);
+  }
 });
+
+// Función auxiliar para formatear fechas
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+}
 </script>
 
 <style scoped>
-.booking-page {
-  padding: 1rem;
+.book-room-page {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.booking-history {
+  margin-top: 2rem;
+}
+
+.booking-history ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.booking-history li {
+  padding: 0.5rem 0;
 }
 </style>

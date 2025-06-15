@@ -85,40 +85,40 @@
   ],
   "rooms": [
     {
+      "id": 1,
       "hotelId": "1",
       "number": "101",
       "type": "Deluxe",
       "status": "Available",
       "price": 150,
-      "floor": 1,
-      "id": 1
+      "floor": 1
     },
     {
+      "id": 2,
       "hotelId": "1",
       "number": "103",
       "type": "Suite",
       "status": "Occupied",
       "price": 180,
-      "floor": 1,
-      "id": 2
+      "floor": 1
     },
     {
+      "id": 3,
       "hotelId": "2",
       "number": "106",
       "type": "Suite",
       "status": "Maintenance",
       "price": 200,
-      "floor": 1,
-      "id": 3
+      "floor": 1
     },
     {
+      "id": 4,
       "hotelId": "2",
       "number": "201",
       "type": "Deluxe",
       "status": "Cleaning",
       "price": 250,
-      "floor": 2,
-      "id": 4
+      "floor": 2
     }
   ],
   "roomIotDevices": [

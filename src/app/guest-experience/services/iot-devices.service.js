@@ -3,8 +3,8 @@
 import axios from 'axios';
 import IotDevice from '../model/iot-devices.entity.js';
 
-const API_URL = 'http://localhost:3000/iotDevices'; // Endpoint para dispositivos IoT
-const ROOMS_URL = 'http://localhost:3000/rooms';    // Endpoint para habitaciones
+const API_URL = 'http://localhost:3001/iotDevices'; // Endpoint para dispositivos IoT
+const ROOMS_URL = 'http://localhost:3001/rooms';    // Endpoint para habitaciones
 
 /**
  * Obtener todos los dispositivos

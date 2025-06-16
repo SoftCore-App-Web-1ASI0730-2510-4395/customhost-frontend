@@ -2,7 +2,7 @@
 import axios from 'axios';
 import Booking from '../model/booking.entity';
 
-const API_URL = 'http://localhost:3000/bookings';
+const API_URL = 'http://localhost:3001/bookings';
 
 /**
  * Obtiene todas las reservas y las instancias con el modelo Booking

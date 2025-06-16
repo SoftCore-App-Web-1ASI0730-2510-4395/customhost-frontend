@@ -3,8 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeComponent from "../public/pages/homeComponent.vue";
 
 const preferencesComponent = () => import("../profiles/pages/preferencesComponent.vue");
+const iotDevicesComponent = () => import("../guest-experience/pages/iot-room-configuration-page.component.vue");
 const MyBookingsComponent = () => import("../crm/pages/my-booking.component.vue");
-const iotDevicesComponent = () => import("../guest-experience/pages/iotDevicesComponent.vue");
 const requestStaffComponent = () => import("../crm/pages/requestStaffComponent.vue");
 const customerRequestsComponent = () => import("../crm/pages/customerRequestsComponent.vue");
 const adminComponent = () => import("../billing/pages/adminComponent.vue");

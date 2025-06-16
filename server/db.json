@@ -9,6 +9,7 @@
       "status": "active",
       "createdAt": "2024-01-10T08:00:00",
       "adminId": 3
+      
     },
     {
       "id": 2,
@@ -194,6 +195,224 @@
     }
   ],
   "serviceRequests": [],
+
+  
+  "iotDevices": [
+    {
+      "id": 1,
+      "name": "Temperature Sensor",
+      "deviceType": "climate",
+      "configSchema": {
+        "unit": [
+          "Celsius",
+          "Fahrenheit"
+        ],
+        "currentValue": "number"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Smart Light",
+      "deviceType": "lighting",
+      "configSchema": {
+        "brightness": "number",
+        "color": [
+          "white",
+          "yellow",
+          "blue"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "name": "Automatic Curtains",
+      "deviceType": "window-control",
+      "configSchema": {
+        "state": [
+          "open",
+          "close"
+        ],
+        "position": "number"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Smart TV",
+      "deviceType": "entertainment",
+      "configSchema": {
+        "apps": [
+          "Netflix",
+          "HBO",
+          "YouTube",
+          "Disney+"
+        ],
+        "volume": "number",
+        "power": [
+          "on",
+          "off"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "name": "Room Camera",
+      "deviceType": "security",
+      "configSchema": {
+        "resolution": [
+          "720p",
+          "1080p",
+          "4K"
+        ],
+        "recording": [
+          "on",
+          "off"
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "name": "Ambient Sound System",
+      "deviceType": "audio",
+      "configSchema": {
+        "volume": "number",
+        "source": [
+          "jazz",
+          "hip hop",
+          "classical",
+          "pop",
+          "nature"
+        ],
+        "power": [
+          "on",
+          "off"
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "name": "Smart Fragrance Diffuser",
+      "deviceType": "wellness",
+      "configSchema": {
+        "intensity": "number",
+        "scent": [
+          "lavender",
+          "vanilla",
+          "citrus",
+          "eucalyptus"
+        ],
+        "power": [
+          "on",
+          "off"
+        ]
+      }
+    }
+  ],
+  "roomDevices": [
+    {
+      "id": 1,
+      "roomId": 105,
+      "iotDeviceId": 1,
+      "status": "inactive"
+    },
+    {
+      "id": 2,
+      "roomId": 105,
+      "iotDeviceId": 2,
+      "status": "inactive"
+    },
+    {
+      "id": 4,
+      "roomId": 102,
+      "iotDeviceId": 2,
+      "status": "working"
+    },
+    {
+      "id": 5,
+      "roomId": 101,
+      "iotDeviceId": 2,
+      "status": "maintenance"
+    },
+    {
+      "id": 6,
+      "roomId": 103,
+      "iotDeviceId": 5,
+      "status": "working"
+    },
+    {
+      "id": 7,
+      "roomId": 105,
+      "iotDeviceId": 4,
+      "status": "working"
+    },
+    {
+      "id": 8,
+      "roomId": 103,
+      "iotDeviceId": 3,
+      "status": "inactive"
+    }
+  ],
+  "roomDevicePreferences": [
+    {
+      "id": 1,
+      "roomDeviceId": 1,
+      "preferences": {
+        "unit": "Celsius",
+        "currentValue": 22
+      }
+    },
+    {
+      "roomDeviceId": 2,
+      "preferences": {
+        "brightness": 44,
+        "color": "blue"
+      },
+      "id": 2
+    },
+    {
+      "roomDeviceId": 4,
+      "preferences": {
+        "color": "yellow",
+        "brightness": 98
+      },
+      "id": 4
+    },
+
+
+    {
+      "roomDeviceId": 5,
+      "preferences": {
+        "brightness": 68,
+        "color": "blue"
+      },
+      "id": 5
+    },
+    {
+      "roomDeviceId": 6,
+      "preferences": {
+        "resolution": "1080p",
+        "recording": "on"
+      },
+      "id": 6
+    },
+    {
+      "roomDeviceId": 7,
+      "preferences": {
+        "apps": "HBO",
+        "volume": 47,
+        "power": "on"
+      },
+      "id": 7
+    },
+    {
+      "roomDeviceId": 8,
+      "preferences": {
+        "state": "close",
+        "position": 67
+      },
+      "id": 8
+    }
+  ],
+
   "userDevicePreferences": [
     {
       "id": 1,
@@ -207,6 +426,8 @@
       "lastUpdated": "2025-05-10T08:30:00Z"
     }
   ],
+
+
   "notifications": [
     {
       "id": 1,

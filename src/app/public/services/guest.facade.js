@@ -4,7 +4,7 @@ import {
     getGuestBookings,
     getGuestServiceRequests,
     getGuestNotifications
-} from '../../crm/application/guest.facade';
+} from '../../crm/services/guest.facade.js';
 
 /**
  * Devuelve todos los datos relevantantes para el dashboard del huésped

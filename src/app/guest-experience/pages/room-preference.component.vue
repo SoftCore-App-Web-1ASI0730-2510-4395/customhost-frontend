@@ -31,7 +31,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import HotelPreferencesFacade from '../application/hotel-preferences.facade';
+import HotelPreferencesFacade from '../services/hotel-preferences.facade.js';
 import IoTDevicePreference from '../components/iot-device-preference.component.vue';
 
 export default {

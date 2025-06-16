@@ -1,9 +1,9 @@
 // src/crm/application/guest.facade.js
 
-import { getBookings, getBookingById } from '../services/booking.service.js';
+import { getBookings, getBookingById } from './booking.service.js';
 import { getUserById } from '../../profiles/services/user.service.js';
-import { getServiceRequests, createServiceRequest } from '../services/service-request.service.js';
-import { getNotificationsByUserId } from '../services/notification.service.js';
+import { getServiceRequests, createServiceRequest } from './service-request.service.js';
+import { getNotificationsByUserId } from './notification.service.js';
 
 /**
  * Coordina información entre contextos para mostrar reservas con detalles del huésped

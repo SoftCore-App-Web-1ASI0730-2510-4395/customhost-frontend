@@ -1,8 +1,8 @@
 // src/guest-experience/facade/hotel-preferences.facade.js
 
-import { getRoomById } from '../../crm/services/rooms.service';
-import { getDevicesByRoom } from '../services/iot-devices.service.js';
-import { saveUserDevicePreference } from '../../profiles/services/user-preference.service';
+import { getRoomById } from '../../crm/services/rooms.service.js';
+import { getDevicesByRoom } from './iot-devices.service.js';
+import { saveUserDevicePreference } from '../../profiles/services/user-preference.service.js';
 
 
 export default class HotelPreferencesFacade {

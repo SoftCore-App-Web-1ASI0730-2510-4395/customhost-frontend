@@ -4,9 +4,10 @@ import Rooms from '../../rooms/model/rooms.entity.js'
 const API_URL = 'https://api-chafa.vercel.app/api/v1/rooms'
 
 export const getRooms = async () => {
-    const response = await axios.get(API_URL)
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/rooms`)
     return response.data.map(room => new Rooms(room))
 }
+
 
 export const createRoom = async (roomData) => {
     const room = new Rooms(roomData)

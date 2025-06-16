@@ -1,7 +1,7 @@
 // src/services/booking.service.js
 import { Booking } from '../model/book.entity';
 
-const API_URL = 'http://localhost:3000/bookings'; // Asegúrate de tener corriendo el json-server
+const API_URL = 'http://localhost:3001/bookings'; // Asegúrate de tener corriendo el json-server
 
 export default {
     /**

@@ -3,7 +3,7 @@
 import axios from 'axios';
 import Room from '../model/rooms.entity';
 
-const API_URL = 'http://localhost:3000/rooms';
+const API_URL = 'http://localhost:3001/rooms';
 
 /**
  * Obtiene todos los cuartos y devuelve instancias del modelo Room

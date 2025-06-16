@@ -1,7 +1,7 @@
 import axios from 'axios';
 import User from '../model/user.entity.js';
 
-const API_URL = 'http://localhost:3000/users';
+const API_URL = 'http://localhost:3001/users';
 
 /**
  * Obtiene un usuario por ID y devuelve una instancia del modelo User

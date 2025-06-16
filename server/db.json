@@ -376,6 +376,8 @@
       },
       "id": 4
     },
+
+
     {
       "roomDeviceId": 5,
       "preferences": {
@@ -411,8 +413,21 @@
     }
   ],
 
+  "userDevicePreferences": [
+    {
+      "id": 1,
+      "userId": 1,
+      "deviceId": 2,
+      "customName": "My Reading Light",
+      "overrides": {
+        "brightness": 85,
+        "color": "cool"
+      },
+      "lastUpdated": "2025-05-10T08:30:00Z"
+    }
+  ],
 
-  
+
   "notifications": [
     {
       "id": 1,

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import CustomerRequest from '../model/customer-request.entity.js'
 
-const API_URL = 'http://localhost:3000/serviceRequests'
+const API_URL = 'http://localhost:3001/serviceRequests'
 
 // Helper para evitar repetición
 const getAndModifyRequest = async (id, modifyFn) => {

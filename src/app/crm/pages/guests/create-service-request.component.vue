@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import GuestFacade from '../../application/guest.facade';
+import GuestFacade from '../../services/guest.facade.js';
 import { useRouter } from 'vue-router';
 
 export default {

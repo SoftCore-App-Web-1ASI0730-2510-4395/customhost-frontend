@@ -3,7 +3,7 @@
 import axios from 'axios';
 import ServiceRequest from '../model/service-request.entity';
 
-const API_URL = 'http://localhost:3000/serviceRequests';
+const API_URL = 'http://localhost:3001/serviceRequests';
 
 /**
  * Obtiene todas las solicitudes de servicio

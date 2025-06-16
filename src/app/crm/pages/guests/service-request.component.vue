@@ -24,7 +24,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import GuestFacade from '../../application/guest.facade';
+import GuestFacade from '../../services/guest.facade.js';
 import ServiceRequestCard from '../../components/guests/service-request-card.component.vue';
 
 export default {

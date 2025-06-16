@@ -19,17 +19,30 @@
       "checkIn": "Check-in",
       "checkOut": "Check-out"
     },
-
-
     "rooms_management": {
+      "hotelId": "Hotel Id",
       "room": "Room #",
       "type": "Type",
       "status": "Status",
       "price": "Price",
       "floor": "Floor",
-      "actions": "Actions"
+      "actions": "Actions",
+      "rooms_management": "Rooms Management",
+      "rooms": "Rooms",
+      "add_room": "Add Room"
     },
-
+    "bookings_tracker": {
+      "booksTracking": "Bookings Tracking",
+      "books": "Books",
+      "guest": "Guest",
+      "hotelId": "Hotel Id",
+      "room": "Room #",
+      "checkIn": "Check-in",
+      "checkOut": "Check-out",
+      "totalPrice": "Total Price",
+      "status": "Status",
+      "paymentStatus": "Payment Status"
+    },
     "charts": {
       "iot_devices_status": "IoT Devices Status",
       "labels": {

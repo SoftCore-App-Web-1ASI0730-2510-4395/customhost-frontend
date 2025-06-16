@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
- <h1>Preferences Page!</h1>
+ <h1>Preferences Page xd!</h1>
 </template>
 
 <style scoped>

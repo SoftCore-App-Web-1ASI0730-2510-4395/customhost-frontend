@@ -9,6 +9,7 @@
       "status": "active",
       "createdAt": "2024-01-10T08:00:00",
       "adminId": 3
+      
     },
     {
       "id": 2,
@@ -81,46 +82,121 @@
       "phone": "+34600789012",
       "role": "guest",
       "createdAt": "2025-02-02T14:15:00"
+    },
+    {
+      "id": 3,
+      "hotelId": 2,
+      "firstName": "Kelly",
+      "lastName": "Campos",
+      "email": "kelly.campos@email.com",
+      "password": "kelly123",
+      "phone": "+34600564893",
+      "role": "guest",
+      "createdAt": "2025-03-01T20:15:00"
     }
   ],
   "rooms": [
     {
-      "id": 101,
-      "hotelId": 1,
+      "hotelId": "1",
       "number": "101",
-      "type": "Suite Presidential",
-      "status": "available",
-      "price": 300,
-      "floor": 1
+      "type": "Deluxe",
+      "status": "Available",
+      "price": 150,
+      "floor": 1,
+      "id": 1
     },
     {
-      "id": 102,
-      "hotelId": 1,
-      "number": "102",
-      "type": "Deluxe Twin",
-      "status": "occupied",
-      "price": 180,
-      "floor": 1
-    },
-    {
-      "id": 103,
-      "hotelId": 1,
+      "hotelId": "1",
       "number": "103",
-      "type": "Family Suite",
-      "status": "cleaning",
+      "type": "Suite",
+      "status": "Occupied",
       "price": 180,
-      "floor": 1
+      "floor": 1,
+      "id": 2
     },
     {
-      "id": 105,
-      "hotelId": 1,
-      "number": "105",
-      "type": "Single",
-      "status": "available",
-      "price": 300,
-      "floor": 1
+      "hotelId": "2",
+      "number": "106",
+      "type": "Suite",
+      "status": "Maintenance",
+      "price": 200,
+      "floor": 1,
+      "id": 3
+    },
+    {
+      "hotelId": "2",
+      "number": "201",
+      "type": "Deluxe",
+      "status": "Cleaning",
+      "price": 250,
+      "floor": 2,
+      "id": 4
     }
   ],
+  "roomIotDevices": [],
+  "iotDevices": [],
+  "bookings": [
+    {
+      "id": 1,
+      "userId": 1,
+      "hotelId": 1,
+      "roomId": 1,
+      "checkInDate": "2025-05-01T14:00:00",
+      "checkOutDate": "2025-05-05T12:00:00",
+      "status": "Active",
+      "totalPrice": 480,
+      "paymentStatus": "Paid"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "hotelId": 1,
+      "roomId": 2,
+      "checkInDate": "2025-05-02T15:30:00",
+      "checkOutDate": "2025-05-07T11:00:00",
+      "status": "Active",
+      "totalPrice": 480,
+      "paymentStatus": "Paid"
+    },
+    {
+      "id": 3,
+      "userId": 3,
+      "hotelId": 2,
+      "roomId": 3,
+      "checkInDate": "2025-06-12T15:30:00",
+      "checkOutDate": "2025-06-20T11:00:00",
+      "status": "Active",
+      "totalPrice": 480,
+      "paymentStatus": "Paid"
+    }
+  ],
+  "staffMembers": [
+    {
+      "id": 4,
+      "hotelId": 1,
+      "firstName": "Ana",
+      "lastName": "López",
+      "email": "ana.lopez@hotel.com",
+      "phone": "+34600333444",
+      "status": "active",
+      "department": "Housekeeping",
+      "createdAt": "2024-06-15T08:30:00"
+    },
+    {
+      "id": 5,
+      "hotelId": 1,
+      "firstName": "David",
+      "lastName": "Martínez",
+      "email": "david.martinez@hotel.com",
+      "phone": "+34600555666",
+      "status": "active",
+      "department": "Technical Support",
+      "createdAt": "2024-07-20T10:15:00"
+    }
+  ],
+  "serviceRequests": [],
+
+  
   "iotDevices": [
     {
       "id": 1,
@@ -334,46 +410,9 @@
       "id": 8
     }
   ],
-  "bookings": [
-    {
-      "id": 1,
-      "userId": 1,
-      "hotelId": 1,
-      "roomId": 101,
-      "checkInDate": "2025-05-01T14:00:00",
-      "checkOutDate": "2025-05-05T12:00:00",
-      "status": "active",
-      "totalPrice": 480,
-      "paymentStatus": "paid"
-    }
-  ],
-  "serviceRequests": [
-    {
-      "id": 1,
-      "userId": 1,
-      "hotelId": 1,
-      "roomId": 101,
-      "requestType": "Toallas/Ropa",
-      "category": "Limpieza",
-      "description": "Necesito toallas adicionales",
-      "status": "pending",
-      "priority": "normal",
-      "createdAt": "2025-05-02T09:15:00"
-    }
-  ],
-  "userDevicePreferences": [
-    {
-      "id": 1,
-      "userId": 1,
-      "deviceId": 2,
-      "customName": "My Reading Light",
-      "overrides": {
-        "brightness": 85,
-        "color": "cool"
-      },
-      "lastUpdated": "2025-05-10T08:30:00Z"
-    }
-  ],
+
+
+  
   "notifications": [
     {
       "id": 1,

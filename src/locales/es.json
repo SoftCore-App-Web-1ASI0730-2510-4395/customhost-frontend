@@ -20,20 +20,30 @@
       "checkIn": "Check-in",
       "checkOut": "Check-out"
     },
-
-
     "rooms_management": {
-      "room": "# Cuarto",
+      "hotelId": "Id del Hotel",
+      "room": "# Habitación",
       "type": "Tipo",
       "status": "Estado",
       "price": "Precio",
       "floor": "Piso",
-      "actions": "Acciones"
+      "actions": "Acciones",
+      "rooms_management": "Gestión de Habitaciones",
+      "rooms": "Habitaciones",
+      "add_room": "Agregar Habitación"
     },
-
-
-
-
+    "bookings_tracker": {
+      "booksTracking": "Seguimiento de reservas",
+      "books": "Reservas",
+      "guest": "Huésped",
+      "hotelId": "Id del Hotel",
+      "room": "# Habitación",
+      "checkIn": "Fecha de Entrada",
+      "checkOut": "Fecha de Salida",
+      "totalPrice": "Precio Total",
+      "status": "Estado",
+      "paymentStatus": "Estado de Pago"
+    },
     "charts": {
       "iot_devices_status": "Estado de dispositivos IoT",
       "labels": {

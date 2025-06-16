@@ -1,3 +1,5 @@
+// src/crm/model/rooms.entity.js
+
 export default class Room {
     constructor({
                     id,
@@ -6,11 +8,10 @@ export default class Room {
                     type,
                     status,
                     price,
-                    floor,
-                    description,
-                    currentGuestId,
-                    activeRequests,
+                    floor
                 }) {
+        if (!id) throw new Error("Room must have an ID");
+
         this.id = id;
         this.hotelId = hotelId;
         this.number = number;
@@ -18,8 +19,19 @@ export default class Room {
         this.status = status;
         this.price = price;
         this.floor = floor;
-        this.description = description;
-        this.currentGuestId = currentGuestId;
-        this.activeRequests = activeRequests || [];
+    }
+
+    /**
+     * Devuelve si el cuarto está disponible
+     */
+    get isAvailable() {
+        return this.status === 'Available';
+    }
+
+    /**
+     * Devuelve una descripción corta del tipo de cuarto
+     */
+    get shortDescription() {
+        return `${this.type} - Piso ${this.floor}`;
     }
 }

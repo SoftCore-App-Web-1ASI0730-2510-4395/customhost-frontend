@@ -1,7 +1,7 @@
 import axios from 'axios'
-import Rooms from '../../rooms/model/rooms.entity.js'
+import Rooms from '../model/rooms.entity.js'
 
-const API_URL = 'https://api-chafa.vercel.app/api/v1/rooms'
+const API_URL = 'http://localhost:3001/api/v1/rooms'
 
 export const getRooms = async () => {
     const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/rooms`)

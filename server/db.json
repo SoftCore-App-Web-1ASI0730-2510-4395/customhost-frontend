@@ -101,6 +101,24 @@
       "status": "occupied",
       "price": 180,
       "floor": 1
+    },
+    {
+      "id": 103,
+      "hotelId": 1,
+      "number": "103",
+      "type": "Family Suite",
+      "status": "cleaning",
+      "price": 180,
+      "floor": 1
+    },
+    {
+      "id": 105,
+      "hotelId": 1,
+      "number": "105",
+      "type": "Single",
+      "status": "available",
+      "price": 300,
+      "floor": 1
     }
   ],
   "iotDevices": [
@@ -128,6 +146,89 @@
           "blue"
         ]
       }
+    },
+    {
+      "id": 3,
+      "name": "Automatic Curtains",
+      "deviceType": "window-control",
+      "configSchema": {
+        "state": [
+          "open",
+          "close"
+        ],
+        "position": "number"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Smart TV",
+      "deviceType": "entertainment",
+      "configSchema": {
+        "apps": [
+          "Netflix",
+          "HBO",
+          "YouTube",
+          "Disney+"
+        ],
+        "volume": "number",
+        "power": [
+          "on",
+          "off"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "name": "Room Camera",
+      "deviceType": "security",
+      "configSchema": {
+        "resolution": [
+          "720p",
+          "1080p",
+          "4K"
+        ],
+        "recording": [
+          "on",
+          "off"
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "name": "Ambient Sound System",
+      "deviceType": "audio",
+      "configSchema": {
+        "volume": "number",
+        "source": [
+          "jazz",
+          "hip hop",
+          "classical",
+          "pop",
+          "nature"
+        ],
+        "power": [
+          "on",
+          "off"
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "name": "Smart Fragrance Diffuser",
+      "deviceType": "wellness",
+      "configSchema": {
+        "intensity": "number",
+        "scent": [
+          "lavender",
+          "vanilla",
+          "citrus",
+          "eucalyptus"
+        ],
+        "power": [
+          "on",
+          "off"
+        ]
+      }
     }
   ],
   "roomDevices": [
@@ -141,15 +242,37 @@
       "id": 2,
       "roomId": 105,
       "iotDeviceId": 2,
-      "status": "inactive",
-      "apiId": "v1"
+      "status": "inactive"
     },
     {
-      "id": 3,
-      "roomId": 105,
+      "id": 4,
+      "roomId": 102,
       "iotDeviceId": 2,
-      "status": "inactive",
-      "apiId": "v1"
+      "status": "working"
+    },
+    {
+      "id": 5,
+      "roomId": 101,
+      "iotDeviceId": 2,
+      "status": "maintenance"
+    },
+    {
+      "id": 6,
+      "roomId": 103,
+      "iotDeviceId": 5,
+      "status": "working"
+    },
+    {
+      "id": 7,
+      "roomId": 105,
+      "iotDeviceId": 4,
+      "status": "working"
+    },
+    {
+      "id": 8,
+      "roomId": 103,
+      "iotDeviceId": 3,
+      "status": "inactive"
     }
   ],
   "roomDevicePreferences": [
@@ -167,8 +290,48 @@
         "brightness": 44,
         "color": "blue"
       },
-      "apiId": "v1",
       "id": 2
+    },
+    {
+      "roomDeviceId": 4,
+      "preferences": {
+        "color": "yellow",
+        "brightness": 98
+      },
+      "id": 4
+    },
+    {
+      "roomDeviceId": 5,
+      "preferences": {
+        "brightness": 68,
+        "color": "blue"
+      },
+      "id": 5
+    },
+    {
+      "roomDeviceId": 6,
+      "preferences": {
+        "resolution": "1080p",
+        "recording": "on"
+      },
+      "id": 6
+    },
+    {
+      "roomDeviceId": 7,
+      "preferences": {
+        "apps": "HBO",
+        "volume": 47,
+        "power": "on"
+      },
+      "id": 7
+    },
+    {
+      "roomDeviceId": 8,
+      "preferences": {
+        "state": "close",
+        "position": 67
+      },
+      "id": 8
     }
   ],
   "bookings": [

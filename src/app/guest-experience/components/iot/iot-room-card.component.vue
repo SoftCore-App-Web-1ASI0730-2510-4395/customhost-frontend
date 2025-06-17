@@ -7,7 +7,7 @@
     <hr />
     <p class="devices-title">Devices</p>
     <ul class="device-list">
-      <li v-for="device in room.devices" :key="device.id" class="device-item">
+      <li v-for="device in room.devices" :key="device.roomDeviceId" class="device-item">
         <span class="device-icon pi pi-eye"></span>
 
         <span class="device-name">{{ device.name }}</span>

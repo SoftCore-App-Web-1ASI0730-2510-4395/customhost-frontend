@@ -19,7 +19,8 @@ const RoomsListComponent = () => import("../crm/pages/rooms-listComponent.vue");
 const HotelRoomSelection = () => import("../crm/pages/guests/hotel-rooms-selection.component.vue");
 const RoomPreferencesComponent = () => import("../guest-experience/pages/guest-room-preference.component.vue");
 const notificationComponent = () => import("../crm/pages/guests/notification.component.vue");
-
+const PaymentComponent = () => import("../billing/pages/payment.component.vue");
+const SelectDatesComponent = () => import("../crm/pages/guests/select-date.component.vue");
 
 // Rutas organizadas por dominio (bounded contexts)
 const routes = [
@@ -134,7 +135,14 @@ const routes = [
                 name: 'Rooms',
                 component: RoomsListComponent,
                 meta: { title: 'Rooms' }
+            },
+            {
+                path: 'selectDates',
+                name: 'SelectDatesPage',
+                component: SelectDatesComponent,
+                meta: { title: 'SelectDatesPage' }
             }
+
         ]
     },
 
@@ -168,7 +176,14 @@ const routes = [
                 name: 'Admin',
                 component: adminComponent,
                 meta: { title: 'Admin' }
+            },
+            {
+                path: 'paymentPage',
+                name: 'PaymentPage',
+                component: PaymentComponent,
+                meta: { title: 'PaymentPage' }
             }
+
         ]
     },
     {

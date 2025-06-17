@@ -96,17 +96,18 @@
   ],
   "payments": [
     {
-      "id": 1,
-      "bookingId": 1,
       "userId": 1,
-      "hotelId": 1,
       "roomId": 1,
-      "amount": 600,
+      "hotelId": 1,
+      "amount": 1500,
       "currency": "USD",
-      "paymentDate": "2025-04-25T14:30:00Z",
-      "paymentStatus": "paid",
+      "checkInDate": "2025-06-17",
+      "checkOutDate": "2025-06-27",
       "paymentMethod": "credit_card",
-      "createdAt": "2025-04-25T14:30:00Z"
+      "status": "paid",
+      "paymentDate": "2025-06-17T11:30:49.129Z",
+      "createdAt": "2025-06-17T11:30:49.129Z",
+      "id": 1
     }
   ],
   "rooms": [
@@ -114,7 +115,7 @@
       "hotelId": 1,
       "number": "101",
       "type": "Suite Presidential",
-      "status": "Available",
+      "status": "Occupied",
       "price": 150,
       "floor": 1,
       "id": 1
@@ -156,7 +157,7 @@
       "id": 5
     },
     {
-      "hotelId":2,
+      "hotelId": 2,
       "number": "201",
       "type": "Deluxe",
       "status": "Cleaning",
@@ -185,7 +186,6 @@
       "createdAt": "2025-04-22T09:30:00"
     }
   ],
-
   "roomIotDevices": [],
   "iotDevices": [
     {

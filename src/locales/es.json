@@ -59,5 +59,28 @@
       "checkIn": "Check-in",
       "checkOut": "Check-out"
     }
+  },
+  "iot_room_configuration": {
+    "title": "Configuración IoT por Habitación",
+    "add_device": "Añadir dispositivo IoT a la habitación",
+    "room": "Habitación",
+    "select_room": "Selecciona una habitación",
+    "iot_device": "Dispositivo IoT",
+    "select_device": "Selecciona un dispositivo",
+    "status": "Estado",
+    "select_status": "Selecciona un estado",
+    "working": "En funcionamiento",
+    "maintenance": "Mantenimiento",
+    "inactive": "Inactivo",
+    "next": "Siguiente",
+    "save_config": "Guardar configuración",
+    "device_config": "Configuración del dispositivo",
+    "devices": "Dispositivos",
+    "no_devices": "Sin dispositivos asignados",
+    "settings": "Configuración",
+    "delete": "Eliminar",
+    "close": "Cerrar",
+    "save_changes": "Guardar cambios"
+
   }
 }

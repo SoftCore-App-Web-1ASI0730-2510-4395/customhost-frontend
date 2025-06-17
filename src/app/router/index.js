@@ -17,7 +17,7 @@ const profileComponent = () => import("../profiles/pages/profileComponent.vue");
 const registerHotelComponent = () => import("../iam/pages/registerHotel.component.vue");
 const RoomsListComponent = () => import("../crm/pages/rooms-listComponent.vue");
 const HotelRoomSelection = () => import("../crm/pages/guests/hotel-rooms-selection.component.vue");
-const RoomPreferencesComponent = () => import("../guest-experience/pages/room-preference.component.vue");
+const RoomPreferencesComponent = () => import("../guest-experience/pages/guest-room-preference.component.vue");
 const notificationComponent = () => import("../crm/pages/guests/notification.component.vue");
 
 
@@ -145,7 +145,7 @@ const routes = [
         redirect: '/home',
         children: [
             {
-                path: 'iot-devices',
+                path: 'staff-devices',
                 name: 'IotDevices',
                 component: iotDevicesComponent,
                 meta: { title: 'IoT Devices' }

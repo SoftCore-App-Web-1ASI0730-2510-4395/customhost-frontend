@@ -5,7 +5,10 @@ import { getRoomById } from '../../crm/services/rooms.service.js';
 import { getHotelById } from '../../crm/services/hotels.service.js';
 import { createPayment } from './payment.service.js';
 
-const API_ROOMS_URL = 'http://localhost:3001/api/v1/rooms'; // ← URL correcta para actualizar el estado del cuarto
+// 👇 Importa servicio de bookings
+import { createBooking } from '../../crm/services/booking.service.js';
+
+const API_ROOMS_URL = 'http://localhost:3001/api/v1/rooms';
 
 /**
  * Coordina la información entre contextos para preparar y realizar un pago
@@ -13,11 +16,6 @@ const API_ROOMS_URL = 'http://localhost:3001/api/v1/rooms'; // ← URL correcta 
 export default {
     /**
      * Prepara los datos del pago con info del usuario, hotel y habitación
-     *
-     * @param {number} userId - ID del usuario actual
-     * @param {number} roomId - ID de la habitación seleccionada
-     * @param {number} hotelId - ID del hotel
-     * @returns {Promise<Object>} - Objeto con toda la info necesaria para pagar
      */
     async preparePaymentData(userId, roomId, hotelId) {
         try {
@@ -43,7 +41,7 @@ export default {
     },
 
     /**
-     * Realiza el pago y marca la habitación como ocupada
+     * Realiza el pago y crea una reserva (booking) asociada
      *
      * @param {Object} paymentData - Datos del pago a guardar
      * @returns {Promise<Payment>} - Pago creado
@@ -57,10 +55,26 @@ export default {
                 paymentDate: new Date().toISOString()
             });
 
-            // 2. Actualizar el estado de la habitación a "Occupied"
+            // 2. Crear una reserva (booking) basada en este pago
+            const bookingData = {
+                userId: paymentData.userId,
+                roomId: paymentData.roomId,
+                checkInDate: paymentData.checkInDate,
+                checkOutDate: paymentData.checkOutDate,
+                status: 'confirmed'
+            };
+
+            const createdBooking = await createBooking(bookingData);
+
+            // 3. Marcar habitación como "Occupied"
             await this.markRoomAsOccupied(paymentData.roomId);
 
-            return createdPayment;
+            // Retornamos ambos datos
+            return {
+                payment: createdPayment,
+                booking: createdBooking
+            };
+
         } catch (error) {
             console.error('Error al procesar el pago:', error);
             throw error;
@@ -69,8 +83,6 @@ export default {
 
     /**
      * Marca una habitación como ocupada
-     *
-     * @param {number} roomId - ID de la habitación
      */
     async markRoomAsOccupied(roomId) {
         try {
@@ -79,7 +91,7 @@ export default {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ status: 'Occupied' })
+                body: JSON.stringify({ status: 'occupied' })
             });
 
             if (!response.ok) {
@@ -92,7 +104,4 @@ export default {
             throw error;
         }
     }
-
-
-
 };

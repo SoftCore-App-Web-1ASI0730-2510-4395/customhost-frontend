@@ -100,7 +100,7 @@ export default {
         localStorage.removeItem('totalPrice');
 
         // Redirigir
-        router.push({ name: 'DashboardPage' });
+        router.push({ name: 'preferences' }); // ← Usamos el name definido en el router
 
       } catch (error) {
         console.error('Error al procesar el pago:', error);

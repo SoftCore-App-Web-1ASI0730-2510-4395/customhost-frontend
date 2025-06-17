@@ -1,17 +1,16 @@
-// src/guest-experience/facade/hotel-preferences.facade.js
+// src/guest-experience/facade/guest-room-device.facade.js
 
 import { getRoomById } from '../../crm/services/rooms.service.js';
-import { getDevicesByRoom } from './iot-devices.service.js';
+import { getDevicesByRoom } from './guest/iot-devices.service.js';
 import { saveUserDevicePreference } from '../../profiles/services/user-preference.service.js';
 
 
-export default class HotelPreferencesFacade {
+export default class GuestRoomDeviceFacade {
     constructor() {}
 
     /**
      * Obtiene una habitación y sus dispositivos IoT
-     */
-    async getRoomWithDevices(roomId) {
+     */  async getRoomWithDevices(roomId) {
         const room = await getRoomById(roomId);
         const devices = await getDevicesByRoom(room.id);
         return { room, devices };

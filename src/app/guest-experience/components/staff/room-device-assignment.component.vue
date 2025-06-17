@@ -2,44 +2,44 @@
   <div>
     <button class="add-device-button" @click="showModal = true">
       <span class="pi pi-plus" style="margin-right: 8px"></span>
-      Add IoT Device to Room
+      {{ t('iot_room_configuration.add_device') }}
     </button>
 
     <div v-if="showModal" class="modal-backdrop">
       <div class="modal">
         <button class="close-button" @click="showModal = false">×</button>
 
-        <h3>Añadir nuevo dispositivo</h3>
+        <h3>{{ t('iot_room_configuration.add_device') }}</h3>
         <form @submit.prevent="handleNext">
-          <label>Habitación:</label>
+          <label>{{ t('iot_room_configuration.room') }}:</label>
           <select v-model="form.roomId" required>
-            <option disabled value="">Selecciona una habitación</option>
+            <option disabled value="">{{ t('iot_room_configuration.select_room') }}</option>
             <option v-for="room in rooms" :key="room.id" :value="room.id">
-              Habitación {{ room.number }}
+              {{ t('iot_room_configuration.room') }} {{ room.number }}
             </option>
           </select>
 
-          <label>Dispositivo IoT:</label>
+          <label>{{ t('iot_room_configuration.iot_device') }}:</label>
           <select v-model="form.iotDeviceId" required>
-            <option disabled value="">Selecciona un dispositivo</option>
+            <option disabled value="">{{ t('iot_room_configuration.select_device') }}</option>
             <option v-for="device in availableDevices" :key="device.id" :value="device.id">
               {{ device.name }} ({{ device.deviceType }})
             </option>
           </select>
 
-          <label>Estado:</label>
+          <label>{{ t('iot_room_configuration.status') }}:</label>
           <select v-model="form.status" required>
-            <option disabled value="">Selecciona un estado</option>
-            <option value="working">Working</option>
-            <option value="maintenance">Maintenance</option>
-            <option value="inactive">Inactive</option>
+            <option disabled value="">{{ t('iot_room_configuration.select_status') }}</option>
+            <option value="working">{{ t('iot_room_configuration.working') }}</option>
+            <option value="maintenance">{{ t('iot_room_configuration.maintenance') }}</option>
+            <option value="inactive">{{ t('iot_room_configuration.inactive') }}</option>
           </select>
 
-          <button type="submit">Next</button>
+          <button type="submit">{{ t('iot_room_configuration.next') }}</button>
         </form>
 
         <div v-if="selectedDeviceConfig">
-          <h4>Configuración del dispositivo</h4>
+          <h4>{{ t('iot_room_configuration.device_config') }}</h4>
           <form @submit.prevent="saveConfig">
             <div v-for="(type, key) in selectedDeviceConfig" :key="key">
               <label>{{ key }}</label>
@@ -48,7 +48,7 @@
               </select>
               <input v-else-if="type === 'number'" type="number" v-model.number="preferences[key]" />
             </div>
-            <button type="submit">Guardar configuración</button>
+            <button type="submit">{{ t('iot_room_configuration.save_config') }}</button>
           </form>
         </div>
       </div>
@@ -58,9 +58,10 @@
 
 <script setup>
 import { ref, watch, onMounted } from 'vue';
-import { roomDeviceService } from '../../services/room-device.service.js';
-import { roomDevicePreferenceService } from '../../services/room-device-preference.service.js';
-import * as roomService from '../../../crm/services/rooms.service.js';
+import { useI18n } from 'vue-i18n';
+import { RoomDeviceManagementFacade } from '../../services/room-device-management.facade.js';
+
+const { t } = useI18n();
 
 const emit = defineEmits(['updated']);
 
@@ -78,22 +79,22 @@ const handleNext = async () => {
 };
 
 const saveConfig = async () => {
-  await roomDevicePreferenceService.saveRoomDeviceConfig(form.value, preferences.value);
+  await RoomDeviceManagementFacade.saveRoomDeviceConfig(form.value, preferences.value);
   alert('Dispositivo configurado exitosamente');
-  roomDeviceService.resetRoomDeviceForm(form.value, selectedDeviceConfig, preferences);
+  RoomDeviceManagementFacade.resetRoomDeviceForm(form.value, selectedDeviceConfig, preferences);
   emit('updated');
 };
 
 watch(() => form.value.roomId, async (roomId) => {
   if (roomId) {
-    availableDevices.value = await roomDeviceService.getAvailableDevicesForRoom(roomId);
+    availableDevices.value = await RoomDeviceManagementFacade.getAvailableDevicesForRoom(roomId);
   } else {
     availableDevices.value = [];
   }
 });
 
 onMounted(async () => {
-  rooms.value = await roomService.getRooms();
+  rooms.value = await RoomDeviceManagementFacade.getRooms();
 });
 </script>
 
@@ -192,4 +193,3 @@ onMounted(async () => {
   cursor: pointer;
 }
 </style>
-

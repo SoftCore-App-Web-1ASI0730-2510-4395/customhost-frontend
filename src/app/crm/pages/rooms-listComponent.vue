@@ -27,7 +27,7 @@
 import Button from 'primevue/button'
 import { ref, reactive, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getRooms, deleteRoom, createRoom, updateRoom } from '../services/rooms-list.service.js'
+import { getRooms, deleteRoom, createRoom, updateRoom } from '../services/rooms.service.js'
 import RoomsListTable from '../components/rooms-list-table.component.vue'
 import RoomsListForm from '../components/rooms-list-form.component.vue'
 

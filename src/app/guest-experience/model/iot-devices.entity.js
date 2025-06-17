@@ -1,6 +1,6 @@
 // src/guest-experience/model/iot-devices.entity.js
 
-export default class IotDevice {
+export default class IotDevices {
     constructor({
                     id,
                     name,
@@ -32,8 +32,7 @@ export default class IotDevice {
 
     /**
      * Devuelve una descripción corta del dispositivo
-     */
-    get shortDescription() {
+     */    get shortDescription() {
         return `${this.name} (${this.type})`;
     }
 }

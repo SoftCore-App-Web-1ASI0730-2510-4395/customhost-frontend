@@ -60,7 +60,7 @@
 import { ref, watch, onMounted } from 'vue';
 import { roomDeviceService } from '../../services/room-device.service.js';
 import { roomDevicePreferenceService } from '../../services/room-device-preference.service.js';
-import * as roomService from '../../../rooms/services/roomsServices.js';
+import * as roomService from '../../../crm/services/rooms.service.js';
 
 const emit = defineEmits(['updated']);
 

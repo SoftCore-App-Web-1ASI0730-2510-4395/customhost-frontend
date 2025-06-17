@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import Room from '../model/rooms.entity';
+import Rooms from "../model/rooms.entity.js";
 
 const API_URL = 'http://localhost:3001/rooms';
 
@@ -43,6 +44,21 @@ export const getRoomsByHotelId = async (hotelId) => {
         return [];
     }
 };
+
+export const createRoom = async (roomData) => {
+    const room = new Rooms(roomData)
+    const response = await axios.post(API_URL, room)
+    return new Rooms(response.data)
+}
+
+export const updateRoom = async (id, roomData) => {
+    const response = await axios.put(`${API_URL}/${id}`, roomData)
+    return new Rooms(response.data)
+}
+
+export const deleteRoom = async (id) => {
+    await axios.delete(`${API_URL}/${id}`)
+}
 
 export class room {
 }

@@ -100,7 +100,7 @@ export default {
         localStorage.removeItem('totalPrice');
 
         // Redirigir
-        router.push({ name: 'DashboardPage' }); // ❌ Sin await
+        router.push({ name: 'DashboardPage' });
 
       } catch (error) {
         console.error('Error al procesar el pago:', error);
@@ -111,7 +111,7 @@ export default {
     };
 
     const goBackToSelection = () => {
-      router.push({ name: 'hotel-room-selection' }); // ❌ Sin await
+      router.push({ name: 'hotel-room-selection' });
     };
 
     onMounted(() => {

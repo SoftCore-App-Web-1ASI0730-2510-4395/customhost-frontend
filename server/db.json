@@ -108,6 +108,20 @@
       "paymentDate": "2025-06-17T11:30:49.129Z",
       "createdAt": "2025-06-17T11:30:49.129Z",
       "id": 1
+    },
+    {
+      "userId": 1,
+      "roomId": 4,
+      "hotelId": 1,
+      "amount": 180,
+      "currency": "USD",
+      "checkInDate": "2025-06-18",
+      "checkOutDate": "2025-06-19",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-17T13:14:28.386Z",
+      "createdAt": "2025-06-17T13:14:28.386Z",
+      "id": 2
     }
   ],
   "rooms": [
@@ -115,7 +129,7 @@
       "hotelId": 1,
       "number": "101",
       "type": "Suite Presidential",
-      "status": "Occupied",
+      "status": "Available",
       "price": 150,
       "floor": 1,
       "id": 1
@@ -124,7 +138,7 @@
       "hotelId": 1,
       "number": "102",
       "type": "Deluxe Twin",
-      "status": "Occupied",
+      "status": "Available",
       "price": 200,
       "floor": 1,
       "id": 2
@@ -133,7 +147,7 @@
       "hotelId": 1,
       "number": "103",
       "type": "Family Suite",
-      "status": "Cleaning",
+      "status": "Available",
       "price": 180,
       "floor": 1,
       "id": 3
@@ -151,7 +165,7 @@
       "hotelId": 2,
       "number": "106",
       "type": "Suite",
-      "status": "Maintenance",
+      "status": "Available",
       "price": 200,
       "floor": 1,
       "id": 5
@@ -160,7 +174,7 @@
       "hotelId": 2,
       "number": "201",
       "type": "Deluxe",
-      "status": "Cleaning",
+      "status": "Available",
       "price": 250,
       "floor": 2,
       "id": 6
@@ -184,6 +198,51 @@
       "checkOutDate": "2025-05-06T11:00:00",
       "status": "checked-in",
       "createdAt": "2025-04-22T09:30:00"
+    }
+  ],
+  "staffMembers": [
+    {
+      "id": 4,
+      "hotelId": 1,
+      "firstName": "Ana",
+      "lastName": "López",
+      "email": "ana.lopez@hotel.com",
+      "phone": "+34600333444",
+      "status": "active",
+      "department": "Housekeeping",
+      "createdAt": "2024-06-15T08:30:00"
+    },
+    {
+      "id": 5,
+      "hotelId": 1,
+      "firstName": "David",
+      "lastName": "Martínez",
+      "email": "david.martinez@hotel.com",
+      "phone": "+34600555666",
+      "status": "active",
+      "department": "Technical Support",
+      "createdAt": "2024-07-20T10:15:00"
+    }
+  ],
+  "serviceRequests": [
+    {
+      "id": 1,
+      "userId": 1,
+      "roomId": 1,
+      "type": "Housekeeping",
+      "description": "Request for extra towels",
+      "status": "completed",
+      "createdAt": "2025-05-01T10:00:00",
+      "resolvedAt": "2025-05-01T11:00:00"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "roomId": 2,
+      "type": "Maintenance",
+      "description": "Air conditioning not working",
+      "status": "in-progress",
+      "createdAt": "2025-05-02T09:30:00"
     }
   ],
   "roomIotDevices": [],

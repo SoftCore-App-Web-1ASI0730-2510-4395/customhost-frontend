@@ -109,3 +109,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.mb-6{
+  color: black;
+}
+</style>

@@ -1,5 +1,4 @@
-<!-- src/app/billing/component/payment-summary-card.component.vue -->
-
+<!-- src/app/billing/components/payment-summary-card.component.vue -->
 <template>
   <pv-card class="shadow-1 border-round-lg">
     <template #title>
@@ -21,7 +20,9 @@
           <h4>Habitación</h4>
           <p>{{ paymentData.room.number }} - {{ paymentData.room.type }}</p>
           <p><strong>Precio por noche:</strong> ${{ paymentData.room.price }} USD</p>
-          <p><strong>Total estimado:</strong> ${{ totalAmount }} USD (4 noches)</p>
+          <p><strong>Total a pagar:</strong> ${{ totalAmount }} USD</p>
+          <p><i class="text-sm">Entrada: {{ formattedCheckIn }}</i></p>
+          <p><i class="text-sm">Salida: {{ formattedCheckOut }}</i></p>
         </div>
       </div>
       <div v-else>
@@ -32,7 +33,7 @@
 </template>
 
 <script>
-import {computed} from "vue";
+import { computed } from "vue";
 
 export default {
   props: {
@@ -43,11 +44,33 @@ export default {
   },
   setup(props) {
     const totalAmount = computed(() => {
-      return props.paymentData.room.price * 4; // Simulamos 4 noches
+      if (!props.paymentData.checkInDate || !props.paymentData.checkOutDate) {
+        return props.paymentData.room.price * 4; // Fallback
+      }
+
+      const start = new Date(props.paymentData.checkInDate);
+      const end = new Date(props.paymentData.checkOutDate);
+
+      const diffTime = end - start;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      return props.paymentData.room.price * diffDays;
+    });
+
+    const formattedCheckIn = computed(() => {
+      const date = new Date(props.paymentData.checkInDate);
+      return date.toLocaleDateString('es-ES');
+    });
+
+    const formattedCheckOut = computed(() => {
+      const date = new Date(props.paymentData.checkOutDate);
+      return date.toLocaleDateString('es-ES');
     });
 
     return {
-      totalAmount
+      totalAmount,
+      formattedCheckIn,
+      formattedCheckOut
     };
   }
 };

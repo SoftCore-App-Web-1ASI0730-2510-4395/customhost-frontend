@@ -1,8 +1,8 @@
-np// json-server.js
+// json-server.js
 import jsonServer from 'json-server';
 
 const server = jsonServer.create();
-const router = jsonServer.router('server/db.json');
+const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const port = 3001;
 

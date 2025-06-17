@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { StaffMember } from '../model/request-staff.entity.js'
 
-const API_URL = 'http://localhost:3001'
+const API_URL = 'http://localhost:3001/api/v1'
 
 export const staffService = {
     async getAllStaffMembers() {

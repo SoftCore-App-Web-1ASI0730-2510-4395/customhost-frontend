@@ -3,7 +3,7 @@
 import axios from 'axios';
 import Notification from '../model/notification.entity';
 
-const API_URL = 'http://localhost:3001/notifications';
+const API_URL = 'http://localhost:3001/api/v1/notifications';
 
 /**
  * Obtiene todas las notificaciones de un usuario

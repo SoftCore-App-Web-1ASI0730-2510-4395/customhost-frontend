@@ -1,4 +1,4 @@
-<!-- src/app/guest-experience/pages/iot-preferences.component.vue -->
+<!-- src/app/guest-experience/components/guest/guest-room-preference.component.vue -->
 <template>
   <div class="surface-section px-4 py-8">
     <!-- Título principal -->
@@ -26,16 +26,20 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import RoomCardComponent from '../components/guest/room-card.component.vue';
-import GuestRoomDeviceFacade from '../services/guest/guest-room-device.facade.js';
+import RoomCardComponent from './room-card.component.vue';
+import GuestRoomDeviceFacade from '../../services/guest/guest-room-device.facade.js';
 
-// Datos reactivos
+// Instancia del facade
 const facade = new GuestRoomDeviceFacade();
+
+// Datos del usuario
 const userId = parseInt(localStorage.getItem('userId'), 10); // O desde route.params.userId
+
+// Estados reactivos
 const roomsWithDevices = ref([]);
 const loading = ref(true);
 
-// Carga las habitaciones y dispositivos asociados al usuario
+// Cargar habitaciones y dispositivos del usuario
 const loadUserRoomsAndDevices = async () => {
   loading.value = true;
   try {
@@ -48,31 +52,16 @@ const loadUserRoomsAndDevices = async () => {
   }
 };
 
-// Llama a la carga al montar el componente
+// Montaje inicial
 onMounted(loadUserRoomsAndDevices);
 </script>
 
 <style scoped>
 .surface-section {
-  background-color: #f9fafb;
+  background-color: #f8f9fa;
 }
 .text-3xl {
   font-size: 1.875rem;
   color: #2c3e50;
-}
-.card {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-.mb-3 {
-  margin-bottom: 1rem;
-}
-.font-semibold {
-  font-weight: 600;
-}
-.text-gray-600 {
-  color: #6b7280;
 }
 </style>

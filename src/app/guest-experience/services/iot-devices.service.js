@@ -1,7 +1,7 @@
 // src/guest-experience/services/iot-device.service.js
 
 import axios from 'axios';
-import IotDevice from '../model/iot-devices.entity.js';
+import IotDevices from '../model/iot-devices.entity.js';
 
 const API_URL = 'http://localhost:3001/iotDevices'; // Endpoint para dispositivos IoT
 const ROOMS_URL = 'http://localhost:3001/rooms';    // Endpoint para habitaciones
@@ -13,7 +13,7 @@ export const getDevices = async () => {
     try {
         const response = await axios.get(API_URL);
         console.log('Datos recibidos desde API:', response.data);
-        return response.data.map(d => new IotDevice(d));
+        return response.data.map(d => new IotDevices(d));
     } catch (error) {
         console.error(
             'Error fetching devices:',
@@ -31,7 +31,7 @@ export const getDeviceById = async (id) => {
     try {
         const response = await axios.get(`${API_URL}/${id}`);
         console.log(`Dispositivo ${id} obtenido:`, response.data);
-        return new IotDevice(response.data);
+        return new IotDevices(response.data);
     } catch (error) {
         console.error(
             `Error fetching device ${id}:`,
@@ -49,7 +49,7 @@ export const getDevicesByRoom = async (roomId) => {
     try {
         const response = await axios.get(`${API_URL}?roomId=${roomId}`);
         console.log(`Dispositivos para room ${roomId}:`, response.data);
-        return response.data.map(d => new IotDevice(d));
+        return response.data.map(d => new IotDevices(d));
     } catch (error) {
         console.error(
             `Error fetching devices for room ${roomId}:`,
@@ -88,7 +88,7 @@ export const createDevice = async (deviceData) => {
         });
 
         console.log('Dispositivo creado:', response.data);
-        return new IotDevice(response.data);
+        return new IotDevices(response.data);
     } catch (error) {
         console.error(
             'Error creating device:',
@@ -106,7 +106,7 @@ export const updateDevice = async (id, deviceData) => {
     try {
         const response = await axios.patch(`${API_URL}/${id}`, deviceData);
         console.log(`Dispositivo ${id} actualizado:`, response.data);
-        return new IotDevice(response.data);
+        return new IotDevices(response.data);
     } catch (error) {
         console.error(
             `Error updating device ${id}:`,
@@ -154,7 +154,7 @@ export const updateDeviceProperties = async (id, properties) => {
     try {
         const response = await axios.patch(`${API_URL}/${id}`, { properties });
         console.log(`Propiedades del dispositivo ${id} actualizadas`);
-        return new IotDevice(response.data);
+        return new IotDevices(response.data);
     } catch (error) {
         console.error(
             `Error updating device ${id} properties:`,

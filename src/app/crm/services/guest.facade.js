@@ -2,8 +2,8 @@
 
 import { getBookings, getBookingById } from './booking.service.js';
 import { getUserById } from '../../profiles/services/user.service.js';
-import { getServiceRequests, createServiceRequest } from './service-request.service.js';
 import { getNotificationsByUserId } from './notification.service.js';
+import { getCustomerRequests, createCustomerRequest} from "./customer-request.service.js";
 
 /**
  * Coordina información entre contextos para mostrar reservas con detalles del huésped
@@ -71,7 +71,7 @@ export default {
      */
     async getGuestServiceRequests(userId) {
         try {
-            const requests = await getServiceRequests();
+            const requests = await getCustomerRequests();
             const user = await getUserById(userId);
 
             return requests
@@ -91,7 +91,7 @@ export default {
      */
     async submitServiceRequest(requestData) {
         try {
-            return await createServiceRequest(requestData);
+            return await createCustomerRequest(requestData);
         } catch (error) {
             console.error('Error enviando solicitud:', error);
             throw error;

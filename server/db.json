@@ -107,6 +107,45 @@
       "paymentStatus": "paid",
       "paymentMethod": "credit_card",
       "createdAt": "2025-04-25T14:30:00Z"
+    },
+    {
+      "user": {
+        "id": 1,
+        "hotelId": 1,
+        "firstName": "Juan",
+        "lastName": "Pérez",
+        "email": "juan.perez@email.com",
+        "password": "juan123",
+        "phone": "+34600123456",
+        "role": "guest",
+        "createdAt": "2025-01-15T15:30:00.000Z"
+      },
+      "room": {
+        "id": 1,
+        "hotelId": 1,
+        "number": "101",
+        "type": "Suite Presidential",
+        "status": "Available",
+        "price": 150,
+        "floor": 1
+      },
+      "hotel": {
+        "id": 1,
+        "name": "Hotel Sheraton Center",
+        "address": "Calle Gran Vía 123, Lima",
+        "email": "info@hotelmc.com",
+        "phone": "+34900111222",
+        "status": "active",
+        "createdAt": "2024-01-10T13:00:00.000Z",
+        "adminId": 3
+      },
+      "amount": 600,
+      "currency": "USD",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-17T10:14:52.755Z",
+      "createdAt": "2025-06-17T10:14:52.755Z",
+      "id": 2
     }
   ],
   "rooms": [
@@ -156,7 +195,7 @@
       "id": 5
     },
     {
-      "hotelId":2,
+      "hotelId": 2,
       "number": "201",
       "type": "Deluxe",
       "status": "Cleaning",
@@ -185,7 +224,6 @@
       "createdAt": "2025-04-22T09:30:00"
     }
   ],
-
   "roomIotDevices": [],
   "iotDevices": [
     {

@@ -2,20 +2,17 @@
   <div class="modal-backdrop" v-if="visible">
     <div class="modal">
       <button class="close-button" @click="onClose">×</button>
-      <h3>Settings</h3>
-
-      <p><strong>Device:</strong> {{ device?.name }}</p>
-      <p><strong>Room #{{ roomId }}</strong></p>
-
-      <label>Status</label>
+      <h3>{{ t('iot_room_configuration.settings') }}</h3>
+      <p><strong>{{ t('iot_room_configuration.iot_device') }}:</strong> {{ device?.name }}</p>
+      <p><strong>{{ t('iot_room_configuration.room') }} #{{ roomId }}</strong></p>
+      <label>{{ t('iot_room_configuration.status') }}</label>
       <select v-model="form.status">
-        <option value="working">Working</option>
-        <option value="maintenance">Maintenance</option>
-        <option value="inactive">Inactive</option>
+        <option value="working">{{ t('iot_room_configuration.working') }}</option>
+        <option value="maintenance">{{ t('iot_room_configuration.maintenance') }}</option>
+        <option value="inactive">{{ t('iot_room_configuration.inactive') }}</option>
       </select>
-
       <div class="preferences">
-        <h4>Properties</h4>
+        <h4>{{ t('iot_room_configuration.device_config') }}</h4>
         <div v-for="(type, key) in computedConfigSchema" :key="key">
           <label>{{ key }}</label>
           <select v-if="Array.isArray(type)" v-model="form.preferences[key]">
@@ -24,13 +21,11 @@
           <input v-else-if="type === 'number'" type="number" v-model.number="form.preferences[key]" />
           <input v-else type="text" v-model="form.preferences[key]" />
         </div>
-        <p v-if="Object.keys(computedConfigSchema).length === 0">No configurable properties</p>
+        <p v-if="Object.keys(computedConfigSchema).length === 0">{{ t('iot_room_configuration.no_devices') }}</p>
       </div>
-
-
       <div class="actions">
-        <button @click="onClose">Close</button>
-        <button @click="onSave">Save Changes</button>
+        <button @click="onClose">{{ t('iot_room_configuration.close') }}</button>
+        <button @click="onSave">{{ t('iot_room_configuration.save_changes') }}</button>
       </div>
     </div>
   </div>
@@ -38,10 +33,10 @@
 
 <script setup>
 import { ref, watch, computed } from 'vue';
-import { roomDeviceService } from '../../services/room-device.service.js';
-import { roomDevicePreferenceService } from '../../services/room-device-preference.service.js';
+import { RoomDeviceManagementFacade } from '../../services/room-device-management.facade.js';
+import { useI18n } from 'vue-i18n';
 
-
+const { t } = useI18n();
 
 const props = defineProps({
   visible: Boolean,
@@ -71,22 +66,17 @@ watch(
     { immediate: true }
 );
 
-
-
 const onClose = () => emits('close');
 
 const onSave = async () => {
-  await roomDeviceService.updateRoomDeviceStatus(props.roomDeviceId, form.value.status);
-  await roomDevicePreferenceService.saveRoomDevicePreference({
+  await RoomDeviceManagementFacade.updateRoomDeviceStatus(props.roomDeviceId, form.value.status);
+  await RoomDeviceManagementFacade.saveRoomDevicePreference({
     roomDeviceId: props.roomDeviceId,
     preferences: form.value.preferences
   });
   emits('updated');
   emits('close');
 };
-
-
-
 </script>
 
 <style scoped>
@@ -184,8 +174,4 @@ const onSave = async () => {
 .actions button:last-child:hover {
   background-color: #00a073;
 }
-
-
-
-
 </style>

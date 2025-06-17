@@ -35,8 +35,8 @@ export default {
           icon: 'pi pi-building',
         },
         {
-          name: this.$t('sidebar_items.iot-devices'),
-          path: '/guest-experience/iot-devices',
+          name: this.$t('sidebar_items.staff-devices'),
+          path: '/guest-experience/staff-devices',
           type: 'staff',
           icon: 'pi pi-mobile'
         },

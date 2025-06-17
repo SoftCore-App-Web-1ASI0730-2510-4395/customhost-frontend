@@ -1,4 +1,4 @@
-<!-- src/app/guest-experience/components/iot-device-preference.component.vue -->
+<!-- src/app/guest-experience/components/staff-device-preference.component.vue -->
 <template>
   <pv-card class="device-card shadow-2 transition-all transition-duration-300 hover:shadow-6">
     <template #title>
@@ -51,7 +51,7 @@
 
 <script>
 import { ref } from 'vue';
-import { saveUserDevicePreference } from '../../profiles/services/user-preference.service';
+import { saveUserDevicePreference } from '../../../profiles/services/user-preference.service.js';
 
 export default {
   props: {

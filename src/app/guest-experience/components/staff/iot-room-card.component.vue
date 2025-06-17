@@ -1,33 +1,26 @@
 <template>
   <div class="room-card">
     <div class="room-header">
-      <h3>Room #{{ room.number }} - {{ room.type }}</h3>
-      <span :class="['status-badge', room.status]">{{ room.status }}</span>
+      <h3>{{ t('iot_room_configuration.room') }} #{{ room.number }} - {{ room.type }}</h3>
+      <span :class="['status-badge', room.status?.toLowerCase()]">{{ room.status }}</span>
     </div>
     <hr />
-    <p class="devices-title">Devices</p>
+    <p class="devices-title">{{ t('iot_room_configuration.devices') }}</p>
     <ul class="device-list">
       <li v-for="device in room.devices" :key="device.roomDeviceId" class="device-item">
         <span class="device-icon pi pi-eye"></span>
-
         <span class="device-name">{{ device.name }}</span>
-        <span :class="['device-status', device.status]">{{ device.status }}</span>
-
-        <!-- Botón de configuración -->
+        <span :class="['device-status', device.status]">{{ t('iot_room_configuration.' + device.status) }}</span>
         <button class="settings-button" @click="openSettings(device)">
           <span class="pi pi-cog"></span>
         </button>
-
-        <!-- Botón de eliminar -->
         <button class="delete-button" @click="deleteDevice(device.roomDeviceId)">
           <span class="pi pi-trash"></span>
         </button>
       </li>
-
-      <li v-if="room.devices.length === 0" class="no-devices">No devices assigned</li>
+      <li v-if="room.devices.length === 0" class="no-devices">{{ t('iot_room_configuration.no_devices') }}</li>
     </ul>
   </div>
-
   <RoomDevicePreferencesModalComponent
       v-if="selectedDevice"
       :visible="showModal"
@@ -38,19 +31,15 @@
       :preferences="selectedDevice.preferences"
       @close="closeModal"
       @updated="$emit('updated')" />
-
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import RoomDevicePreferencesModalComponent from './room-device-preferences-modal.component.vue';
-import { roomDevicePreferenceService } from '../../services/room-device-preference.service.js';
+import { RoomDeviceManagementFacade } from '../../services/room-device-management.facade.js';
 
-
-
-
-
-
+const { t } = useI18n();
 
 const props = defineProps({
   room: Object
@@ -59,11 +48,9 @@ const props = defineProps({
 const room = props.room; // ⬅️ ESTA LÍNEA ES LA CLAVE
 const emit = defineEmits(['updated']);
 
-
-
 const openSettings = async (device) => {
   console.log("Opening settings for device:", device);
-  const preferences = await roomDevicePreferenceService.getPreferencesForRoomDevice(room.id, device.iotDeviceId);
+  const preferences = await RoomDeviceManagementFacade.getPreferencesForRoomDevice(room.id, device.iotDeviceId);
 
   console.log("Loaded preferences:", preferences);
   selectedDevice.value = {
@@ -73,12 +60,10 @@ const openSettings = async (device) => {
   showModal.value = true;
 };
 
-
-
 const deleteDevice = async (roomDeviceId) => {
   if (!confirm('¿Estás seguro de que deseas eliminar este dispositivo?')) return;
   try {
-    await roomDevicePreferenceService.deleteRoomDeviceAndPreferences(roomDeviceId);
+    await RoomDeviceManagementFacade.deleteRoomDeviceAndPreferences(roomDeviceId);
     emit('updated'); // Recargar vista
   } catch (error) {
     console.error('Error eliminando dispositivo:', error);
@@ -86,16 +71,13 @@ const deleteDevice = async (roomDeviceId) => {
   }
 };
 
-
 const selectedDevice = ref(null);
 const showModal = ref(false);
-
 
 const closeModal = () => {
   showModal.value = false;
 };
 </script>
-
 
 <style scoped>
 .room-card {
@@ -119,7 +101,6 @@ const closeModal = () => {
 .delete-button:hover {
   color: #ff4d4d;
 }
-
 
 .room-header {
   display: flex;

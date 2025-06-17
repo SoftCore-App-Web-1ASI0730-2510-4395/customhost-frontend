@@ -1,4 +1,4 @@
-<!-- src/app/guest-experience/pages/room-preference.component.vue -->
+<!-- src/app/guest-experience/pages/guest-room-preference.component.vue -->
 <template>
   <div class="surface-section px-4 py-8">
     <div class="text-3xl font-bold text-center mb-6">Personaliza tus Dispositivos IoT</div>
@@ -31,13 +31,13 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import HotelPreferencesFacade from '../services/hotel-preferences.facade.js';
-import IoTDevicePreference from '../components/iot-device-preference.component.vue';
+import GuestRoomDeviceFacade from '../services/guest-room-device.facade.js';
+import IoTDevicePreference from '../components/guest/iot-device-preference.component.vue';
 
 export default {
   components: { IoTDevicePreference },
   setup() {
-    const facade = new HotelPreferencesFacade();
+    const facade = new GuestRoomDeviceFacade();
     const route = useRoute();
 
     const roomId = parseInt(route.params.roomId, 10);

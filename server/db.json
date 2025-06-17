@@ -150,6 +150,27 @@
       "id": 6
     }
   ],
+  "bookings": [
+    {
+      "id": 1,
+      "userId": 1,
+      "roomId": 1,
+      "checkInDate": "2025-05-01T14:00:00",
+      "checkOutDate": "2025-05-05T12:00:00",
+      "status": "confirmed",
+      "createdAt": "2025-04-20T10:00:00"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "roomId": 2,
+      "checkInDate": "2025-05-02T15:00:00",
+      "checkOutDate": "2025-05-06T11:00:00",
+      "status": "checked-in",
+      "createdAt": "2025-04-22T09:30:00"
+    }
+  ],
+
   "roomIotDevices": [],
   "iotDevices": [
     {
@@ -406,8 +427,8 @@
       "userId": 2,
       "title": "Mantenimiento iniciado",
       "message": "El técnico ha llegado a revisar el aire acondicionado.",
-      "type": "alert",
-      "read": true,
+      "type": "info",
+      "read": false,
       "createdAt": "2025-05-02T11:00:00"
     }
   ],

@@ -4,7 +4,7 @@ import axios from 'axios';
 import Room from '../model/rooms.entity';
 import Rooms from "../model/rooms.entity.js";
 
-const API_URL = 'http://localhost:3001/rooms';
+const API_URL = 'http://localhost:3001/api/v1/rooms';
 
 /**
  * Obtiene todos los cuartos y devuelve instancias del modelo Room
@@ -24,7 +24,7 @@ export const getRooms = async () => {
  */
 export const getRoomById = async (roomId) => {
     try {
-        const response = await axios.get(`${API_URL}/${roomId}`);
+        const response = await axios.get(`${API_URL}/${1}`);
         return new Room(response.data);
     } catch (error) {
         console.error('Error al obtener cuarto por ID:', error);

@@ -3,7 +3,7 @@
 import axios from 'axios';
 import Hotel from '../model/hotels.entity';
 
-const API_URL = 'http://localhost:3001/hotels';
+const API_URL = 'http://localhost:3001/api/v1/hotels';
 
 /**
  * Obtiene todos los hoteles y devuelve instancias del modelo Hotel

@@ -91,8 +91,10 @@ import { getRoomsByHotelId } from '../../services/rooms.service';
   const goToPayment = () => {
   localStorage.setItem('selectedHotel', JSON.stringify(selectedHotel.value));
   localStorage.setItem('selectedRoom', JSON.stringify(selectedRoom.value));
-  router.push({ name: 'PaymentPage' });
-};
+  localStorage.setItem('selectedRoom', JSON.stringify(selectedRoom.value));
+  router.push({ name: 'SelectDatesPage' });
+
+  };
 
   // Badge severity por estado
   const getBadgeSeverity = (status) => {

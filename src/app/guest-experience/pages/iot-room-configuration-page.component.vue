@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <h2>Configuración IoT por Habitación</h2>
+    <h2>{{ t('iot_room_configuration.title') }}</h2>
 
     <room-device-assignment @updated="loadRoomsWithDevices" />
 
@@ -18,14 +18,19 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { roomDeviceService } from '../services/room-device.service';
-import RoomDeviceAssignment from '../components/iot/room-device-assignment.component.vue';
-import IotRoomCard from '../components/iot/iot-room-card.component.vue';
+import { useI18n } from 'vue-i18n';
+
+import RoomDeviceAssignment from '../components/staff/room-device-assignment.component.vue';
+import IotRoomCard from '../components/staff/iot-room-card.component.vue';
+import { RoomDeviceManagementFacade } from '../services/room-device-management.facade.js';
+
+const { t } = useI18n();
 
 const roomsWithDevices = ref([]);
 
 const loadRoomsWithDevices = async () => {
-  roomsWithDevices.value = await roomDeviceService.getRoomsWithDevices();
+  roomsWithDevices.value = await RoomDeviceManagementFacade.getRoomsWithDevices();
+
   console.log('roomsWithDevices:', roomsWithDevices.value); // Depuración
 };
 

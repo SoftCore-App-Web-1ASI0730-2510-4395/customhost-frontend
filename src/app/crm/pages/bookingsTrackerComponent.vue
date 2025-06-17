@@ -16,7 +16,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getBookingsWithDetails } from '../services/bookings-tracker.service.js'
+import { getBookingsWithDetails } from '../services/booking.service.js'
 import BookingsTrackerTable from '../components/bookings-tracker-table.component.vue'
 
 

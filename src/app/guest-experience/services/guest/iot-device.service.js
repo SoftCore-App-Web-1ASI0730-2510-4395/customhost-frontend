@@ -1,16 +1,16 @@
-// src/guest-experience/services/staff-device.service.js
+// src/guest-experience/services/iot-device.service.js
 
 import axios from 'axios';
-import IotDevice from '../../model/iot-device.entity.js';
+import { IotDevice } from '../../model/iot-device.entity.js';
 
 const API_URL = 'http://localhost:3001/iotDevices'; // Endpoint para dispositivos IoT
-const ROOMS_URL = 'http://localhost:3001/rooms';    // Endpoint para habitaciones
 
 /**
  * Obtener todos los dispositivos
  */
 export const getDevices = async () => {
-    try {        const response = await axios.get(API_URL);
+    try {
+        const response = await axios.get(API_URL);
         console.log('Datos recibidos desde API:', response.data);
         return response.data.map(d => new IotDevice(d));
     } catch (error) {
@@ -25,7 +25,8 @@ export const getDevices = async () => {
 
 /**
  * Obtener dispositivo por ID
- */export const getDeviceById = async (id) => {
+ */
+export const getDeviceById = async (id) => {
     try {
         const response = await axios.get(`${API_URL}/${id}`);
         console.log(`Dispositivo ${id} obtenido:`, response.data);
@@ -41,29 +42,50 @@ export const getDevices = async () => {
 };
 
 /**
- * Obtener dispositivos por habitación
+ * Obtener dispositivos por habitación (CORREGIDO)
  */
 export const getDevicesByRoom = async (roomId) => {
     try {
-        const response = await axios.get(`${API_URL}?roomId=${roomId}`);
-        console.log(`Dispositivos para room ${roomId}:`, response.data);
-        return response.data.map(d => new IotDevice(d));
+        // Obtener roomDevices
+        const roomDeviceResponse = await axios.get(`http://localhost:3001/roomDevices?roomId=${roomId}`);
+        const roomDevices = roomDeviceResponse.data;
+
+        if (!roomDevices.length) return [];
+
+        // Obtener iotDevices
+        const allIotDevicesResponse = await axios.get('http://localhost:3001/iotDevices');
+        const allIotDevices = allIotDevicesResponse.data;
+
+        // Obtener roomDevicePreferences
+        const roomDevicePrefsResponse = await axios.get('http://localhost:3001/roomDevicePreferences');
+        const roomDevicePreferences = roomDevicePrefsResponse.data;
+
+        // Mapear dispositivos con sus preferencias base
+        return allIotDevices
+            .filter(iot => roomDevices.some(rd => rd.iotDeviceId === iot.id))
+            .map(iot => {
+                const roomDevice = roomDevices.find(rd => rd.iotDeviceId === iot.id);
+                const preference = roomDevicePreferences.find(p => p.roomDeviceId === roomDevice.id);
+
+                return {
+                    ...iot,
+                    status: roomDevice.status,
+                    preferences: preference?.preferences || {}
+                };
+            });
     } catch (error) {
-        console.error(
-            `Error fetching devices for room ${roomId}:`,
-            error.message,
-            error.response?.data || ''
-        );
+        console.error(`Error fetching devices for room ${roomId}:`, error);
         return [];
     }
 };
+
+
 
 /**
  * Crear dispositivo
  */
 export const createDevice = async (deviceData) => {
     try {
-        // Configuración por defecto basada en el tipo
         const defaultProperties = {
             sensor: { value: '0', unit: '' },
             actuator: { state: 'off', intensity: '0%' }
@@ -76,15 +98,6 @@ export const createDevice = async (deviceData) => {
         };
 
         const response = await axios.post(API_URL, deviceToCreate);
-
-        // Actualizar lista de dispositivos en la habitación
-        const roomResponse = await axios.get(`${ROOMS_URL}/${deviceData.roomId}`);
-        const room = roomResponse.data;
-
-        await axios.patch(`${ROOMS_URL}/${deviceData.roomId}`, {
-            iotDevices: [...room.iotDevices, response.data.id]
-        });
-
         console.log('Dispositivo creado:', response.data);
         return new IotDevice(response.data);
     } catch (error) {
@@ -118,21 +131,9 @@ export const updateDevice = async (id, deviceData) => {
 /**
  * Eliminar dispositivo
  */
-export const deleteDevice = async (id)=>{
+export const deleteDevice = async (id) => {
     try {
-        const device = await getDeviceById(id);
-        if (!device) throw new Error('Device not found');
-
         await axios.delete(`${API_URL}/${id}`);
-
-        // Actualizar habitación
-        const roomResponse = await axios.get(`${ROOMS_URL}/${device.roomId}`);
-        const room = roomResponse.data;
-
-        await axios.patch(`${ROOMS_URL}/${device.roomId}`, {
-            iotDevices: room.iotDevices.filter(deviceId => deviceId !== id)
-        });
-
         console.log(`Dispositivo ${id} eliminado`);
         return true;
     } catch (error) {
@@ -162,3 +163,5 @@ export const updateDeviceProperties = async (id, properties) => {
         throw error;
     }
 };
+
+

@@ -98,4 +98,17 @@ export const getBookingsWithDetails = async () => {
         console.error('Error al cargar reservas:', error)
         return []
     }
-}
+};
+
+/**
+ * Obtiene las reservas de un usuario específico
+ */
+export const getBookingsByUserId = async (userId) => {
+    try {
+        const response = await axios.get(`${API_URL}?userId=${userId}`);
+        return response.data.map(b => new Booking(b));
+    } catch (error) {
+        console.error(`Error al obtener reservas del usuario ${userId}:`, error);
+        return [];
+    }
+};

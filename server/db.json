@@ -192,7 +192,7 @@
     },
     {
       "id": 2,
-      "userId": 2,
+      "userId": 1,
       "roomId": 2,
       "checkInDate": "2025-05-02T15:00:00",
       "checkOutDate": "2025-05-06T11:00:00",
@@ -484,6 +484,23 @@
         "color": "cool"
       },
       "lastUpdated": "2025-05-10T08:30:00Z"
+    },
+    {
+      "userId": null,
+      "deviceId": {
+        "id": 1,
+        "name": "Temperature Sensor",
+        "deviceType": "climate",
+        "configSchema": {
+          "unit": [
+            "Celsius",
+            "Fahrenheit"
+          ],
+          "currentValue": "number"
+        },
+        "status": "working",
+        "roomDeviceId": 1
+      }
     }
   ],
   "notifications": [

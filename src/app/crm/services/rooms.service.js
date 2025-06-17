@@ -24,7 +24,7 @@ export const getRooms = async () => {
  */
 export const getRoomById = async (roomId) => {
     try {
-        const response = await axios.get(`${API_URL}/${1}`);
+        const response = await axios.get(`${API_URL}/${roomId}`);
         return new Room(response.data);
     } catch (error) {
         console.error('Error al obtener cuarto por ID:', error);

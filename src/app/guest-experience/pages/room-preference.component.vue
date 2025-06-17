@@ -88,8 +88,5 @@ export default {
   font-size: 1.875rem;
   color: #2c3e50;
 }
-.mb-4{
-  color: black;
-}
 
 </style>

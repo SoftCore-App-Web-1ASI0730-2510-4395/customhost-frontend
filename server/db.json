@@ -94,9 +94,24 @@
       "createdAt": "2025-03-01T20:15:00"
     }
   ],
+  "payments": [
+    {
+      "id": 1,
+      "bookingId": 1,
+      "userId": 1,
+      "hotelId": 1,
+      "roomId": 1,
+      "amount": 600,
+      "currency": "USD",
+      "paymentDate": "2025-04-25T14:30:00Z",
+      "paymentStatus": "paid",
+      "paymentMethod": "credit_card",
+      "createdAt": "2025-04-25T14:30:00Z"
+    }
+  ],
   "rooms": [
     {
-      "hotelId": "1",
+      "hotelId": 1,
       "number": "101",
       "type": "Suite Presidential",
       "status": "Available",
@@ -105,7 +120,7 @@
       "id": 1
     },
     {
-      "hotelId": "1",
+      "hotelId": 1,
       "number": "102",
       "type": "Deluxe Twin",
       "status": "Occupied",
@@ -114,7 +129,7 @@
       "id": 2
     },
     {
-      "hotelId": "1",
+      "hotelId": 1,
       "number": "103",
       "type": "Family Suite",
       "status": "Cleaning",
@@ -123,7 +138,7 @@
       "id": 3
     },
     {
-      "hotelId": "1",
+      "hotelId": 1,
       "number": "105",
       "type": "Single",
       "status": "Available",
@@ -132,7 +147,7 @@
       "id": 4
     },
     {
-      "hotelId": "2",
+      "hotelId": 2,
       "number": "106",
       "type": "Suite",
       "status": "Maintenance",
@@ -141,7 +156,7 @@
       "id": 5
     },
     {
-      "hotelId": "2",
+      "hotelId":2,
       "number": "201",
       "type": "Deluxe",
       "status": "Cleaning",

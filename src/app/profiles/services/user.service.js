@@ -1,3 +1,5 @@
+// src/app/profiles/services/user.service.js
+
 import axios from 'axios';
 import User from '../model/user.entity.js';
 

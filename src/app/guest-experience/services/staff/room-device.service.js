@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { iotDeviceService } from '../services/iot-device.service.js';
-import * as roomService from '../../crm/services/rooms.service.js';
+import { iotDeviceService } from './iot-device.service.js';
+import * as roomService from '../../../crm/services/rooms.service.js';
 const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const roomDeviceService = {

@@ -1,7 +1,7 @@
-import {RoomDevice} from "../model/room-device.entity.js";
-import {RoomDevicePreference} from "../model/room-device-preference.entity.js";
+import {RoomDevice} from "../../model/room-device.entity.js";
+import {RoomDevicePreference} from "../../model/room-device-preference.entity.js";
 
-import {roomDeviceService} from "../services/room-device.service.js";
+import {roomDeviceService} from "./room-device.service.js";
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;

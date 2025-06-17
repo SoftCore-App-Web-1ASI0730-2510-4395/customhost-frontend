@@ -9,7 +9,6 @@
       "status": "active",
       "createdAt": "2024-01-10T08:00:00",
       "adminId": 3
-      
     },
     {
       "id": 2,
@@ -99,7 +98,7 @@
     {
       "hotelId": "1",
       "number": "101",
-      "type": "Deluxe",
+      "type": "Suite Presidential",
       "status": "Available",
       "price": 150,
       "floor": 1,
@@ -107,12 +106,30 @@
     },
     {
       "hotelId": "1",
-      "number": "103",
-      "type": "Suite",
+      "number": "102",
+      "type": "Deluxe Twin",
       "status": "Occupied",
-      "price": 180,
+      "price": 200,
       "floor": 1,
       "id": 2
+    },
+    {
+      "hotelId": "1",
+      "number": "103",
+      "type": "Family Suite",
+      "status": "Cleaning",
+      "price": 180,
+      "floor": 1,
+      "id": 3
+    },
+    {
+      "hotelId": "1",
+      "number": "105",
+      "type": "Single",
+      "status": "Available",
+      "price": 180,
+      "floor": 1,
+      "id": 4
     },
     {
       "hotelId": "2",
@@ -121,7 +138,7 @@
       "status": "Maintenance",
       "price": 200,
       "floor": 1,
-      "id": 3
+      "id": 5
     },
     {
       "hotelId": "2",
@@ -130,73 +147,10 @@
       "status": "Cleaning",
       "price": 250,
       "floor": 2,
-      "id": 4
+      "id": 6
     }
   ],
   "roomIotDevices": [],
-  "iotDevices": [],
-  "bookings": [
-    {
-      "id": 1,
-      "userId": 1,
-      "hotelId": 1,
-      "roomId": 1,
-      "checkInDate": "2025-05-01T14:00:00",
-      "checkOutDate": "2025-05-05T12:00:00",
-      "status": "Active",
-      "totalPrice": 480,
-      "paymentStatus": "Paid"
-    },
-    {
-      "id": 2,
-      "userId": 2,
-      "hotelId": 1,
-      "roomId": 2,
-      "checkInDate": "2025-05-02T15:30:00",
-      "checkOutDate": "2025-05-07T11:00:00",
-      "status": "Active",
-      "totalPrice": 480,
-      "paymentStatus": "Paid"
-    },
-    {
-      "id": 3,
-      "userId": 3,
-      "hotelId": 2,
-      "roomId": 3,
-      "checkInDate": "2025-06-12T15:30:00",
-      "checkOutDate": "2025-06-20T11:00:00",
-      "status": "Active",
-      "totalPrice": 480,
-      "paymentStatus": "Paid"
-    }
-  ],
-  "staffMembers": [
-    {
-      "id": 4,
-      "hotelId": 1,
-      "firstName": "Ana",
-      "lastName": "López",
-      "email": "ana.lopez@hotel.com",
-      "phone": "+34600333444",
-      "status": "active",
-      "department": "Housekeeping",
-      "createdAt": "2024-06-15T08:30:00"
-    },
-    {
-      "id": 5,
-      "hotelId": 1,
-      "firstName": "David",
-      "lastName": "Martínez",
-      "email": "david.martinez@hotel.com",
-      "phone": "+34600555666",
-      "status": "active",
-      "department": "Technical Support",
-      "createdAt": "2024-07-20T10:15:00"
-    }
-  ],
-  "serviceRequests": [],
-
-  
   "iotDevices": [
     {
       "id": 1,
@@ -310,45 +264,51 @@
   "roomDevices": [
     {
       "id": 1,
-      "roomId": 105,
+      "roomId": 1,
       "iotDeviceId": 1,
-      "status": "inactive"
-    },
-    {
-      "id": 2,
-      "roomId": 105,
-      "iotDeviceId": 2,
-      "status": "inactive"
+      "status": "working"
     },
     {
       "id": 4,
-      "roomId": 102,
+      "roomId": 2,
       "iotDeviceId": 2,
       "status": "working"
     },
     {
       "id": 5,
-      "roomId": 101,
+      "roomId": 1,
       "iotDeviceId": 2,
       "status": "maintenance"
     },
     {
       "id": 6,
-      "roomId": 103,
+      "roomId": 3,
       "iotDeviceId": 5,
       "status": "working"
     },
     {
       "id": 7,
-      "roomId": 105,
-      "iotDeviceId": 4,
-      "status": "working"
+      "roomId": 3,
+      "iotDeviceId": 3,
+      "status": "inactive"
     },
     {
       "id": 8,
-      "roomId": 103,
-      "iotDeviceId": 3,
+      "roomId": 4,
+      "iotDeviceId": 1,
       "status": "inactive"
+    },
+    {
+      "id": 9,
+      "roomId": 4,
+      "iotDeviceId": 2,
+      "status": "inactive"
+    },
+    {
+      "id": 10,
+      "roomId": 4,
+      "iotDeviceId": 4,
+      "status": "working"
     }
   ],
   "roomDevicePreferences": [
@@ -361,14 +321,6 @@
       }
     },
     {
-      "roomDeviceId": 2,
-      "preferences": {
-        "brightness": 44,
-        "color": "blue"
-      },
-      "id": 2
-    },
-    {
       "roomDeviceId": 4,
       "preferences": {
         "color": "yellow",
@@ -376,8 +328,6 @@
       },
       "id": 4
     },
-
-
     {
       "roomDeviceId": 5,
       "preferences": {
@@ -397,22 +347,37 @@
     {
       "roomDeviceId": 7,
       "preferences": {
-        "apps": "HBO",
-        "volume": 47,
-        "power": "on"
+        "state": "open",
+        "position": 80
       },
       "id": 7
     },
     {
       "roomDeviceId": 8,
       "preferences": {
-        "state": "close",
-        "position": 67
+        "unit": "Celsius",
+        "currentValue": 20
       },
       "id": 8
+    },
+    {
+      "roomDeviceId": 9,
+      "preferences": {
+        "brightness": 78,
+        "color": "white"
+      },
+      "id": 9
+    },
+    {
+      "roomDeviceId": 10,
+      "preferences": {
+        "apps": "HBO",
+        "volume": 60,
+        "power": "on"
+      },
+      "id": 10
     }
   ],
-
   "userDevicePreferences": [
     {
       "id": 1,
@@ -426,8 +391,6 @@
       "lastUpdated": "2025-05-10T08:30:00Z"
     }
   ],
-
-
   "notifications": [
     {
       "id": 1,

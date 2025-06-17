@@ -5,8 +5,9 @@
     <room-device-assignment @updated="loadRoomsWithDevices" />
 
     <div class="rooms-grid">
+
       <iot-room-card
-          v-for="room in roomsWithDevices"
+          v-for="room in roomsWithDevices.filter(r => r.devices && r.devices.length > 0)"
           :key="room.id"
           :room="room"
           @updated="loadRoomsWithDevices"
@@ -25,12 +26,17 @@ const roomsWithDevices = ref([]);
 
 const loadRoomsWithDevices = async () => {
   roomsWithDevices.value = await roomDeviceService.getRoomsWithDevices();
+  console.log('roomsWithDevices:', roomsWithDevices.value); // Depuración
 };
 
 onMounted(loadRoomsWithDevices);
 </script>
 
 <style scoped>
+
+h2{
+  color: black;
+}
 .page-container {
   padding: 24px;
 }

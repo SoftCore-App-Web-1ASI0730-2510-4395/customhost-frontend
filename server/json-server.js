@@ -1,4 +1,4 @@
-np// json-server.js
+// json-server.js
 import jsonServer from 'json-server';
 
 const server = jsonServer.create();

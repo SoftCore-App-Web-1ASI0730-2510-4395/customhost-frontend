@@ -81,5 +81,21 @@
     "close": "Close",
     "save_changes": "Save changes"
 
+  },
+
+  "sidebar_items": {
+    "home": "Home",
+    "rooms": "Rooms",
+    "guests": "Book Now",
+    "staff-devices": "Staff Devices",
+    "customer-requests": "Customer Requests",
+    "bookings-tracker": "Bookings Tracker",
+    "request-staff": "Request Staff",
+    "preferences": "Preferences",
+    "my-bookings": "My Bookings",
+    "customer-service": "Customer Service",
+    "notifications": "Notifications",
+    "admin": "Admin",
+    "profile": "Profile"
   }
 }

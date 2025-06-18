@@ -82,5 +82,21 @@
     "close": "Cerrar",
     "save_changes": "Guardar cambios"
 
+  },
+
+  "sidebar_items": {
+    "home": "Inicio",
+    "rooms": "Habitaciones",
+    "guests": "Reservar Ahora",
+    "staff-devices": "Dispositivos del personal",
+    "customer-requests": "Solicitudes de clientes",
+    "bookings-tracker": "Seguimiento de reservas",
+    "request-staff": "Solicitar personal",
+    "preferences": "Preferencias",
+    "my-bookings": "Mis reservas",
+    "customer-service": "Atención al cliente",
+    "notifications": "Notificaciones",
+    "admin": "Administrador",
+    "profile": "Perfil"
   }
 }

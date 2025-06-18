@@ -19,17 +19,18 @@ export default {
   computed: {
     sidebar_items() {
       return [
-          //ambos
+
+
+
+        //staff
         {
           name: this.$t('sidebar_items.home'),
           path: '/home',
-          type: 'both',
+          type: 'staff',
           icon: 'pi pi-home',
         },
-
-          //staff
         {
-          name: this.$t('rooms'),
+          name: this.$t('sidebar_items.rooms'),
           path: '/crm/rooms',
           type: 'staff',
           icon: 'pi pi-building',
@@ -62,7 +63,14 @@ export default {
 
         //guest
         {
-          name: this.$t('sidebar_rooms.guests'),
+          name: this.$t('sidebar_items.home'),
+          path: '/guest-home',
+          type: 'guest',
+          icon: 'pi pi-home',
+        },
+
+        {
+          name: this.$t('sidebar_items.guests'),
           path: '/crm/guest/hotel-room-selection',
           type: 'guest',
           icon: 'pi pi-building', // Mejor icono para habitaciones

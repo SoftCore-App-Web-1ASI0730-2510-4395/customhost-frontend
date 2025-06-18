@@ -42,7 +42,8 @@ export default {
                     guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
                     roomNumber: room?.number || 'N/A',
                     roomType: room?.type || 'Tipo desconocido',
-                    totalPrice: payment?.amount || 0
+                    totalPrice: payment?.amount || 0,
+                    // status de cuarto se puede actualizar tras eliminar
                 };
             });
 
@@ -138,7 +139,32 @@ export default {
      */
     async deleteGuestBooking(bookingId) {
         try {
+            // Validar bookingId antes de continuar
+            if (!bookingId) {
+                throw new Error('El id de la reserva es inválido');
+            }
+            // Obtener la reserva antes de eliminar para saber el roomId
+            const booking = await getBookingById(bookingId);
             await deleteBooking(bookingId);
+            // Esperar un poco para asegurar que la eliminación se procese antes de actualizar el cuarto
+            await new Promise(resolve => setTimeout(resolve, 200));
+            // Cambiar el estado del cuarto a 'Available' después de eliminar la reserva usando PATCH
+            if (booking && booking.roomId) {
+                const API_ROOMS_URL = 'http://localhost:3001/api/v1/rooms';
+                const response = await fetch(`${API_ROOMS_URL}/${booking.roomId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'Available' })
+                });
+                if (!response.ok) {
+                    // Log detallado para depuración
+                    const errorText = await response.text();
+                    console.error(`Error actualizando habitación ${booking.roomId}:`, response.status, errorText);
+                    throw new Error(`Error actualizando habitación ${booking.roomId}`);
+                }
+            }
         } catch (error) {
             console.error('Error eliminando reserva:', error);
             throw new Error('No se pudo eliminar la reserva');

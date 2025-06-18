@@ -34,10 +34,8 @@
 
 <script>
 import {computed} from "vue";
-import {deleteBooking} from "../../services/booking.service.js";
 
 export default {
-  methods: {deleteBooking},
   props: {
     booking: {
       type: Object,
@@ -66,12 +64,9 @@ export default {
       return props.booking.checkOutDate.toLocaleDateString('es-ES');
     });
 
-    // Nueva función para refrescar la página tras eliminar
+    // Solución: función para emitir el evento correctamente
     const handleDelete = () => {
       emit('delete-booking', props.booking.id);
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
     };
 
     return { statusSeverity, checkInDate, checkOutDate, handleDelete };

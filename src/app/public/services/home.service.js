@@ -20,7 +20,7 @@ export const getHotelDashboardStats = async () => {
         const iotDevices = iotDevicesRes.data
 
         // Contar habitaciones ocupadas
-        const occupiedRooms = rooms.filter(r => r.status === 'occupied').length
+        const occupiedRooms = rooms.filter(r => r.status === 'Occupied').length
         const totalRooms = rooms.length
 
         // Reservas de hoy

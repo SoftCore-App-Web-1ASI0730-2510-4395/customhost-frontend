@@ -66,20 +66,19 @@ export default {
 
     const deleteBooking = async (bookingId) => {
       if (!confirm('¿Estás seguro de eliminar esta reserva?')) return;
-
+      loading.value = true;
       try {
         await GuestFacade.deleteGuestBooking(bookingId);
-
-        // Mostrar mensaje de éxito
         showMessage('✅ La reserva se ha eliminado correctamente.', 'success');
-
-        // Recargar las reservas
-        await loadBookings();
-
       } catch (error) {
-        // Mostrar mensaje de error
-        showMessage('❌ No se pudo eliminar la reserva.', 'error');
+        // Mostrar mensaje de error real si existe
+        const errorMsg = error?.message || 'No se pudo eliminar la reserva.';
+        showMessage(`❌ ${errorMsg}`, 'error');
         console.error('Error al eliminar reserva:', error);
+      } finally {
+        // Siempre recargar las reservas, incluso si hay error
+        await loadBookings();
+        loading.value = false;
       }
     };
 

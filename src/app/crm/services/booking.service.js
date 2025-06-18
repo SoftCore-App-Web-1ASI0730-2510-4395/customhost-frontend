@@ -70,9 +70,20 @@ export const deleteBooking = async (id) => {
         throw new Error('El id de la reserva no puede ser null o undefined');
     }
     try {
-        await axios.delete(`${API_URL}/${id}`);
+        const response = await axios.delete(`${API_URL}/${id}`);
+        if (response.status !== 200 && response.status !== 204) {
+            // Log detallado para depuración
+            console.error('Respuesta inesperada al eliminar:', response.status, response.data);
+            throw new Error('No se pudo eliminar la reserva en el backend');
+        }
+        return true;
     } catch (error) {
-        console.error('Error al eliminar reserva:', error);
+        // Log detallado para depuración
+        if (error.response) {
+            console.error('Error al eliminar reserva:', error.response.status, error.response.data);
+        } else {
+            console.error('Error al eliminar reserva:', error.message);
+        }
         throw error;
     }
 };

@@ -95,7 +95,7 @@ export default {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ status: 'occupied' })
+                body: JSON.stringify({ status: 'Occupied' })
             });
 
             if (!response.ok) {

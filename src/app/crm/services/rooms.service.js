@@ -62,6 +62,14 @@ export const updateRoom = async (id, roomData) => {
 };
 
 /**
+ * Actualiza solo el status de una habitación existente (PATCH)
+ */
+export const updateRoomStatus = async (id, status) => {
+    const response = await axios.patch(`${API_URL}/${id}`, { status });
+    return new Room(response.data);
+};
+
+/**
  * Elimina una habitación por ID
  */
 export const deleteRoom = async (id) => {

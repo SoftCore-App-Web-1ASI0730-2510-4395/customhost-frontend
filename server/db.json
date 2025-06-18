@@ -304,6 +304,104 @@
       "paymentDate": "2025-06-18T06:35:43.554Z",
       "createdAt": "2025-06-18T06:35:43.554Z",
       "id": 15
+    },
+    {
+      "userId": 1,
+      "roomId": 5,
+      "hotelId": 2,
+      "amount": 200,
+      "currency": "USD",
+      "checkInDate": "2025-06-21",
+      "checkOutDate": "2025-06-22",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-18T06:43:15.955Z",
+      "createdAt": "2025-06-18T06:43:15.955Z",
+      "id": 16
+    },
+    {
+      "userId": 1,
+      "roomId": 6,
+      "hotelId": 2,
+      "amount": 500,
+      "currency": "USD",
+      "checkInDate": "2025-06-21",
+      "checkOutDate": "2025-06-23",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-18T06:44:49.121Z",
+      "createdAt": "2025-06-18T06:44:49.121Z",
+      "id": 17
+    },
+    {
+      "userId": 1,
+      "roomId": 2,
+      "hotelId": 1,
+      "amount": 400,
+      "currency": "USD",
+      "checkInDate": "2025-06-27",
+      "checkOutDate": "2025-06-29",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-18T06:47:03.352Z",
+      "createdAt": "2025-06-18T06:47:03.352Z",
+      "id": 18
+    },
+    {
+      "userId": 1,
+      "roomId": 1,
+      "hotelId": 1,
+      "amount": 150,
+      "currency": "USD",
+      "checkInDate": "2025-06-20",
+      "checkOutDate": "2025-06-21",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-18T06:50:03.030Z",
+      "createdAt": "2025-06-18T06:50:03.030Z",
+      "id": 19
+    },
+    {
+      "userId": 1,
+      "roomId": 3,
+      "hotelId": 1,
+      "amount": 1440,
+      "currency": "USD",
+      "checkInDate": "2025-06-20",
+      "checkOutDate": "2025-06-28",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-18T06:51:27.890Z",
+      "createdAt": "2025-06-18T06:51:27.890Z",
+      "id": 20
+    },
+    {
+      "userId": 1,
+      "roomId": 4,
+      "hotelId": 1,
+      "amount": 1620,
+      "currency": "USD",
+      "checkInDate": "2025-06-12",
+      "checkOutDate": "2025-06-21",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-18T06:54:11.501Z",
+      "createdAt": "2025-06-18T06:54:11.501Z",
+      "id": 21
+    },
+    {
+      "userId": 1,
+      "roomId": 1,
+      "hotelId": 1,
+      "amount": 150,
+      "currency": "USD",
+      "checkInDate": "2025-06-20",
+      "checkOutDate": "2025-06-21",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-18T06:56:49.604Z",
+      "createdAt": "2025-06-18T06:56:49.604Z",
+      "id": 22
     }
   ],
   "rooms": [
@@ -311,7 +409,7 @@
       "hotelId": 1,
       "number": "101",
       "type": "Suite Presidential",
-      "status": "Available",
+      "status": "Occupied",
       "price": 150,
       "floor": 1,
       "id": 1
@@ -338,7 +436,7 @@
       "hotelId": 1,
       "number": "105",
       "type": "Single",
-      "status": "occupied",
+      "status": "Occupied",
       "price": 180,
       "floor": 1,
       "id": 4
@@ -365,27 +463,11 @@
   "bookings": [
     {
       "userId": 1,
-      "roomId": 5,
+      "roomId": 1,
       "checkInDate": "2025-06-20",
-      "checkOutDate": "2025-06-22",
-      "status": "confirmed",
-      "id": 1
-    },
-    {
-      "userId": 1,
-      "roomId": 2,
-      "checkInDate": "2025-06-21",
-      "checkOutDate": "2025-06-26",
-      "status": "confirmed",
-      "id": 2
-    },
-    {
-      "userId": 1,
-      "roomId": 4,
-      "checkInDate": "2025-06-19",
       "checkOutDate": "2025-06-21",
       "status": "confirmed",
-      "id": 3
+      "id": 1
     }
   ],
   "staffMembers": [

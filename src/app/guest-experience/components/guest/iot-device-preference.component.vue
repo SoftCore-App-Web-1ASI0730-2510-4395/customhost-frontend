@@ -7,41 +7,44 @@
       <pv-badge :value="device.status" :severity="getBadgeSeverity(device.status)" />
     </div>
 
-    <!-- Configuraciones estáticas del dispositivo -->
+    <!-- Configuraciones visuales del dispositivo -->
     <ul class="configuration-list list-none p-0 m-0">
-      <li v-for="(type, key) in device.configSchema" :key="key" class="mb-3 pb-2 border-bottom-1">
-        <strong>{{ key }}:</strong>
-
-        <!-- Botón de edición -->
-        <button class="edit-button ml-2" @click="openEditModal(key)">
-          <i class="pi pi-pencil"></i>
-        </button>
-
-        <!-- Si es array (opciones múltiples) -->
-        <span v-if="Array.isArray(type)">
-          {{ Array.isArray(device.preferences[key]) ? device.preferences[key].join(', ') : device.preferences[key] }}
-        </span>
-
-        <!-- Si es número -->
-        <span v-else-if="type === 'number'">
-          {{ device.preferences[key] }}{{ unitMapping[key] || '' }}
-        </span>
-
-        <!-- Otros tipos -->
-        <span v-else>
-          {{ device.preferences[key] }}
-        </span>
+      <li v-if="device.type === 'ac'" class="mb-3 pb-2 border-bottom-1">
+        <i class="pi pi-snowflake mr-2"></i>
+        <strong>Temperatura:</strong> {{ device.preferences?.temperature || 22 }}°C
       </li>
-
-      <!-- Mensaje si no hay configuraciones -->
-      <li v-if="Object.keys(device.configSchema).length === 0" class="text-sm text-gray-500">
+      <li v-if="device.type === 'light'" class="mb-3 pb-2 border-bottom-1">
+        <i class="pi pi-lightbulb mr-2"></i>
+        <strong>Brillo:</strong> {{ device.preferences?.brightness || 50 }}%
+      </li>
+      <li v-if="device.type === 'tv'" class="mb-3 pb-2 border-bottom-1">
+        <i class="pi pi-tv mr-2"></i>
+        <strong>Canal:</strong> {{ device.preferences?.channel || 1 }}
+      </li>
+      <li v-if="device.type === 'speaker'" class="mb-3 pb-2 border-bottom-1">
+        <i class="pi pi-volume-up mr-2"></i>
+        <strong>Volumen:</strong> {{ device.preferences?.volume || 50 }}%
+      </li>
+      <li v-if="device.type === 'curtain'" class="mb-3 pb-2 border-bottom-1">
+        <i class="pi pi-sliders-h mr-2"></i>
+        <strong>Apertura:</strong> {{ device.preferences?.open || 0 }}%
+      </li>
+      <li class="mb-3 pb-2 border-bottom-1">
+        <i class="pi pi-power-off mr-2"></i>
+        <strong>Estado:</strong> {{ (device.preferences?.status || 'off') | capitalize }}
+      </li>
+      <li v-if="!device.type" class="text-sm text-gray-500">
         Este dispositivo no tiene configuraciones disponibles.
       </li>
     </ul>
 
     <!-- Modal de edición -->
     <pv-dialog v-model:visible="showEditModal" header="Editar Configuración" :modal="true">
-      <IoTDeviceEditConfig :configKey="editingConfigKey" :device="device" />
+      <IoTDeviceEditConfig
+        :configKey="editingConfigKey"
+        :device="device"
+        @update="onUpdatePreference"
+      />
       <template #footer>
         <pv-button label="Guardar" icon="pi pi-save" severity="success" @click="saveConfig" />
       </template>
@@ -52,10 +55,15 @@
 <script setup>
 import { ref } from 'vue';
 import IoTDeviceEditConfig from './iot-device-edit-config.component.vue';
+import GuestRoomDeviceFacade from '../../services/guest/guest-room-device.facade.js';
 
 const props = defineProps({
   device: {
     type: Object,
+    required: true
+  },
+  userId: {
+    type: Number,
     required: true
   }
 });
@@ -63,6 +71,7 @@ const props = defineProps({
 // Estado para el modal de edición
 const showEditModal = ref(false);
 const editingConfigKey = ref('');
+const editedValue = ref(null);
 
 // Mapea unidades o valores por defecto si son números
 const unitMapping = {
@@ -93,11 +102,26 @@ const openEditModal = (key) => {
   showEditModal.value = true;
 };
 
+// Instancia del facade
+const facade = new GuestRoomDeviceFacade();
+
 // Guardar cambios después de edición
 const saveConfig = async () => {
-  // Lógica para guardar preferencias actualizadas
-  alert('Preferencia guardada');
+  if (!editingConfigKey.value) return;
+  // Actualiza la preferencia localmente
+  props.device.preferences[editingConfigKey.value] = editedValue.value;
+  // Guarda en backend
+  await facade.saveRoomDevicePreference({
+    userId: props.userId,
+    deviceId: props.device.id,
+    preferences: { ...props.device.preferences }
+  });
   showEditModal.value = false;
+};
+
+// Recibe el valor editado del hijo
+const onUpdatePreference = ({ key, value }) => {
+  editedValue.value = value;
 };
 </script>
 

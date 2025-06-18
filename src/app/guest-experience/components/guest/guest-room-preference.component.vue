@@ -11,8 +11,17 @@
 
     <!-- Habitaciones con dispositivos -->
     <div v-else-if="roomsWithDevices.length > 0" class="grid gap-6">
-      <div v-for="room in roomsWithDevices" :key="room.room.id" class="col-12 md:col-6 lg:col-4">
-        <RoomCardComponent :room="room.room" :devices="room.devices" :userId="userId" />
+      <div
+        v-for="room in roomsWithDevices"
+        :key="room.room.id"
+        class="col-12 md:col-6 lg:col-4"
+      >
+        <RoomCardComponent
+          :room="room.room"
+          :devices="room.devices"
+          :userId="userId"
+          @save-room-iot-config="handleSaveRoomConfig(room.room, $event)"
+        />
       </div>
     </div>
 
@@ -49,6 +58,22 @@ const loadUserRoomsAndDevices = async () => {
     console.error('Error cargando datos:', error);
   } finally {
     loading.value = false;
+  }
+};
+
+// Manejar el evento de guardar configuración de habitación
+const handleSaveRoomConfig = async (room, devices) => {
+  try {
+    await facade.updateRoomPreferences(room.id, {
+      temperature: room.temperature,
+      devices
+    });
+    // Opcional: muestra mensaje visual
+    alert('Configuración guardada correctamente.');
+    await loadUserRoomsAndDevices();
+  } catch (error) {
+    alert('Error al guardar la configuración.');
+    console.error(error);
   }
 };
 

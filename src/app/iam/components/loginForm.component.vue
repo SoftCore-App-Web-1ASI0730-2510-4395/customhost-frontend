@@ -75,7 +75,7 @@ export default {
     </div>
     
     <div class="text-center mt-4">
-      <p>¿No tienes una cuenta? <router-link to="/auth/register">Regístrate aquí</router-link></p>
+      <p>¿No tienes una cuenta? <router-link to="/iam/register">Regístrate aquí</router-link></p>
     </div>
   </form>
 </template>

@@ -118,7 +118,7 @@ export default {
     </div>
     
     <div class="text-center mt-4">
-      <p>¿Ya tienes una cuenta? <router-link to="/auth/login">Inicia sesión aquí</router-link></p>
+      <p>¿Ya tienes una cuenta? <router-link to="/iam/login">Inicia sesión aquí</router-link></p>
     </div>
   </form>
 </template>

@@ -139,7 +139,7 @@ export default {
     </div>
     
     <div class="text-center mt-4">
-      <p>¿Tu hotel ya está registrado? <router-link to="/auth/login">Accede aquí</router-link></p>
+      <p>¿Tu hotel ya está registrado? <router-link to="/iam/login">Accede aquí</router-link></p>
     </div>
   </form>
 </template>

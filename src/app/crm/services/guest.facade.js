@@ -1,9 +1,11 @@
 // src/crm/application/guest.facade.js
 
-import { getBookings, getBookingById } from './booking.service.js';
+import {getBookings, getBookingById, deleteBooking} from './booking.service.js';
 import { getUserById } from '../../profiles/services/user.service.js';
 import { getNotificationsByUserId } from './notification.service.js';
 import { getCustomerRequests, createCustomerRequest} from "./customer-request.service.js";
+import { getRoomById } from './rooms.service.js';
+import { getPaymentsByUserId } from '../../billing/services/payment.service.js'; // Asegúrate de importar esto
 
 /**
  * Coordina información entre contextos para mostrar reservas con detalles del huésped
@@ -18,17 +20,29 @@ export default {
      */
     async getGuestBookings(userId) {
         try {
-            // Obtener reservas y usuario en paralelo
             const [bookings, user] = await Promise.all([
                 getBookings(),
                 getUserById(userId)
             ]);
 
-            // Añadir nombre del huésped a cada reserva
-            return bookings.map(booking => ({
-                ...booking,
-                guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
-            }));
+            const payments = await getPaymentsByUserId(userId);
+            const roomIds = [...new Set(bookings.map(b => b.roomId))]; // IDs únicos
+            const rooms = await Promise.all(roomIds.map(id => getRoomById(id)));
+
+            const roomMap = Object.fromEntries(rooms.map(r => [r.id, r]));
+
+            return bookings.map(booking => {
+                const room = roomMap[booking.roomId];
+                const payment = payments.find(p => p.roomId === booking.roomId);
+
+                return {
+                    ...booking,
+                    guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
+                    roomNumber: room?.number || 'N/A',
+                    roomType: room?.type || 'Tipo desconocido',
+                    totalPrice: payment?.amount || 0
+                };
+            });
 
         } catch (error) {
             console.error('Error obteniendo reservas del huésped:', error);
@@ -110,5 +124,23 @@ export default {
             return [];
         }
     },
+
+    /**
+     * Elimina una reserva específica
+     *
+     * @param {number} bookingId - ID de la reserva a eliminar
+     * @returns {Promise<void>}
+     * @throws {Error} - Si hay un error al eliminar
+     */
+    async deleteGuestBooking(bookingId) {
+        try {
+            await deleteBooking(bookingId);
+        } catch (error) {
+            console.error('Error eliminando reserva:', error);
+            throw new Error('No se pudo eliminar la reserva');
+        }
+    },
+
+
 
 };

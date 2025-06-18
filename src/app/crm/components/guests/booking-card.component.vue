@@ -3,7 +3,7 @@
   <pv-card class="booking-card shadow-2 transition-all transition-duration-300 hover:shadow-6">
     <template #title>
       <div class="flex justify-content-between align-items-center">
-        <span>Habitación {{ booking.roomNumber }}</span>
+        <span>{{ booking.roomType }} {{ booking.roomNumber }}</span>
         <pv-badge :severity="statusSeverity">{{ booking.status }}</pv-badge>
       </div>
     </template>
@@ -21,8 +21,12 @@
       </div>
 
       <div class="mt-3 flex justify-content-end">
-        <pv-button label="Ver Detalles" icon="pi pi-eye" class="p-button-outlined p-button-sm mr-2" />
-        <pv-button label="Cancelar" icon="pi pi-trash" class="p-button-danger p-button-sm" v-if="booking.isActive" />
+        <pv-button
+            label="Eliminar"
+            icon="pi pi-trash"
+            class="p-button-danger p-button-sm"
+            @click="deleteBooking(booking.id)"
+        />
       </div>
     </template>
   </pv-card>
@@ -30,8 +34,10 @@
 
 <script>
 import {computed} from "vue";
+import {deleteBooking} from "../../services/booking.service.js";
 
 export default {
+  methods: {deleteBooking},
   props: {
     booking: {
       type: Object,

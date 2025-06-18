@@ -38,13 +38,26 @@ export default {
       loading.value = true;
       try {
         // Suponiendo que el ID del usuario viene desde autenticación o sesión
-        const userId = 2; // TODO: Reemplazar por auth store o dinámico
+        const userId = 1; // TODO: Reemplazar por auth store o dinámico
         const data = await GuestFacade.getGuestBookings(userId);
         bookings.value = data;
       } catch (error) {
         console.error('Error al cargar reservas:', error);
       } finally {
         loading.value = false;
+      }
+    };
+
+    const deleteBooking = async (bookingId) => {
+      if (!confirm('¿Estás seguro de eliminar esta reserva?')) return;
+
+      try {
+        await GuestFacade.deleteGuestBooking(bookingId);
+        // Recargar las reservas
+        await loadBookings();
+      } catch (error) {
+        alert('No se pudo eliminar la reserva. Inténtalo más tarde.');
+        console.error('Error al eliminar reserva:', error);
       }
     };
 
@@ -59,7 +72,8 @@ export default {
     return {
       bookings,
       loading,
-      goToReserve
+      goToReserve,
+      deleteBooking
     };
   }
 };

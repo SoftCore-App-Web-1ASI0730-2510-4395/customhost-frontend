@@ -34,9 +34,11 @@ export default {
             return bookings.map(booking => {
                 const room = roomMap[booking.roomId];
                 const payment = payments.find(p => p.roomId === booking.roomId);
-
+                // Reordena para que id esté primero
+                const { id, ...rest } = booking;
                 return {
-                    ...booking,
+                    id,
+                    ...rest,
                     guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
                     roomNumber: room?.number || 'N/A',
                     roomType: room?.type || 'Tipo desconocido',
@@ -68,9 +70,11 @@ export default {
             }
 
             const user = await getUserById(userId);
-
+            // Reordena para que id esté primero
+            const { id, ...rest } = booking;
             return {
-                ...booking,
+                id,
+                ...rest,
                 guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido'
             };
 

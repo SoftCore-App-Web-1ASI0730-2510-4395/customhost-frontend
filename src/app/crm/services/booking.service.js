@@ -38,7 +38,11 @@ export const getBookingById = async (bookingId) => {
 export const createBooking = async (bookingData) => {
     try {
         const response = await axios.post(API_URL, bookingData);
-        return new Booking(response.data);
+        const data = response.data;
+        // Reordena el objeto para que el id esté primero y no se sobrescriba
+        const { id, ...rest } = data;
+        const ordered = { id, ...rest };
+        return new Booking(ordered);
     } catch (error) {
         console.error('Error al crear reserva:', error);
         throw error;
@@ -62,6 +66,9 @@ export const updateBooking = async (id, bookingData) => {
  * Elimina una reserva por ID
  */
 export const deleteBooking = async (id) => {
+    if (id === null || id === undefined) {
+        throw new Error('El id de la reserva no puede ser null o undefined');
+    }
     try {
         await axios.delete(`${API_URL}/${id}`);
     } catch (error) {

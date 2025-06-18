@@ -21,4 +21,3 @@ server.use(router);
 server.listen(port, () => {
 console.log(`JSON Server listening => http://localhost:${port}`);
 });
-

@@ -25,7 +25,7 @@
             label="Eliminar"
             icon="pi pi-trash"
             class="p-button-danger p-button-sm"
-            @click="deleteBooking(booking.id)"
+            @click="handleDelete"
         />
       </div>
     </template>
@@ -44,7 +44,7 @@ export default {
       required: true
     }
   },
-  setup(props) {
+  setup(props, { emit }) {
     const statusSeverity = computed(() => {
       switch (props.booking.status) {
         case 'active':
@@ -66,7 +66,15 @@ export default {
       return props.booking.checkOutDate.toLocaleDateString('es-ES');
     });
 
-    return { statusSeverity, checkInDate, checkOutDate };
+    // Nueva función para refrescar la página tras eliminar
+    const handleDelete = () => {
+      emit('delete-booking', props.booking.id);
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    };
+
+    return { statusSeverity, checkInDate, checkOutDate, handleDelete };
   }
 };
 </script>

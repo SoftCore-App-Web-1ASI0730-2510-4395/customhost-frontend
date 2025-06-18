@@ -4,7 +4,7 @@ import {getBookings, getBookingById, deleteBooking} from './booking.service.js';
 import { getUserById } from '../../profiles/services/user.service.js';
 import { getNotificationsByUserId } from './notification.service.js';
 import { getCustomerRequests, createCustomerRequest} from "./customer-request.service.js";
-import { getRoomById } from './rooms.service.js';
+import { getRoomById, getRoomsByIds } from './rooms.service.js';
 import { getPaymentsByUserId } from '../../billing/services/payment.service.js'; // Asegúrate de importar esto
 
 /**
@@ -110,7 +110,14 @@ export default {
      */
     async submitServiceRequest(requestData) {
         try {
-            return await createCustomerRequest(requestData);
+            // Guardar en serviceRequests (customer-request.service.js ya apunta a esa tabla)
+            const created = await createCustomerRequest({
+                ...requestData,
+                status: 'Pending',
+                createdAt: new Date().toISOString(),
+                history: []
+            });
+            return created;
         } catch (error) {
             console.error('Error enviando solicitud:', error);
             throw error;
@@ -171,6 +178,24 @@ export default {
         }
     },
 
-
+    /**
+     * Devuelve las habitaciones asociadas a los bookings del usuario
+     * @param {number} userId
+     * @returns {Promise<Array>} habitaciones del usuario
+     */
+    async getUserRooms(userId) {
+        try {
+            const bookings = await getBookings();
+            const userBookings = bookings.filter(b => b.userId === userId);
+            const roomIds = [...new Set(userBookings.map(b => b.roomId))];
+            if (roomIds.length === 0) return [];
+            // getRoomsByIds debe devolver un array de rooms dado un array de ids
+            const rooms = await getRoomsByIds(roomIds);
+            return rooms;
+        } catch (error) {
+            console.error('Error obteniendo habitaciones del usuario:', error);
+            return [];
+        }
+    },
 
 };

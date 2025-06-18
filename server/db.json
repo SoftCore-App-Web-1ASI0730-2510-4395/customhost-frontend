@@ -122,294 +122,14 @@
       "paymentDate": "2025-06-17T13:14:28.386Z",
       "createdAt": "2025-06-17T13:14:28.386Z",
       "id": 2
-    },
-    {
-      "userId": 1,
-      "roomId": 3,
-      "hotelId": 1,
-      "amount": 360,
-      "currency": "USD",
-      "checkInDate": "2025-06-18",
-      "checkOutDate": "2025-06-20",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-17T19:51:35.123Z",
-      "createdAt": "2025-06-17T19:51:35.123Z",
-      "id": 3
-    },
-    {
-      "userId": 1,
-      "roomId": 6,
-      "hotelId": 2,
-      "amount": 500,
-      "currency": "USD",
-      "checkInDate": "2025-06-26",
-      "checkOutDate": "2025-06-28",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-17T19:59:03.776Z",
-      "createdAt": "2025-06-17T19:59:03.776Z",
-      "id": 4
-    },
-    {
-      "userId": 1,
-      "roomId": 4,
-      "hotelId": 1,
-      "amount": 540,
-      "currency": "USD",
-      "checkInDate": "2025-06-25",
-      "checkOutDate": "2025-06-28",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-17T19:59:47.152Z",
-      "createdAt": "2025-06-17T19:59:47.152Z",
-      "id": 5
-    },
-    {
-      "userId": 1,
-      "roomId": 5,
-      "hotelId": 2,
-      "amount": 800,
-      "currency": "USD",
-      "checkInDate": "2025-06-11",
-      "checkOutDate": "2025-06-15",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-17T20:01:38.795Z",
-      "createdAt": "2025-06-17T20:01:38.795Z",
-      "id": 6
-    },
-    {
-      "userId": 1,
-      "roomId": 2,
-      "hotelId": 1,
-      "amount": 200,
-      "currency": "USD",
-      "checkInDate": "2025-06-20",
-      "checkOutDate": "2025-06-21",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T05:47:20.540Z",
-      "createdAt": "2025-06-18T05:47:20.540Z",
-      "id": 7
-    },
-    {
-      "userId": 1,
-      "roomId": 1,
-      "hotelId": 1,
-      "amount": 150,
-      "currency": "USD",
-      "checkInDate": "2025-06-19",
-      "checkOutDate": "2025-06-20",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T05:55:17.244Z",
-      "createdAt": "2025-06-18T05:55:17.244Z",
-      "id": 8
-    },
-    {
-      "userId": 1,
-      "roomId": 4,
-      "hotelId": 1,
-      "amount": 360,
-      "currency": "USD",
-      "checkInDate": "2025-06-18",
-      "checkOutDate": "2025-06-20",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:01:27.146Z",
-      "createdAt": "2025-06-18T06:01:27.146Z",
-      "id": 9
-    },
-    {
-      "userId": 1,
-      "roomId": 6,
-      "hotelId": 2,
-      "amount": 500,
-      "currency": "USD",
-      "checkInDate": "2025-06-19",
-      "checkOutDate": "2025-06-21",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:15:35.821Z",
-      "createdAt": "2025-06-18T06:15:35.822Z",
-      "id": 10
-    },
-    {
-      "userId": 1,
-      "roomId": 3,
-      "hotelId": 1,
-      "amount": 360,
-      "currency": "USD",
-      "checkInDate": "2025-06-20",
-      "checkOutDate": "2025-06-22",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:18:37.783Z",
-      "createdAt": "2025-06-18T06:18:37.783Z",
-      "id": 11
-    },
-    {
-      "userId": 1,
-      "roomId": 1,
-      "hotelId": 1,
-      "amount": 300,
-      "currency": "USD",
-      "checkInDate": "2025-06-20",
-      "checkOutDate": "2025-06-22",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:23:48.395Z",
-      "createdAt": "2025-06-18T06:23:48.395Z",
-      "id": 12
-    },
-    {
-      "userId": 1,
-      "roomId": 5,
-      "hotelId": 2,
-      "amount": 400,
-      "currency": "USD",
-      "checkInDate": "2025-06-20",
-      "checkOutDate": "2025-06-22",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:26:41.038Z",
-      "createdAt": "2025-06-18T06:26:41.038Z",
-      "id": 13
-    },
-    {
-      "userId": 1,
-      "roomId": 2,
-      "hotelId": 1,
-      "amount": 1000,
-      "currency": "USD",
-      "checkInDate": "2025-06-21",
-      "checkOutDate": "2025-06-26",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:28:02.717Z",
-      "createdAt": "2025-06-18T06:28:02.717Z",
-      "id": 14
-    },
-    {
-      "userId": 1,
-      "roomId": 4,
-      "hotelId": 1,
-      "amount": 360,
-      "currency": "USD",
-      "checkInDate": "2025-06-19",
-      "checkOutDate": "2025-06-21",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:35:43.554Z",
-      "createdAt": "2025-06-18T06:35:43.554Z",
-      "id": 15
-    },
-    {
-      "userId": 1,
-      "roomId": 5,
-      "hotelId": 2,
-      "amount": 200,
-      "currency": "USD",
-      "checkInDate": "2025-06-21",
-      "checkOutDate": "2025-06-22",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:43:15.955Z",
-      "createdAt": "2025-06-18T06:43:15.955Z",
-      "id": 16
-    },
-    {
-      "userId": 1,
-      "roomId": 6,
-      "hotelId": 2,
-      "amount": 500,
-      "currency": "USD",
-      "checkInDate": "2025-06-21",
-      "checkOutDate": "2025-06-23",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:44:49.121Z",
-      "createdAt": "2025-06-18T06:44:49.121Z",
-      "id": 17
-    },
-    {
-      "userId": 1,
-      "roomId": 2,
-      "hotelId": 1,
-      "amount": 400,
-      "currency": "USD",
-      "checkInDate": "2025-06-27",
-      "checkOutDate": "2025-06-29",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:47:03.352Z",
-      "createdAt": "2025-06-18T06:47:03.352Z",
-      "id": 18
-    },
-    {
-      "userId": 1,
-      "roomId": 1,
-      "hotelId": 1,
-      "amount": 150,
-      "currency": "USD",
-      "checkInDate": "2025-06-20",
-      "checkOutDate": "2025-06-21",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:50:03.030Z",
-      "createdAt": "2025-06-18T06:50:03.030Z",
-      "id": 19
-    },
-    {
-      "userId": 1,
-      "roomId": 3,
-      "hotelId": 1,
-      "amount": 1440,
-      "currency": "USD",
-      "checkInDate": "2025-06-20",
-      "checkOutDate": "2025-06-28",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:51:27.890Z",
-      "createdAt": "2025-06-18T06:51:27.890Z",
-      "id": 20
-    },
-    {
-      "userId": 1,
-      "roomId": 4,
-      "hotelId": 1,
-      "amount": 1620,
-      "currency": "USD",
-      "checkInDate": "2025-06-12",
-      "checkOutDate": "2025-06-21",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:54:11.501Z",
-      "createdAt": "2025-06-18T06:54:11.501Z",
-      "id": 21
-    },
-    {
-      "userId": 1,
-      "roomId": 1,
-      "hotelId": 1,
-      "amount": 150,
-      "currency": "USD",
-      "checkInDate": "2025-06-20",
-      "checkOutDate": "2025-06-21",
-      "paymentMethod": "credit_card",
-      "status": "paid",
-      "paymentDate": "2025-06-18T06:56:49.604Z",
-      "createdAt": "2025-06-18T06:56:49.604Z",
-      "id": 22
     }
   ],
   "rooms": [
     {
       "hotelId": 1,
       "number": "101",
-      "type": "Suite Presidential",
-      "status": "Occupied",
+      "type": "Standard Double",
+      "status": "Available",
       "price": 150,
       "floor": 1,
       "id": 1
@@ -463,9 +183,9 @@
   "bookings": [
     {
       "userId": 1,
-      "roomId": 1,
-      "checkInDate": "2025-06-20",
-      "checkOutDate": "2025-06-21",
+      "roomId": 4,
+      "checkInDate": "2025-06-12",
+      "checkOutDate": "2025-07-04",
       "status": "confirmed",
       "id": 1
     }
@@ -527,6 +247,11 @@
           "Fahrenheit"
         ],
         "currentValue": "number"
+      },
+      "status": "working",
+      "preferences": {
+        "unit": "Celsius",
+        "currentValue": 22
       }
     },
     {
@@ -540,6 +265,11 @@
           "yellow",
           "blue"
         ]
+      },
+      "status": "maintenance",
+      "preferences": {
+        "brightness": 68,
+        "color": "blue"
       }
     },
     {
@@ -721,15 +451,17 @@
       "roomDeviceId": 8,
       "preferences": {
         "unit": "Celsius",
-        "currentValue": 20
+        "currentValue": 30,
+        "status": "inactive"
       },
       "id": 8
     },
     {
       "roomDeviceId": 9,
       "preferences": {
-        "brightness": 78,
-        "color": "white"
+        "brightness": 52,
+        "color": "yellow",
+        "status": "inactive"
       },
       "id": 9
     },
@@ -738,7 +470,8 @@
       "preferences": {
         "apps": "HBO",
         "volume": 60,
-        "power": "on"
+        "power": "on",
+        "status": "working"
       },
       "id": 10
     }
@@ -754,26 +487,6 @@
         "color": "cool"
       },
       "lastUpdated": "2025-05-10T08:30:00Z"
-    },
-    {
-      "userId": null,
-      "deviceId": {
-        "id": 1,
-        "name": "Temperature Sensor",
-        "deviceType": "climate",
-        "configSchema": {
-          "unit": [
-            "Celsius",
-            "Fahrenheit"
-          ],
-          "currentValue": "number"
-        },
-        "status": "working",
-        "roomDeviceId": 1
-      },
-      "customName": "sdad",
-      "overrides": {},
-      "id": 2
     }
   ],
   "notifications": [

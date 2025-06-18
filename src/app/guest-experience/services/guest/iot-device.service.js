@@ -60,19 +60,18 @@ export const getDevicesByRoom = async (roomId) => {
         const roomDevicePrefsResponse = await axios.get('http://localhost:3001/roomDevicePreferences');
         const roomDevicePreferences = roomDevicePrefsResponse.data;
 
-        // Mapear dispositivos con sus preferencias base
-        return allIotDevices
-            .filter(iot => roomDevices.some(rd => rd.iotDeviceId === iot.id))
-            .map(iot => {
-                const roomDevice = roomDevices.find(rd => rd.iotDeviceId === iot.id);
-                const preference = roomDevicePreferences.find(p => p.roomDeviceId === roomDevice.id);
-
-                return {
-                    ...iot,
-                    status: roomDevice.status,
-                    preferences: preference?.preferences || {}
-                };
-            });
+        // Mapear dispositivos con sus preferencias base y roomDeviceId
+        return roomDevices.map(rd => {
+            const iot = allIotDevices.find(i => i.id === rd.iotDeviceId);
+            const preference = roomDevicePreferences.find(p => p.roomDeviceId === rd.id);
+            return {
+                ...iot,
+                roomDeviceId: rd.id,
+                roomDevicePreferenceId: preference?.id,
+                status: rd.status,
+                preferences: preference?.preferences || {}
+            };
+        });
     } catch (error) {
         console.error(`Error fetching devices for room ${roomId}:`, error);
         return [];
@@ -164,4 +163,60 @@ export const updateDeviceProperties = async (id, properties) => {
     }
 };
 
+/**
+ * Crear preferencia de un roomDevice (POST)
+ */
+export const createRoomDevicePreference = async (roomDeviceId, preferences) => {
+    try {
+        const response = await axios.post('http://localhost:3001/roomDevicePreferences', {
+            roomDeviceId,
+            preferences
+        });
+        console.log(`Preferencia creada para roomDeviceId ${roomDeviceId}`);
+        return response.data;
+    } catch (error) {
+        console.error(
+            `Error creando preferencia para roomDeviceId ${roomDeviceId}:`,
+            error.message,
+            error.response?.data || ''
+        );
+        throw error;
+    }
+};
 
+/**
+ * Actualiza las preferencias de un roomDevice (PATCH)
+ */
+export const updateRoomDevicePreferences = async (roomDevicePreferenceId, preferences) => {
+    try {
+        const response = await axios.patch(`http://localhost:3001/roomDevicePreferences/${roomDevicePreferenceId}`, {
+            preferences
+        });
+        console.log(`Preferencias del roomDevicePreference ${roomDevicePreferenceId} actualizadas`);
+        return response.data;
+    } catch (error) {
+        console.error(
+            `Error actualizando preferencias de roomDevicePreference ${roomDevicePreferenceId}:`,
+            error.message,
+            error.response?.data || ''
+        );
+        throw error;
+    }
+};
+
+/**
+ * Obtiene la preferencia de un roomDevice por roomDeviceId
+ */
+export const getRoomDevicePreferenceByRoomDeviceId = async (roomDeviceId) => {
+    try {
+        const response = await axios.get(`http://localhost:3001/roomDevicePreferences?roomDeviceId=${roomDeviceId}`);
+        return response.data && response.data.length > 0 ? response.data[0] : null;
+    } catch (error) {
+        console.error(
+            `Error obteniendo preferencia para roomDeviceId ${roomDeviceId}:`,
+            error.message,
+            error.response?.data || ''
+        );
+        return null;
+    }
+};

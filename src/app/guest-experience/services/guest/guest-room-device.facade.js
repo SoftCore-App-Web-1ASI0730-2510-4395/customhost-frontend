@@ -1,5 +1,5 @@
 import { getRoomById } from '../../../crm/services/rooms.service.js';
-import { getDevicesByRoom } from './iot-device.service.js';
+import { getDevicesByRoom, updateRoomDevicePreferences, createRoomDevicePreference, getRoomDevicePreferenceByRoomDeviceId } from './iot-device.service.js';
 import { saveUserDevicePreference, getUserDevicePreferences } from '../../../profiles/services/user-preference.service.js';
 
 // Ajusta estas rutas según la ubicación real en tu proyecto
@@ -26,7 +26,7 @@ export default class GuestRoomDeviceFacade {
         if (!user) throw new Error("Usuario no encontrado");
 
         const bookings = await getBookingsByUserId(1); // Obtiene las reservas del usuario
-        const roomIds = [...new Set(bookings.map(b => b.roomId))]; // ID únicos de cuartos
+        const roomIds = [...new Set(bookings.map(b => b.roomId))]; // ID ��nicos de cuartos
         const roomsWithDevices = [];
 
         for (const roomId of roomIds) {
@@ -55,9 +55,44 @@ export default class GuestRoomDeviceFacade {
     }
 
     /**
+     * Guarda la preferencia de un dispositivo en una habitación (para IoT)
+     * Si existe la preferencia, actualiza (PATCH); si no, crea (POST)
+     * @param {Object} params - { roomDeviceId, preferences }
+     */
+    async saveRoomDevicePreference({ roomDeviceId, preferences }) {
+        // Buscar si ya existe la preferencia
+        const existingPref = await getRoomDevicePreferenceByRoomDeviceId(roomDeviceId);
+        if (existingPref) {
+            // PATCH
+            return await updateRoomDevicePreferences(existingPref.id, preferences);
+        } else {
+            // POST
+            return await createRoomDevicePreference(roomDeviceId, preferences);
+        }
+    }
+
+    /**
      * Obtiene las preferencias existentes del usuario
      */
     async getUserPreferences(userId) {
         return await getUserDevicePreferences(userId);
+    }
+
+    /**
+     * Actualiza las preferencias de una habitación (solo roomDevicePreferences)
+     */
+    async updateRoomPreferences(roomId, { devices }) {
+        if (Array.isArray(devices)) {
+            for (const device of devices) {
+                // Se espera que cada device tenga roomDeviceId y preferences
+                if (device.roomDeviceId && device.preferences) {
+                    await this.saveRoomDevicePreference({
+                        roomDeviceId: device.roomDeviceId,
+                        preferences: device.preferences
+                    });
+                }
+            }
+        }
+        return true;
     }
 }

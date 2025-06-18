@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import HomeComponent from "../public/pages/homeComponent.vue";
+
+
 
 const preferencesComponent = () => import("../profiles/pages/preferencesComponent.vue");
 const iotDevicesComponent = () => import("../guest-experience/pages/iot-room-configuration-page.component.vue");
@@ -12,7 +13,7 @@ const bookingsTrackerComponent = () => import("../crm/pages/bookingsTrackerCompo
 const customerServiceComponent = () => import("../crm/pages/guests/create-service-request.component.vue");
 const loginComponent = () => import("../iam/pages/login.component.vue");
 const registerComponent = () => import("../iam/pages/register.component.vue");
-const notFoundComponent = () => import("../public/pages/notFoundComponent.vue");
+const notFoundComponent = () => import("../public/pages/page-not-found.component.vue");
 const profileComponent = () => import("../profiles/pages/profileComponent.vue");
 const registerHotelComponent = () => import("../iam/pages/registerHotel.component.vue");
 const RoomsListComponent = () => import("../crm/pages/rooms-listComponent.vue");
@@ -21,14 +22,27 @@ const RoomPreferencesComponent = () => import("../guest-experience/pages/guest-r
 const notificationComponent = () => import("../crm/pages/guests/notification.component.vue");
 const PaymentComponent = () => import("../billing/pages/payment.component.vue");
 const SelectDatesComponent = () => import("../crm/pages/guests/select-date.component.vue");
+const guestHomePage = () => import("../public/pages/guest-home-page.component.vue");
+const staffHomePage = () => import("../public/pages/staff-home-page.component.vue");
 
 // Rutas organizadas por dominio (bounded contexts)
 const routes = [
+
+    // STAFF HOME
     {
-        path: '/home',
-        name: 'Home',
-        component: HomeComponent,
-        meta: { title: 'Home' }
+        path: '/staff-home',
+        name: 'StaffHome',
+        component: staffHomePage,
+        meta: { title: 'StaffHome' }
+    },
+
+    // GUEST HOME
+
+    {
+        path: '/guest-home',
+        name: 'GuestHome',
+        component: guestHomePage,
+        meta: { title: 'GuestHome' }
     },
     {
         path: '/iam',

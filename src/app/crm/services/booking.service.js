@@ -38,7 +38,11 @@ export const getBookingById = async (bookingId) => {
 export const createBooking = async (bookingData) => {
     try {
         const response = await axios.post(API_URL, bookingData);
-        return new Booking(response.data);
+        const data = response.data;
+        // Reordena el objeto para que el id esté primero y no se sobrescriba
+        const { id, ...rest } = data;
+        const ordered = { id, ...rest };
+        return new Booking(ordered);
     } catch (error) {
         console.error('Error al crear reserva:', error);
         throw error;
@@ -62,10 +66,24 @@ export const updateBooking = async (id, bookingData) => {
  * Elimina una reserva por ID
  */
 export const deleteBooking = async (id) => {
+    if (id === null || id === undefined) {
+        throw new Error('El id de la reserva no puede ser null o undefined');
+    }
     try {
-        await axios.delete(`${API_URL}/${id}`);
+        const response = await axios.delete(`${API_URL}/${id}`);
+        if (response.status !== 200 && response.status !== 204) {
+            // Log detallado para depuración
+            console.error('Respuesta inesperada al eliminar:', response.status, response.data);
+            throw new Error('No se pudo eliminar la reserva en el backend');
+        }
+        return true;
     } catch (error) {
-        console.error('Error al eliminar reserva:', error);
+        // Log detallado para depuración
+        if (error.response) {
+            console.error('Error al eliminar reserva:', error.response.status, error.response.data);
+        } else {
+            console.error('Error al eliminar reserva:', error.message);
+        }
         throw error;
     }
 };

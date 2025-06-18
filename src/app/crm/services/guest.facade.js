@@ -1,9 +1,11 @@
 // src/crm/application/guest.facade.js
 
-import { getBookings, getBookingById } from './booking.service.js';
+import {getBookings, getBookingById, deleteBooking} from './booking.service.js';
 import { getUserById } from '../../profiles/services/user.service.js';
 import { getNotificationsByUserId } from './notification.service.js';
 import { getCustomerRequests, createCustomerRequest} from "./customer-request.service.js";
+import { getRoomById } from './rooms.service.js';
+import { getPaymentsByUserId } from '../../billing/services/payment.service.js'; // Asegúrate de importar esto
 
 /**
  * Coordina información entre contextos para mostrar reservas con detalles del huésped
@@ -18,17 +20,32 @@ export default {
      */
     async getGuestBookings(userId) {
         try {
-            // Obtener reservas y usuario en paralelo
             const [bookings, user] = await Promise.all([
                 getBookings(),
                 getUserById(userId)
             ]);
 
-            // Añadir nombre del huésped a cada reserva
-            return bookings.map(booking => ({
-                ...booking,
-                guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
-            }));
+            const payments = await getPaymentsByUserId(userId);
+            const roomIds = [...new Set(bookings.map(b => b.roomId))]; // IDs únicos
+            const rooms = await Promise.all(roomIds.map(id => getRoomById(id)));
+
+            const roomMap = Object.fromEntries(rooms.map(r => [r.id, r]));
+
+            return bookings.map(booking => {
+                const room = roomMap[booking.roomId];
+                const payment = payments.find(p => p.roomId === booking.roomId);
+                // Reordena para que id esté primero
+                const { id, ...rest } = booking;
+                return {
+                    id,
+                    ...rest,
+                    guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
+                    roomNumber: room?.number || 'N/A',
+                    roomType: room?.type || 'Tipo desconocido',
+                    totalPrice: payment?.amount || 0,
+                    // status de cuarto se puede actualizar tras eliminar
+                };
+            });
 
         } catch (error) {
             console.error('Error obteniendo reservas del huésped:', error);
@@ -54,9 +71,11 @@ export default {
             }
 
             const user = await getUserById(userId);
-
+            // Reordena para que id esté primero
+            const { id, ...rest } = booking;
             return {
-                ...booking,
+                id,
+                ...rest,
                 guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido'
             };
 
@@ -110,5 +129,48 @@ export default {
             return [];
         }
     },
+
+    /**
+     * Elimina una reserva específica
+     *
+     * @param {number} bookingId - ID de la reserva a eliminar
+     * @returns {Promise<void>}
+     * @throws {Error} - Si hay un error al eliminar
+     */
+    async deleteGuestBooking(bookingId) {
+        try {
+            // Validar bookingId antes de continuar
+            if (!bookingId) {
+                throw new Error('El id de la reserva es inválido');
+            }
+            // Obtener la reserva antes de eliminar para saber el roomId
+            const booking = await getBookingById(bookingId);
+            await deleteBooking(bookingId);
+            // Esperar un poco para asegurar que la eliminación se procese antes de actualizar el cuarto
+            await new Promise(resolve => setTimeout(resolve, 200));
+            // Cambiar el estado del cuarto a 'Available' después de eliminar la reserva usando PATCH
+            if (booking && booking.roomId) {
+                const API_ROOMS_URL = 'http://localhost:3001/api/v1/rooms';
+                const response = await fetch(`${API_ROOMS_URL}/${booking.roomId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'Available' })
+                });
+                if (!response.ok) {
+                    // Log detallado para depuración
+                    const errorText = await response.text();
+                    console.error(`Error actualizando habitación ${booking.roomId}:`, response.status, errorText);
+                    throw new Error(`Error actualizando habitación ${booking.roomId}`);
+                }
+            }
+        } catch (error) {
+            console.error('Error eliminando reserva:', error);
+            throw new Error('No se pudo eliminar la reserva');
+        }
+    },
+
+
 
 };

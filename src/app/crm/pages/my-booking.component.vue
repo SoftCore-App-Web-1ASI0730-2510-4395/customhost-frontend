@@ -1,6 +1,10 @@
-<!-- src/app/crm/pages/my-booking.component.vue -->
 <template>
   <div class="surface-section px-4 py-8">
+    <!-- Mensaje de éxito o error -->
+    <div v-if="message" class="notification-box" :class="message.type">
+      {{ message.text }}
+    </div>
+
     <div class="text-3xl font-bold text-center mb-6">Mis Reservas</div>
 
     <div v-if="loading" class="flex justify-content-center mt-6">
@@ -9,14 +13,19 @@
 
     <div v-else-if="bookings.length > 0" class="grid">
       <div v-for="booking in bookings" :key="booking.id" class="col-12 md:col-6 lg:col-4">
-        <BookingCard :booking="booking" />
+        <BookingCard :booking="booking" @delete-booking="deleteBooking" />
       </div>
     </div>
 
     <div v-else class="flex flex-column align-items-center justify-content-center mt-6">
       <i class="pi pi-info-circle text-6xl text-blue-500 mb-3"></i>
       <span class="text-xl text-center text-gray-600">No tienes ninguna reserva activa.</span>
-      <pv-button label="Ir a Reservar Habitación" icon="pi pi-home" class="mt-4" @click="goToReserve" />
+      <pv-button
+          label="Ir a Reservar Habitación"
+          icon="pi pi-home"
+          class="mt-4"
+          @click="goToReserve"
+      />
     </div>
   </div>
 </template>
@@ -33,12 +42,19 @@ export default {
     const router = useRouter();
     const bookings = ref([]);
     const loading = ref(true);
+    const message = ref(null);
+
+    const showMessage = (text, type = 'success') => {
+      message.value = { text, type };
+      setTimeout(() => {
+        message.value = null;
+      }, 3000);
+    };
 
     const loadBookings = async () => {
       loading.value = true;
       try {
-        // Suponiendo que el ID del usuario viene desde autenticación o sesión
-        const userId = 2; // TODO: Reemplazar por auth store o dinámico
+        const userId = 1; // TODO: Reemplazar por auth store o dinámico
         const data = await GuestFacade.getGuestBookings(userId);
         bookings.value = data;
       } catch (error) {
@@ -48,8 +64,26 @@ export default {
       }
     };
 
+    const deleteBooking = async (bookingId) => {
+      if (!confirm('¿Estás seguro de eliminar esta reserva?')) return;
+      loading.value = true;
+      try {
+        await GuestFacade.deleteGuestBooking(bookingId);
+        showMessage('✅ La reserva se ha eliminado correctamente.', 'success');
+      } catch (error) {
+        // Mostrar mensaje de error real si existe
+        const errorMsg = error?.message || 'No se pudo eliminar la reserva.';
+        showMessage(`❌ ${errorMsg}`, 'error');
+        console.error('Error al eliminar reserva:', error);
+      } finally {
+        // Siempre recargar las reservas, incluso si hay error
+        await loadBookings();
+        loading.value = false;
+      }
+    };
+
     const goToReserve = () => {
-      router.push({ name: 'SelectHotelRoom' }); // Asegúrate de tener esta ruta definida
+      router.push({ name: 'hotel-room-selection' });
     };
 
     onMounted(() => {
@@ -59,7 +93,9 @@ export default {
     return {
       bookings,
       loading,
-      goToReserve
+      message,
+      goToReserve,
+      deleteBooking
     };
   }
 };
@@ -71,5 +107,36 @@ export default {
 }
 .text-3xl {
   color: #343a40;
+}
+
+.notification-box {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  z-index: 9999;
+  animation: slideIn 0.3s ease-out;
+}
+
+.notification-box.success {
+  background-color: #4CAF50;
+}
+
+.notification-box.error {
+  background-color: #F44336;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 </style>

@@ -63,8 +63,12 @@ export default {
                 checkOutDate: paymentData.checkOutDate,
                 status: 'confirmed'
             };
-
+            // Si el backend retorna un id, asegúrate de ponerlo primero al crear el objeto de booking
+            // Pero aquí bookingData aún no tiene id, el id lo asigna el backend en createBooking
             const createdBooking = await createBooking(bookingData);
+            // Si quieres que el id esté primero en el objeto final:
+            const { id, ...rest } = createdBooking;
+            const orderedBooking = { id, ...rest };
 
             // 3. Marcar habitación como "Occupied"
             await this.markRoomAsOccupied(paymentData.roomId);
@@ -72,7 +76,7 @@ export default {
             // Retornamos ambos datos
             return {
                 payment: createdPayment,
-                booking: createdBooking
+                booking: orderedBooking
             };
 
         } catch (error) {
@@ -91,7 +95,7 @@ export default {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ status: 'occupied' })
+                body: JSON.stringify({ status: 'Occupied' })
             });
 
             if (!response.ok) {

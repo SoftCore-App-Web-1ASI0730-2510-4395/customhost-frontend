@@ -22,7 +22,7 @@ import { useI18n } from 'vue-i18n';
 
 import RoomDeviceAssignment from '../components/staff/room-device-assignment.component.vue';
 import IotRoomCard from '../components/staff/iot-room-card.component.vue';
-import { RoomDeviceManagementFacade } from '../services/room-device-management.facade.js';
+import { RoomDeviceManagementFacade } from '../services/staff/room-device-management.facade.js';
 
 const { t } = useI18n();
 

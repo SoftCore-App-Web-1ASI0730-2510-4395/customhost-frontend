@@ -36,6 +36,7 @@ export default class CustomerRequest {
     assignStaff(staffId) {
         this.assignedTo = staffId;
         this.status = 'In progress';
+        this.status = 'In progress';
         this.addHistoryEntry('Assigned', `Petition assigned to the personal ${staffId}`);
     }
 

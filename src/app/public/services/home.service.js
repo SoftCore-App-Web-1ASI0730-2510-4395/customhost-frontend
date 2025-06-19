@@ -1,7 +1,7 @@
 // src/services/home.service.js
 import axios from 'axios'
 
-const API_URL = 'https://localhost:3001'
+const API_URL = import.meta.env.VITE_API_BASE_URL
 
 export const getHotelDashboardStats = async () => {
     try {

@@ -202,7 +202,7 @@ const routes = [
     },
     {
         path: '/',
-        redirect: '/home'
+        redirect: '/guest-home'
     },
     {
         path: "/:pathMatch(.*)*",

@@ -8,8 +8,6 @@ import { createPayment } from './payment.service.js';
 // 👇 Importa servicio de bookings
 import { createBooking } from '../../crm/services/booking.service.js';
 
-const API_ROOMS_URL = 'http://localhost:3001/api/v1/rooms';
-
 /**
  * Coordina la información entre contextos para preparar y realizar un pago
  */
@@ -90,6 +88,7 @@ export default {
      */
     async markRoomAsOccupied(roomId) {
         try {
+            const API_ROOMS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
             const response = await fetch(`${API_ROOMS_URL}/${roomId}`, {
                 method: 'PATCH',
                 headers: {

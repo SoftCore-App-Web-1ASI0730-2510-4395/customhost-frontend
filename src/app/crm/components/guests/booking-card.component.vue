@@ -15,17 +15,29 @@
           <p><i class="pi pi-calendar-times mr-2"></i><strong>Salida:</strong> {{ checkOutDate }}</p>
         </div>
         <div class="col-12 md:col-6">
-          <p><i class="pi pi-user mr-2"></i><strong>Huésped:</strong> {{ booking.guestName }}</p>
-          <p><i class="pi pi-money-bill mr-2"></i><strong>Total:</strong> ${{ booking.totalPrice }} USD</p>
+          <!-- Mostrar huésped y total solo en modo edición -->
+          <template v-if="mode === 'edit'">
+            <p><i class="pi pi-user mr-2"></i><strong>Huésped:</strong> {{ booking.guestName }}</p>
+            <p><i class="pi pi-money-bill mr-2"></i><strong>Total:</strong> ${{ booking.totalPrice }} USD</p>
+          </template>
         </div>
       </div>
 
       <div class="mt-3 flex justify-content-end">
+        <!-- Botón según el modo -->
         <pv-button
+            v-if="mode === 'edit'"
             label="Eliminar"
             icon="pi pi-trash"
             class="p-button-danger p-button-sm"
             @click="handleDelete"
+        />
+        <pv-button
+            v-else
+            label="Ver más"
+            icon="pi pi-eye"
+            class="p-button-text p-button-sm"
+            @click="handleView"
         />
       </div>
     </template>
@@ -33,15 +45,22 @@
 </template>
 
 <script>
-import {computed} from "vue";
+import { computed } from 'vue';
 
 export default {
+  name: 'BookingCard',
   props: {
     booking: {
       type: Object,
       required: true
+    },
+    mode: {
+      type: String,
+      default: 'edit',
+      validator: v => ['edit', 'view'].includes(v)
     }
   },
+  emits: ['delete-booking', 'view-booking'],
   setup(props, { emit }) {
     const statusSeverity = computed(() => {
       switch (props.booking.status) {
@@ -56,20 +75,17 @@ export default {
       }
     });
 
-    const checkInDate = computed(() => {
-      return props.booking.checkInDate.toLocaleDateString('es-ES');
-    });
+    const checkInDate = computed(() =>
+        new Date(props.booking.checkInDate).toLocaleDateString('es-ES')
+    );
+    const checkOutDate = computed(() =>
+        new Date(props.booking.checkOutDate).toLocaleDateString('es-ES')
+    );
 
-    const checkOutDate = computed(() => {
-      return props.booking.checkOutDate.toLocaleDateString('es-ES');
-    });
+    const handleDelete = () => emit('delete-booking', props.booking.id);
+    const handleView   = () => emit('view-booking', props.booking.id);
 
-    // Solución: función para emitir el evento correctamente
-    const handleDelete = () => {
-      emit('delete-booking', props.booking.id);
-    };
-
-    return { statusSeverity, checkInDate, checkOutDate, handleDelete };
+    return { statusSeverity, checkInDate, checkOutDate, handleDelete, handleView };
   }
 };
 </script>

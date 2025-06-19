@@ -111,7 +111,7 @@ const routes = [
                 path: 'my-bookings',
                 name: 'MyBookings',
                 component: MyBookingsComponent,
-                meta: { title: 'My Bookings' }
+                meta: { title: 'MyBookings' }
             },
 
             {

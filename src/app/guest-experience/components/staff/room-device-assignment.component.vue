@@ -59,7 +59,7 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { RoomDeviceManagementFacade } from '../../services/staff/room-device-management.facade.js';
+import { RoomDeviceManagementFacade } from '../../services/room-device-management.facade.js';
 
 const { t } = useI18n();
 

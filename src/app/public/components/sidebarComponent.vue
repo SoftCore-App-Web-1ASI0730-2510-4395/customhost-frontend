@@ -25,7 +25,7 @@ export default {
         //staff
         {
           name: this.$t('sidebar_items.home'),
-          path: '/home',
+          path: '/staff-home',
           type: 'staff',
           icon: 'pi pi-home',
         },
@@ -70,7 +70,7 @@ export default {
         },
 
         {
-          name: this.$t('sidebar_items.guests'),
+          name: this.$t('sidebar_items.book-now'),
           path: '/crm/guest/hotel-room-selection',
           type: 'guest',
           icon: 'pi pi-building', // Mejor icono para habitaciones

@@ -1,6 +1,6 @@
 {
   "dashboard": {
-    "title": "Hotel Admin Dashboard",
+    "title": "Dashboard",
     "summary_cards": {
       "occupied_rooms": "Occupied Rooms",
       "bookings_today": "Bookings Today",
@@ -95,7 +95,8 @@
     "my-bookings": "My Bookings",
     "customer-service": "Customer Service",
     "notifications": "Notifications",
-    "admin": "Admin",
-    "profile": "Profile"
+    "profile": "Profile",
+    "guest": "Guest",
+    "staff": "Staff"
   }
 }

@@ -1,0 +1,31 @@
+@startuml
+' Definición de entidades (bounded contexts)
+entity "Public\n(Utilidades Base)" as PUBLIC
+entity "IAM\n(Identity & Access Management)" as IAM
+entity "CRM\n(Customer Relationship Management)" as CRM
+entity "Rooms\n(Gestión de Habitaciones)" as ROOMS
+entity "Guest Experience\n(Experiencia del Huésped)" as GUEST
+entity "Staff Management\n(Gestión de Personal)" as STAFF
+
+' Relaciones de provisión de utilidades (Public → otros)
+PUBLIC ||--o{ IAM    : provee utilidades
+PUBLIC ||--o{ CRM    : provee utilidades
+PUBLIC ||--o{ ROOMS  : provee utilidades
+PUBLIC ||--o{ GUEST  : provee utilidades
+PUBLIC ||--o{ STAFF  : provee utilidades
+
+' Relaciones de autenticación/autorización (IAM → todos)
+IAM ..> PUBLIC  : controla acceso
+IAM ..> CRM     : controla acceso
+IAM ..> ROOMS   : controla acceso
+IAM ..> GUEST   : controla acceso
+IAM ..> STAFF   : controla acceso
+
+' Relaciones de dependencia de datos
+CRM    ||--o{ GUEST  : suministra datos de huéspedes
+CRM    ||--o{ STAFF  : suministra datos de huéspedes
+
+ROOMS  ||--o{ GUEST  : suministra disponibilidad
+ROOMS  ||--o{ STAFF  : asigna tareas de mantenimiento
+
+@enduml

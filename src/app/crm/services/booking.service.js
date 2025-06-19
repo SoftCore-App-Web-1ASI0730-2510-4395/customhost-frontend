@@ -2,9 +2,9 @@
 import axios from 'axios';
 import Booking from '../model/booking.entity.js';
 
-const API_URL = 'http://localhost:3001/api/v1/bookings'
-const USERS_URL = 'http://localhost:3001/api/v1/users'
-const ROOMS_URL = 'http://localhost:3001/api/v1/rooms'
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/bookings';
+const USERS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/users';
+const ROOMS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
 
 /**
  * Obtiene todas las reservas y las instancias con el modelo Booking

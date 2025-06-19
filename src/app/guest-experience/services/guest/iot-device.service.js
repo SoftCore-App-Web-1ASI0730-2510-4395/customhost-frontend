@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { IotDevice } from '../../model/iot-device.entity.js';
 
-const API_URL = 'http://localhost:3001/iotDevices'; // Endpoint para dispositivos IoT
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/iotDevices'; // Endpoint para dispositivos IoT
 
 /**
  * Obtener todos los dispositivos

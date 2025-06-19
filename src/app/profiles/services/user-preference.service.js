@@ -3,7 +3,7 @@
 import axios from 'axios';
 import UserDevicePreference from '../model/user-device-preference.entity.js';
 
-const API_URL = 'http://localhost:3001/userDevicePreferences';
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/userDevicePreferences';
 
 /**
  * Guarda una preferencia del usuario para un dispositivo

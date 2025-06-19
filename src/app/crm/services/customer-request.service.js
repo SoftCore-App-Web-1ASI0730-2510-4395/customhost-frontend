@@ -1,7 +1,7 @@
 import axios from 'axios'
 import CustomerRequest from '../model/customer-request.entity.js'
 
-const API_URL = 'http://localhost:3001/api/v1/serviceRequests'
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/serviceRequests'
 
 // Helper para evitar repetición
 const getAndModifyRequest = async (id, modifyFn) => {

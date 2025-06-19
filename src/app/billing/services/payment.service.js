@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Payment from '../model/payment.entity';
 
-const API_URL = 'http://localhost:3001/api/v1/payments'; // ← Tu ruta en db.json
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/payments';
 
 /**
  * Obtiene todos los pagos de un usuario

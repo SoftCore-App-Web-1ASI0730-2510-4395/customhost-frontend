@@ -122,6 +122,20 @@
       "paymentDate": "2025-06-17T13:14:28.386Z",
       "createdAt": "2025-06-17T13:14:28.386Z",
       "id": 2
+    },
+    {
+      "userId": 1,
+      "roomId": 4,
+      "hotelId": 1,
+      "amount": 540,
+      "currency": "USD",
+      "checkInDate": "2025-06-18",
+      "checkOutDate": "2025-06-21",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-19T01:34:38.199Z",
+      "createdAt": "2025-06-19T01:34:38.199Z",
+      "id": 3
     }
   ],
   "rooms": [
@@ -184,8 +198,8 @@
     {
       "userId": 1,
       "roomId": 4,
-      "checkInDate": "2025-06-12",
-      "checkOutDate": "2025-07-04",
+      "checkInDate": "2025-06-18",
+      "checkOutDate": "2025-06-21",
       "status": "confirmed",
       "id": 1
     }

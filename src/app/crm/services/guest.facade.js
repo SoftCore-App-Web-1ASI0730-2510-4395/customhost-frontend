@@ -157,7 +157,7 @@ export default {
             await new Promise(resolve => setTimeout(resolve, 200));
             // Cambiar el estado del cuarto a 'Available' después de eliminar la reserva usando PATCH
             if (booking && booking.roomId) {
-                const API_ROOMS_URL = 'http://localhost:3001/api/v1/rooms';
+                const API_ROOMS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
                 const response = await fetch(`${API_ROOMS_URL}/${booking.roomId}`, {
                     method: 'PATCH',
                     headers: {

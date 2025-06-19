@@ -3,7 +3,7 @@
 import axios from 'axios';
 import Room from '../model/rooms.entity';
 
-const API_URL = 'http://localhost:3001/api/v1/rooms';
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
 
 /**
  * Obtiene todos los cuartos y devuelve instancias del modelo Room

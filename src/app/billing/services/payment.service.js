@@ -32,3 +32,16 @@ export const createPayment = async (paymentData) => {
         throw error;
     }
 };
+
+/**
+ * Obtiene todos los pagos
+ */
+export const getAllPayments = async () => {
+    try {
+        const response = await axios.get(API_URL);
+        return response.data.map(p => new Payment(p));
+    } catch (error) {
+        console.error('Error fetching all payments:', error);
+        return [];
+    }
+};

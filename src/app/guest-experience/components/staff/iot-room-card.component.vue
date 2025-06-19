@@ -1,7 +1,7 @@
 <template>
   <div class="room-card">
     <div class="room-header">
-      <h3>{{ t('iot_room_configuration.room') }} #{{ room.number }} - {{ room.type }}</h3>
+      <h3>{{ t('iot_room_configuration.room') }} #{{ room.roomNumber }} - {{ room.type }}</h3>
       <span :class="['status-badge', room.status?.toLowerCase()]">{{ room.status }}</span>
     </div>
     <hr />
@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import RoomDevicePreferencesModalComponent from './room-device-preferences-modal.component.vue';
 import { RoomDeviceManagementFacade } from '../../services/room-device-management.facade.js';
@@ -77,6 +77,10 @@ const showModal = ref(false);
 const closeModal = () => {
   showModal.value = false;
 };
+
+onMounted(() => {
+  console.log('room.devices en mounted:', room.devices);
+});
 </script>
 
 <style scoped>

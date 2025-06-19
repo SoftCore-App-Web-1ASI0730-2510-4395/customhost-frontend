@@ -27,10 +27,9 @@ const departments = ref([
 const fetchData = async () => {
   try {
     const [staffRes, requestsRes] = await Promise.all([
-      axios.get(`${API_URL}/staffMembers`),
-      axios.get(`${API_URL}/serviceRequests?status_ne=Resolved`)
+      axios.get(`${API_URL}/api/v1/staff-members`),
+      axios.get(`${API_URL}/api/v1/crm/service-request?status_ne=Resolved`)
     ])
-
     staffMembers.value = staffRes.data
     activeRequests.value = requestsRes.data
   } catch (error) {

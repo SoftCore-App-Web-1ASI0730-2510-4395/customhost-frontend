@@ -40,7 +40,7 @@ export default {
                     id,
                     ...rest,
                     guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
-                    roomNumber: room?.number || 'N/A',
+                    roomNumber: room?.roomNumber || 'N/A',
                     roomType: room?.type || 'Tipo desconocido',
                     totalPrice: payment?.amount || 0,
                     // status de cuarto se puede actualizar tras eliminar

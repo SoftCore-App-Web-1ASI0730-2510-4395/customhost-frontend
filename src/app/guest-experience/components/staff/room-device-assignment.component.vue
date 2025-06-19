@@ -15,7 +15,7 @@
           <select v-model="form.roomId" required>
             <option disabled value="">{{ t('iot_room_configuration.select_room') }}</option>
             <option v-for="room in rooms" :key="room.id" :value="room.id">
-              {{ t('iot_room_configuration.room') }} {{ room.number }}
+              {{ t('iot_room_configuration.room') }} {{ room.roomNumber }}
             </option>
           </select>
 

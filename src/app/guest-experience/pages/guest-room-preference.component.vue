@@ -37,7 +37,7 @@
       <div class="modal-content">
         <h3 class="modal-title">
           Configura tu habitación
-          <span v-if="editRoomData.number" class="room-name"> - Habitación {{ editRoomData.number }}</span>
+          <span v-if="editRoomData.roomNumber" class="room-name"> - Habitación {{ editRoomData.roomNumber }}</span>
         </h3>
         <div class="modal-section">
           <label class="modal-label">Dispositivos IoT:</label>
@@ -119,7 +119,7 @@ const handleEditRoomConfig = (room) => {
   // Clona dispositivos y asegura que tengan preferencias inicializadas
   editRoomData.value = {
     id: room.id,
-    number: room.number,
+    roomNumber: room.roomNumber,
     devices: (room.devices && room.devices.length)
       ? room.devices.map(d => ({
           ...d,

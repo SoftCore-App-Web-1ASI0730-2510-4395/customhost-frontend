@@ -34,7 +34,7 @@
           <select v-model="form.roomId" id="roomId" required>
             <option disabled value="">Seleccione habitación</option>
             <option v-for="room in rooms" :key="room.id" :value="room.id">
-              {{ room.number }} - {{ room.type }}
+              {{ room.roomNumber }} - {{ room.type }}
             </option>
           </select>
         </div>

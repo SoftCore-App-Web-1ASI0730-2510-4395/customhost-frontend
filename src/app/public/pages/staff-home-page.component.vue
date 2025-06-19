@@ -25,7 +25,7 @@
         class="room-card"
       >
         <div class="room-card-header">
-          <span class="room-number">Habitación {{ room.number }}</span>
+          <span class="room-number">Habitación {{ room.roomNumber }}</span>
         </div>
         <div class="room-card-body">
           <div class="room-type">{{ room.type }}</div>

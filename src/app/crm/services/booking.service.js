@@ -2,7 +2,7 @@
 import axios from 'axios';
 import Booking from '../model/booking.entity.js';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/bookings';
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/booking';
 const USERS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/users';
 const ROOMS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
 
@@ -109,7 +109,7 @@ export const getBookingsWithDetails = async () => {
                 user,
                 room,
                 fullName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
-                roomNumber: room?.number || 'N/A'
+                roomNumber: room?.roomNumber || 'N/A'
             }
         })
     } catch (error) {

@@ -60,7 +60,9 @@ export const getRoomsByHotelId = async (hotelId) => {
  * Crea una nueva habitación
  */
 export const createRoom = async (roomData) => {
-    const room = new Room(roomData);
+    // Eliminar id o roomId si existen
+    const { id, roomId, ...data } = roomData;
+    const room = new Room(data);
     const response = await axios.post(API_URL, room);
     return new Room(response.data);
 };
@@ -96,7 +98,7 @@ export const deleteRoom = async (id) => {
 export async function getRoomsByIds(ids) {
     if (!ids || ids.length === 0) return [];
     // Usamos fetch porque axios apunta a /api/v1/rooms y aquí necesitamos el mock server
-    const res = await fetch('http://localhost:3001/rooms');
+    const res = await fetch('http://localhost:5232/rooms');
     const allRooms = await res.json();
     return allRooms.filter(room => ids.includes(room.id));
 }

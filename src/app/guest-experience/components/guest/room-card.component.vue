@@ -4,7 +4,7 @@
     <!-- Nombre del cuarto y tipo -->
     <div class="flex justify-content-between align-items-center mb-3">
       <h3 class="text-xl font-bold m-0">
-        {{ room.number ? 'Habitación ' + room.number : '' }} - {{ room.type }}
+        {{ room.roomNumber ? 'Habitación ' + room.roomNumber : '' }} - {{ room.type }}
       </h3>
       <pv-badge :value="room.status" :severity="getRoomStatusSeverity(room.status)" />
     </div>

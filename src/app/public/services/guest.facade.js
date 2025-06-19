@@ -24,7 +24,7 @@ export default {
             // Datos de habitación simulados (pueden venir del modelo Room si lo tienes cargado)
             const currentRoom = currentBooking ? {
                 id: currentBooking.roomId,
-                number: currentBooking.roomNumber,
+                roomNumber: currentBooking.roomNumber,
                 floor: 1, // Esto debería venir de un servicio real
                 type: "Deluxe"
             } : null;

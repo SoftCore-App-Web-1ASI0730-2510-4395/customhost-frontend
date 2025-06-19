@@ -8,16 +8,16 @@ const API_URL = import.meta.env.VITE_API_BASE_URL;
 export const roomDevicePreferenceService = {
 
     async saveRoomDevicePreference(preference) {
-        const res = await axios.get(`${API_URL}/roomDevicePreferences?roomDeviceId=${preference.roomDeviceId}`);
+        const res = await axios.get(`${API_URL}/room-device-preferences?roomDeviceId=${preference.roomDeviceId}`);
         const existing = res.data[0];
 
         if (existing) {
-            return axios.put(`${API_URL}/roomDevicePreferences/${existing.id}`, {
+            return axios.put(`${API_URL}/room-device-preferences/${existing.id}`, {
                 ...existing,
                 preferences: preference.preferences
             });
         } else {
-            return axios.post(`${API_URL}/roomDevicePreferences`, {
+            return axios.post(`${API_URL}/room-device-preferences`, {
                 roomDeviceId: preference.roomDeviceId,
                 preferences: preference.preferences
             });
@@ -36,11 +36,11 @@ export const roomDevicePreferenceService = {
     },
 
     async getPreferencesForRoomDevice(roomId, iotDeviceId) {
-        const roomDevicesRes = await axios.get(`${API_URL}/roomDevices?roomId=${roomId}&iotDeviceId=${iotDeviceId}`);
+        const roomDevicesRes = await axios.get(`${API_URL}/room-devices?roomId=${roomId}&iotDeviceId=${iotDeviceId}`);
         const roomDevice = roomDevicesRes.data[0];
         if (!roomDevice) return {};
 
-        const prefsRes = await axios.get(`${API_URL}/roomDevicePreferences?roomDeviceId=${roomDevice.id}`);
+        const prefsRes = await axios.get(`${API_URL}/room-device-preferences?roomDeviceId=${roomDevice.id}`);
         const prefs = prefsRes.data[0]?.preferences ?? {};
 
         return prefs;
@@ -48,11 +48,11 @@ export const roomDevicePreferenceService = {
 
     async deleteRoomDeviceAndPreferences(roomDeviceId) {
         // Elimina preferencias si existen
-        const res = await axios.get(`${API_URL}/roomDevicePreferences?roomDeviceId=${roomDeviceId}`);
+        const res = await axios.get(`${API_URL}/room-device-preferences?roomDeviceId=${roomDeviceId}`);
         const preference = res.data[0];
 
         if (preference) {
-            await axios.delete(`${API_URL}/roomDevicePreferences/${preference.id}`);
+            await axios.delete(`${API_URL}/room-device-preferences/${preference.id}`);
         }
 
         // Elimina el dispositivo

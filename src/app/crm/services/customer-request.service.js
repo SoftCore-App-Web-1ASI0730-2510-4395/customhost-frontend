@@ -1,7 +1,7 @@
 import axios from 'axios'
 import CustomerRequest from '../model/customer-request.entity.js'
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/serviceRequests'
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/crm/service-request'
 
 // Helper para evitar repetición
 const getAndModifyRequest = async (id, modifyFn) => {
@@ -24,11 +24,17 @@ export const getCustomerRequests = async () => {
 }
 
 export const createCustomerRequest = async (requestData) => {
-    const request = new CustomerRequest({
-        ...requestData,
-        createdAt: new Date().toISOString()
-    })
-    const response = await axios.post(API_URL, request.toJSON())
+    // Solo enviar los campos requeridos por el backend
+    const payload = {
+        title: requestData.title || '',
+        description: requestData.description || '',
+        type: requestData.type || '',
+        priority: requestData.priority || '',
+        userId: requestData.userId,
+        hotelId: requestData.hotelId,
+        roomId: requestData.roomId
+    }
+    const response = await axios.post(API_URL, payload)
     return new CustomerRequest(response.data)
 }
 

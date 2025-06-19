@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { iotDeviceService } from './iot-device.service.js';
 import * as roomService from '../../../crm/services/rooms.service.js';
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1';
 
 export const roomDeviceService = {
 
     async addRoomDevice(roomDevice) {
-        return axios.post(`${API_URL}/roomDevices`, roomDevice);
+        return axios.post(`${API_URL}/room-devices`, roomDevice);
     },
 
     resetRoomDeviceForm(form, selectedDeviceConfig, preferences) {
@@ -19,7 +19,7 @@ export const roomDeviceService = {
 
     async getAvailableDevicesForRoom(roomId) {
         const allDevices = await iotDeviceService.getAllIotDevices();
-        const roomDevicesRes = await axios.get(`${API_URL}/roomDevices?roomId=${roomId}`);
+        const roomDevicesRes = await axios.get(`${API_URL}/room-devices?roomId=${roomId}`);
         const usedDeviceTypes = new Set(roomDevicesRes.data.map(rd => {
             const device = allDevices.find(d => d.id === rd.iotDeviceId);
             return device?.deviceType;
@@ -31,7 +31,7 @@ export const roomDeviceService = {
         const [rooms, devices, roomDevices] = await Promise.all([
             roomService.getRooms(),
             iotDeviceService.getAllIotDevices(),
-            axios.get(`${API_URL}/roomDevices`)
+            axios.get(`${API_URL}/room-devices`)
         ]);
 
         return rooms.map(room => {
@@ -51,7 +51,7 @@ export const roomDeviceService = {
 
             return {
                 id: room.id,
-                number: room.number,
+                roomNumber: room.roomNumber,
                 type: room.type,
                 status: room.status,
                 devices: devicesInRoom
@@ -60,16 +60,16 @@ export const roomDeviceService = {
     },
 
     async updateRoomDeviceStatus(roomDeviceId, newStatus) {
-        const existing = await axios.get(`${API_URL}/roomDevices/${roomDeviceId}`);
+        const existing = await axios.get(`${API_URL}/room-devices/${roomDeviceId}`);
         const updated = {
             ...existing.data,
             status: newStatus
         };
-        return axios.put(`${API_URL}/roomDevices/${roomDeviceId}`, updated);
+        return axios.put(`${API_URL}/room-devices/${roomDeviceId}`, updated);
     },
 
     async deleteRoomDevice(roomDeviceId) {
-        return axios.delete(`${API_URL}/roomDevices/${roomDeviceId}`);
+        return axios.delete(`${API_URL}/room-devices/${roomDeviceId}`);
     }
 
 }

@@ -86,7 +86,7 @@
   "sidebar_items": {
     "home": "Home",
     "rooms": "Rooms",
-    "guests": "Book Now",
+    "book-now": "Book Now",
     "staff-devices": "Staff Devices",
     "customer-requests": "Customer Requests",
     "bookings-tracker": "Bookings Tracker",

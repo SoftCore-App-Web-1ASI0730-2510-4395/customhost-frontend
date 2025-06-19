@@ -87,7 +87,7 @@
   "sidebar_items": {
     "home": "Inicio",
     "rooms": "Habitaciones",
-    "guests": "Reservar Ahora",
+    "book-now": "Reservar Ahora",
     "staff-devices": "Dispositivos del personal",
     "customer-requests": "Solicitudes de clientes",
     "bookings-tracker": "Seguimiento de reservas",

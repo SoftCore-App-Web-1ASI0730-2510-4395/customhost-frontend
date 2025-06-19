@@ -3,7 +3,7 @@
 import { getUserById } from '../../profiles/services/user.service.js';
 import { getRoomById } from '../../crm/services/rooms.service.js';
 import { getHotelById } from '../../crm/services/hotels.service.js';
-import { createPayment } from './payment.service.js';
+import { createPayment, getAllPayments } from './payment.service.js';
 
 // 👇 Importa servicio de bookings
 import { createBooking } from '../../crm/services/booking.service.js';
@@ -106,5 +106,13 @@ export default {
             console.error('Error marcando habitación como ocupada:', error);
             throw error;
         }
+    },
+
+    /**
+     * Obtiene todos los pagos
+     * @returns {Promise<Array>} - Lista de pagos
+     */
+    async getAllPayments() {
+        return getAllPayments();
     }
 };

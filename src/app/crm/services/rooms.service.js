@@ -11,12 +11,24 @@ const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
 export const getRooms = async () => {
     try {
         const response = await axios.get(API_URL);
-        return response.data.map(room => new Room(room));
+
+        // 1) ver qué llega del API
+
+
+        const rooms = response.data.map(raw => {
+            const room = new Room(raw);
+            // 2) ver que la entidad Room recibe bien los campos
+
+            return room;
+        });
+
+        return rooms;
     } catch (error) {
-        console.error('Error al obtener cuartos:', error);
+
         return [];
     }
 };
+
 
 /**
  * Obtiene un cuarto específico por ID
@@ -26,7 +38,7 @@ export const getRoomById = async (roomId) => {
         const response = await axios.get(`${API_URL}/${roomId}`);
         return new Room(response.data);
     } catch (error) {
-        console.error('Error al obtener cuarto por ID:', error);
+
         throw error;
     }
 };

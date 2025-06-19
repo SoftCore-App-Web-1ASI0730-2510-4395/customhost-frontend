@@ -57,6 +57,12 @@
     <div v-else class="text-center text-gray-500">No hay dispositivos IoT en mantenimiento o inactivos.</div>
     <div class="mb-30px"></div>
   </div>
+
+  <!-- NUEVA GRÁFICA: Pagos individuales (escalares) -->
+  <div style="max-width: 900px; margin: 40px auto 0 auto;">
+    <h3 class="text-center mb-2" style="font-weight:600;">Pagos individuales (escalares)</h3>
+    <canvas id="scalarPaymentsChart" width="900" height="350"></canvas>
+  </div>
 </template>
 
 <script setup>
@@ -68,7 +74,7 @@ const availableRooms = ref([]);
 const iotDevicesWithIssues = ref([]);
 const usuarioNombre = ref('Juan Pérez'); // TODO: desde sesión
 
-const paramurl = ref(null);
+const paramurl = ref({}); // Ahora es un objeto para filtros dinámicos
 
 // Año seleccionado y años disponibles
 const currentYear = new Date().getFullYear();
@@ -140,8 +146,69 @@ function renderChart() {
   });
 }
 
+let scalarChartInstance = null;
+
+function renderScalarChart() {
+  // Filtra pagos del año seleccionado y ordena por checkInDate
+  const filtered = allPayments
+    .filter(payment => {
+      let dateObj = payment.checkInDate;
+      if (typeof dateObj === 'string') dateObj = new Date(dateObj);
+      return dateObj instanceof Date && !isNaN(dateObj.getTime()) && dateObj.getUTCFullYear() === Number(selectedYear.value);
+    })
+    .sort((a, b) => new Date(a.checkInDate) - new Date(b.checkInDate));
+
+  const labels = filtered.map(payment => {
+    let dateObj = payment.checkInDate;
+    if (typeof dateObj === 'string') dateObj = new Date(dateObj);
+    return dateObj.toLocaleDateString('es-ES');
+  });
+  const data = filtered.map(payment => Number(payment.amount) || 0);
+
+  if (scalarChartInstance) {
+    scalarChartInstance.destroy();
+  }
+
+  scalarChartInstance = new Chart(document.getElementById('scalarPaymentsChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Monto individual de pago (USD)',
+        data,
+        backgroundColor: '#3b82f6',
+        borderColor: '#3b82f6',
+        fill: false,
+        tension: 0.2,
+        pointRadius: 5,
+        pointHoverRadius: 7
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true }, title: { display: false } },
+      scales: {
+        x: { title: { display: true, text: 'Fecha de check-in' } },
+        y: { title: { display: true, text: 'Monto (USD)' } }
+      }
+    }
+  });
+}
+
 function updateChart() {
-  renderChart();
+  fetchPayments().then(() => {
+    renderChart();
+    renderScalarChart();
+  });
+}
+
+async function fetchPayments() {
+  // Ejemplo: filtra por hotelId y año usando paramurl
+  paramurl.value = {
+    hotelId: 1, // Cambia esto según el hotel seleccionado o sesión
+    year: selectedYear.value
+  };
+  allPayments = await homeFacade.getAllPayments(paramurl.value);
 }
 
 async function fetchAvailableRooms() {
@@ -183,28 +250,26 @@ async function fetchIotDevicesWithIssues() {
 }
 
 onMounted(async () => {
-  // Obtén todos los pagos una sola vez
-  allPayments = await homeFacade.getAllPayments(paramurl.value);
+  await fetchPayments();
 
-  // Determina los años disponibles a partir de los pagos (por paymentDate)
+  // Determina los años disponibles a partir de los pagos (por checkInDate)
   const yearsSet = new Set();
   allPayments.forEach(payment => {
-    let dateObj = payment.paymentDate;
+    let dateObj = payment.checkInDate;
     if (typeof dateObj === 'string') dateObj = new Date(dateObj);
     if (dateObj instanceof Date && !isNaN(dateObj.getTime())) {
       yearsSet.add(dateObj.getUTCFullYear());
     }
   });
-  // Siempre incluye el año actual por si no hay pagos este año
   if (!yearsSet.has(currentYear)) yearsSet.add(currentYear);
   availableYears.value = Array.from(yearsSet).sort();
 
-  // Si el año seleccionado no está en la lista, selecciona el más reciente
   if (!availableYears.value.includes(selectedYear.value)) {
     selectedYear.value = availableYears.value[availableYears.value.length - 1];
   }
 
   renderChart();
+  renderScalarChart();
 
   await fetchAvailableRooms();
   await fetchIotDevicesWithIssues();

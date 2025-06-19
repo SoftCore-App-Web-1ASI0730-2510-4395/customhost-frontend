@@ -13,15 +13,23 @@ export default {
   emits: ['update:visible'],
   data() {
     return {
-      userType: 'guest' //  'guest', 'staff' o 'admin'
+      userType: 'guest', // 'guest', 'staff'
+    }
+  },
+  methods: {
+    updateVisibility() {
+      this.$emit('update:visible', false);
+    },
+    isActive(path) {
+      return this.$route.path === path;
+    },
+    handleUserTypeChange(type) {
+      this.userType = type;
     }
   },
   computed: {
     sidebar_items() {
       return [
-
-
-
         //staff
         {
           name: this.$t('sidebar_items.home'),
@@ -100,16 +108,8 @@ export default {
           icon: 'pi pi-cog'
         },
 
-          //admin
-        {
-          name: this.$t('sidebar_items.admin'),
-          path: '/billing/admin',
-          type: 'admin',
-          icon: 'pi pi-shield'
-        },
 
-          //ambos
-
+        //ambos
         {
           name: this.$t('sidebar_items.profile'),
           path: '/profiles/profile',
@@ -126,14 +126,6 @@ export default {
       });
     }
   },
-  methods: {
-    updateVisibility() {
-      this.$emit('update:visible', false);
-    },
-    isActive(path) {
-      return this.$route.path === path;
-    }
-  },
   created() {
     //En teoría aca deberíamos obtener el rol del usuario, en caso se use algún "store" en vue.
   }
@@ -146,12 +138,22 @@ export default {
       :dismissable="true"
       @update:visible="updateVisibility"
       style="background: var(--color-secondary-light); color: var(--color-slate); border: none"
-
   >
     <div class="sidebar-header">
-      <h3 class="text-2xl">{{ $t('title') }}</h3>
+      <h3 class="text-2xl">{{ $t('dashboard.title') }}</h3>
+      <div class="user-type-switch">
+        <button
+          v-for="type in ['guest', 'staff']"
+          :key="type"
+          :class="['switch-btn', { active: userType === type }]"
+          @click="handleUserTypeChange(type)"
+        >
+          <i v-if="type === 'guest'" class="pi pi-user"></i>
+          <i v-else-if="type === 'staff'" class="pi pi-users"></i>
+          <span>{{ $t('sidebar_items.' + type) }}</span>
+        </button>
+      </div>
     </div>
-
     <div class="sidebar-content">
       <ul class="sidebar-menu">
         <li v-for="item in filteredItems" :key="item.path"
@@ -162,7 +164,6 @@ export default {
                 <span class="menu-label">{{ item.name }}</span>
               </div>
             </router-link>
-
         </li>
       </ul>
     </div>
@@ -216,5 +217,32 @@ export default {
 
 i {
   font-size: 1.25rem;
+}
+
+.user-type-switch {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  justify-content: center;
+}
+.switch-btn {
+  background: #fff;
+  border: 1px solid #fa8f45;
+  color: #fa8f45;
+  border-radius: 20px;
+  padding: 0.3rem 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+.switch-btn.active, .switch-btn:hover {
+  background: #fa8f45;
+  color: #fff;
+  border: 1px solid #fa8f45;
 }
 </style>

@@ -1,6 +1,6 @@
 {
   "dashboard": {
-    "title": "Panel de Administración Hotelera",
+    "title": "Dashboard",
     "summary_cards": {
       "occupied_rooms": "Habitaciones ocupadas",
       "bookings_today": "Reservas de hoy",
@@ -96,7 +96,8 @@
     "my-bookings": "Mis reservas",
     "customer-service": "Atención al cliente",
     "notifications": "Notificaciones",
-    "admin": "Administrador",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "guest": "Huésped",
+    "staff": "Personal"
   }
 }

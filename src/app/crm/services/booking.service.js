@@ -71,7 +71,7 @@ export const deleteBooking = async (id) => {
     }
     try {
         const response = await axios.delete(`${API_URL}/${id}`);
-        if (response.status !== 200 && response.status !== 204) {
+        if (response.status >= 300) {
             // Log detallado para depuración
             console.error('Respuesta inesperada al eliminar:', response.status, response.data);
             throw new Error('No se pudo eliminar la reserva en el backend');

@@ -111,11 +111,13 @@ export const homeFacade = {
 
   /**
    * Obtiene todos los pagos
+   * @param {any} paramurl - Parámetro opcional para filtrar pagos
    * @returns {Promise<Array>} - Lista de pagos
    */
-  async getAllPayments() {
+  async getAllPayments(paramurl) {
     const paymentFacade = await import('../../billing/services/payment.facade.js');
-    return paymentFacade.default.getAllPayments();
+    // Si paymentFacade.default.getAllPayments soporta paramurl, pásalo
+    return paymentFacade.default.getAllPayments(paramurl);
   },
 
   /**

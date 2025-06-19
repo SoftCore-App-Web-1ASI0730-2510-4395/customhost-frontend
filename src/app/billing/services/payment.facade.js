@@ -110,9 +110,10 @@ export default {
 
     /**
      * Obtiene todos los pagos
+     * @param {any} paramurl - Parámetro opcional para filtrar pagos
      * @returns {Promise<Array>} - Lista de pagos
      */
-    async getAllPayments() {
-        return getAllPayments();
+    async getAllPayments(paramurl) {
+        return getAllPayments(paramurl);
     }
 };

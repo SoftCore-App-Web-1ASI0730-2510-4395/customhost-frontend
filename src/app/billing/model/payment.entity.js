@@ -8,7 +8,8 @@ export default class Payment {
                     amount,
                     currency = 'USD',
                     paymentDate,
-                    paymentStatus = 'pending',
+                    checkInDate, // <-- Añadido
+                    status, // <-- Cambia de paymentStatus a status
                     paymentMethod,
                     createdAt
                 }) {
@@ -21,10 +22,12 @@ export default class Payment {
         this.roomId = roomId;
         this.amount = amount;
         this.currency = currency;
-        this.paymentDate = paymentDate ? new Date(paymentDate) : null;
-        this.paymentStatus = paymentStatus;
+        // Si ya es Date, úsalo, si es string, conviértelo
+        this.paymentDate = paymentDate instanceof Date ? paymentDate : (paymentDate ? new Date(paymentDate) : null);
+        this.checkInDate = checkInDate instanceof Date ? checkInDate : (checkInDate ? new Date(checkInDate) : null); // <-- Añadido
+        this.paymentStatus = status || 'pending'; // <-- Usa status
         this.paymentMethod = paymentMethod || null;
-        this.createdAt = createdAt ? new Date(createdAt) : new Date();
+        this.createdAt = createdAt instanceof Date ? createdAt : (createdAt ? new Date(createdAt) : new Date());
     }
 
     /**

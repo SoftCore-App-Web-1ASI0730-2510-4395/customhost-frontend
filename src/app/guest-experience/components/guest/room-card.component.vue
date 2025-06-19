@@ -23,9 +23,9 @@
           <!-- Mostrar configuración visual -->
           <div v-if="Object.keys(device.preferences || {}).length > 0">
             <div
-              v-for="(value, key) in device.preferences"
-              :key="key"
-              class="device-config-row"
+                v-for="(value, key) in device.preferences"
+                :key="key"
+                class="device-config-row"
             >
               <span class="device-config-label">{{ getFriendlyLabel(device, key) }}:</span>
               <span class="device-config-value">

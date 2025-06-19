@@ -23,7 +23,7 @@
           <select v-model="form.iotDeviceId" required>
             <option disabled value="">{{ t('iot_room_configuration.select_device') }}</option>
             <option v-for="device in availableDevices" :key="device.id" :value="device.id">
-              {{ device.name }} ({{ device.deviceType }})
+              {{ getDeviceNameById(device.id) }} ({{ getDeviceTypeById(device.id) }})
             </option>
           </select>
 
@@ -68,6 +68,7 @@ const emit = defineEmits(['updated']);
 const showModal = ref(false);
 const form = ref({ roomId: '', iotDeviceId: '', status: '' });
 const rooms = ref([]);
+const allDevices = ref([]); // Lista de todos los dispositivos IoT
 const availableDevices = ref([]);
 const selectedDeviceConfig = ref(null);
 const preferences = ref({});
@@ -96,6 +97,16 @@ watch(() => form.value.roomId, async (roomId) => {
 onMounted(async () => {
   rooms.value = await RoomDeviceManagementFacade.getRooms();
 });
+
+// Funciones utilitarias
+const getDeviceNameById = (id) => {
+  const device = allDevices.value.find(d => d.id === id);
+  return device ? device.name : 'Desconocido';
+};
+const getDeviceTypeById = (id) => {
+  const device = allDevices.value.find(d => d.id === id);
+  return device ? device.deviceType : '';
+};
 </script>
 
 <style scoped>

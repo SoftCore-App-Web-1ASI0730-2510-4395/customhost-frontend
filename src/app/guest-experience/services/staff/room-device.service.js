@@ -28,35 +28,9 @@ export const roomDeviceService = {
     },
 
     async getRoomsWithDevices() {
-        const [rooms, devices, roomDevices] = await Promise.all([
-            roomService.getRooms(),
-            iotDeviceService.getAllIotDevices(),
-            axios.get(`${API_URL}/room-devices`)
-        ]);
-
-        return rooms.map(room => {
-            const assigned = roomDevices.data.filter(rd => rd.roomId === room.id);
-            const devicesInRoom = assigned.map(rd => {
-                const device = devices.find(d => d.id === rd.iotDeviceId);
-                return {
-                    roomDeviceId: rd.id,
-
-                    name: device?.name ?? 'Desconocido',
-                    type: device?.deviceType,
-                    iotDeviceId: rd.iotDeviceId, //  NECESARIO para buscar preferencias
-                    status: rd.status,
-                    configSchema: device?.configSchema ?? {} // <-- Agregado para el modal
-                };
-            });
-
-            return {
-                id: room.id,
-                roomNumber: room.roomNumber,
-                type: room.type,
-                status: room.status,
-                devices: devicesInRoom
-            };
-        });
+        // Consumir el nuevo endpoint que ya retorna la estructura anidada
+        const response = await axios.get('http://localhost:5232/api/v1/rooms/with-devices');
+        return response.data;
     },
 
     async updateRoomDeviceStatus(roomDeviceId, newStatus) {

@@ -7,7 +7,7 @@ import AddStaffMemberDialog from '../components/request-staff-member-add.compone
 import DeleteConfirmDialog from '../components/request-staff-member-delete.component.vue';
 import {staffService} from "../services/request-staff.service.js";
 
-const API_URL = 'http://localhost:3001'
+const API_URL = import.meta.env.VITE_API_BASE_URL
 const staffMembers = ref([])
 const activeRequests = ref([])
 const loading = ref(true)

@@ -1,50 +1,29 @@
-// filepath: c:\Users\halli\OneDrive\Documentos\customhost\wa\src\auth\pages\registerHotelComponent.vue
-<script>
+<script setup>
+import { ref } from 'vue';
 import { Card, Toast, Message } from "primevue";
-import RegisterHotelForm from '../components/registerHotelForm.component.vue'; // Importar el nuevo componente
+import RegisterHotelForm from '../components/registerHotelForm.component.vue';
 
-export default {
-  name: "registerHotelComponent",
-  components: {
-    'pv-card': Card,
-    'pv-toast': Toast,
-    'pv-message': Message,
-    RegisterHotelForm // Registrar el componente del formulario
-  },
-  data() {
-    return {
-      // Ya no se necesitan los campos del formulario aquí
-      // hotelName: '',
-      // username: '',
-      // email: '',
-      // password: '',
-      // passwordRepeat: '',
-      // submitted: false, // Se manejará en el hijo o se pasará como prop si es necesario para el padre
-      loading: false,
-      errorMessage: '' // Mensaje de error general para la página (ej. error de servidor)
-    }
-  },
-  methods: {
-    handleRegistration(formData) {
-      this.errorMessage = '';
-      this.loading = true;
+const loading = ref(false);
+const errorMessage = ref('');
 
-      // Simulación de la lógica de registro del hotel con los datos del formulario hijo
-      console.log("Datos recibidos del formulario:", formData);
+function handleRegistration(formData) {
+  errorMessage.value = '';
+  loading.value = true;
 
-      setTimeout(() => {
-        console.log("Registrando Hotel:", formData.hotelName, "Admin:", formData.username, "Email:", formData.email);
-        // Ejemplo de notificación de éxito:
-        // this.$toast.add({severity:'success', summary: 'Solicitud Recibida', detail:'Gracias por registrar tu hotel. Nos pondremos en contacto pronto.', life: 5000});
-        // this.$router.push('/iam/login'); // O a una página de agradecimiento/confirmación
+  // Simulación de la lógica de registro del hotel con los datos del formulario hijo
+  console.log("Datos recibidos del formulario:", formData);
 
-        // Ejemplo de error del servidor:
-        // this.errorMessage = 'Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.';
+  setTimeout(() => {
+    console.log("Registrando Hotel:", formData.hotelName, "Admin:", formData.username, "Email:", formData.email);
+    // Ejemplo de notificación de éxito:
+    // this.$toast.add({severity:'success', summary: 'Solicitud Recibida', detail:'Gracias por registrar tu hotel. Nos pondremos en contacto pronto.', life: 5000});
+    // this.$router.push('/iam/login'); // O a una página de agradecimiento/confirmación
 
-        this.loading = false;
-      }, 1500);
-    }
-  }
+    // Ejemplo de error del servidor:
+    // errorMessage.value = 'Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.';
+
+    loading.value = false;
+  }, 1500);
 }
 </script>
 

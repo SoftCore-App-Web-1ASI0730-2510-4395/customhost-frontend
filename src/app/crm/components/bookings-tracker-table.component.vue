@@ -6,12 +6,6 @@
         {{ data.fullName }}
       </template>
     </Column>
-    <Column field="roomNumber" :header="t('dashboard.bookings_tracker.hotelId')">
-      <template #body="{ data }">
-        <i class="pi pi-building text-orange-500 mr-2"></i>
-        {{ data.hotelId }}
-      </template>
-    </Column>
     <Column field="roomNumber" :header="t('dashboard.bookings_tracker.room')">
       <template #body="{ data }">
         <i class="pi pi-building text-purple-500 mr-2"></i>
@@ -30,20 +24,9 @@
         {{ formatDate(data.checkOutDate) }}
       </template>
     </Column>
-    <Column field="totalPrice" :header="t('dashboard.bookings_tracker.totalPrice')">
-      <template #body="{ data }">
-        <i class="pi pi-money-bill text-green-500 mr-2"></i>
-        {{ data.totalPrice }}
-      </template>
-    </Column>
     <Column field="status" :header="t('dashboard.bookings_tracker.status')">
       <template #body="{ data }">
         {{ data.status }}
-      </template>
-    </Column>
-    <Column field="paymentStatus" :header="t('dashboard.bookings_tracker.paymentStatus')">
-      <template #body="{ data }">
-        {{ data.paymentStatus }}
       </template>
     </Column>
   </DataTable>

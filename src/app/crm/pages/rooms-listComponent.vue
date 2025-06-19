@@ -88,7 +88,14 @@ const saveRoom = async () => {
   }
 }
 
-onMounted(fetchRooms)
+onMounted(async () => {
+  try {
+    const API_URL = import.meta.env.VITE_API_BASE_URL
+    rooms.value = await getRooms()
+  } catch (error) {
+    console.error('Error al cargar habitaciones:', error)
+  }
+})
 </script>
 
 <style scoped>

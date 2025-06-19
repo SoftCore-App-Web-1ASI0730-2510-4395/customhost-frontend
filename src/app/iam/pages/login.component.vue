@@ -1,65 +1,54 @@
-<script>
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { Card, Toast, Message } from "primevue";
 import LoginForm from '../components/loginForm.component.vue';
 
-export default {
-  name: "loginComponent",
-  components: {
-    'pv-card': Card,
-    'pv-toast': Toast,
-    'pv-message': Message,
-    LoginForm
-  },
-  data() {
-    return {
-      loading: false,
-      errorMessage: ''
-    }
-  },
-  methods: {
-    handleLogin(formData) {
-      this.errorMessage = '';
-      this.loading = true;
+const loading = ref(false);
+const errorMessage = ref('');
+const router = useRouter();
 
-      // Aquí implementarías la lógica de autenticación
-      console.log("Datos recibidos del formulario:", formData);
+function handleLogin(formData) {
+  errorMessage.value = '';
+  loading.value = true;
 
-      setTimeout(() => {
-        if (formData.email === 'usuario@ejemplo.com' && formData.password === 'contraseña') {
-          // Login exitoso
-          // Redirigir al usuario a la página principal
-          this.$router.push('/');
-        } else {
-          // Login fallido
-          this.errorMessage = 'Credenciales incorrectas';
-        }
-        this.loading = false;
-      }, 1000);
+  // Aquí implementarías la lógica de autenticación
+  console.log("Datos recibidos del formulario:", formData);
+
+  setTimeout(() => {
+    if (formData.email === 'usuario@ejemplo.com' && formData.password === 'contraseña') {
+      // Login exitoso
+      router.push('/');
+    } else {
+      // Login fallido
+      errorMessage.value = 'Credenciales incorrectas';
     }
-  }
+    loading.value = false;
+  }, 1000);
 }
 </script>
 
-<template>  <div class="login-container">
-  <div class="login-image-container">
-    <img src="/src/assets/img/auth_img.jpg" alt="Login Background" class="login-image" />
+<template>
+  <div class="login-container">
+    <div class="login-image-container">
+      <img src="/src/assets/img/auth_img.jpg" alt="Login Background" class="login-image" />
+    </div>
+    <div class="login-form-container">
+      <pv-card class="login-card">
+        <template #title>
+          <h2 class="login-title">Iniciar sesión</h2>
+        </template>
+        <template #content>
+          <LoginForm
+            :loading="loading"
+            @submit-login="handleLogin"
+          />
+          <pv-message severity="error" v-if="errorMessage && !loading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
+        </template>
+      </pv-card>
+      <pv-toast position="top-right" />
+    </div>
   </div>
-  <div class="login-form-container">
-    <pv-card class="login-card">
-      <template #title>
-        <h2 class="login-title">Iniciar sesión</h2>
-      </template>        <template #content>
-      <LoginForm
-          :loading="loading"
-          @submit-login="handleLogin"
-      />
-      <!-- Mensaje de error general para la página -->
-      <pv-message severity="error" v-if="errorMessage && !loading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
-    </template>
-    </pv-card>
-    <pv-toast position="top-right" />
-  </div>
-</div>
 </template>
 
 <style scoped>

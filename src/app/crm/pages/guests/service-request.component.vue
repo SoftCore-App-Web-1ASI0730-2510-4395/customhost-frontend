@@ -111,7 +111,8 @@ export default {
 
     const loadRooms = async () => {
       try {
-        const res = await fetch('http://localhost:3001/rooms');
+        const API_URL = import.meta.env.VITE_API_BASE_URL;
+        const res = await fetch(`${API_URL}/rooms`);
         rooms.value = await res.json();
       } catch (e) {
         rooms.value = [];

@@ -1,52 +1,42 @@
-<script>
-// Nuevo componente: c:\Users\halli\OneDrive\Documentos\customhost\wa\src\iam\components\registerHotelForm.component.vue
-export default {
-  name: "RegisterHotelForm",
-  props: {
-    loading: {
-      type: Boolean,
-      default: false
-    }
-  },  data() {
-    return {
-      hotelName: '',
-      username: '',
-      email: '',
-      password: '',
-      passwordRepeat: '',
-      submitted: false, // Manejo local de "submitted" para validación de campos
-      formErrorMessage: '' // Mensaje de error específico del formulario (ej. contraseñas no coinciden)
-    };
-  },
-  methods: {
-    handleSubmit() {
-      this.submitted = true;
-      this.formErrorMessage = '';
+<script setup>
+import { ref } from 'vue';
 
-      if (!this.hotelName || !this.username || !this.email || !this.password || !this.passwordRepeat) {
-        // Los mensajes de error individuales se mostrarán bajo cada campo
-        return;
-      }
-
-      if (this.password !== this.passwordRepeat) {
-        this.formErrorMessage = 'Las contraseñas no coinciden.';
-        // Podríamos añadir la clase p-invalid directamente aquí si es necesario,
-        // pero los mensajes de error ya son bastante claros.
-        // if (this.$refs.passwordRepeatInputHotelForm && this.$refs.passwordRepeatInputHotelForm.$el) {
-        //    this.$refs.passwordRepeatInputHotelForm.$el.classList.add('p-invalid');
-        // }
-        return;
-      }
-      
-      // Emitir los datos del formulario al componente padre
-      this.$emit('submit-registration', {
-        hotelName: this.hotelName,
-        username: this.username,
-        email: this.email,
-        password: this.password
-      });
-    }
+const props = defineProps({
+  loading: {
+    type: Boolean,
+    default: false
   }
+});
+
+const emit = defineEmits(['submit-registration']);
+
+const hotelName = ref('');
+const username = ref('');
+const email = ref('');
+const password = ref('');
+const passwordRepeat = ref('');
+const submitted = ref(false);
+const formErrorMessage = ref('');
+
+function handleSubmit() {
+  submitted.value = true;
+  formErrorMessage.value = '';
+
+  if (!hotelName.value || !username.value || !email.value || !password.value || !passwordRepeat.value) {
+    return;
+  }
+
+  if (password.value !== passwordRepeat.value) {
+    formErrorMessage.value = 'Las contraseñas no coinciden.';
+    return;
+  }
+
+  emit('submit-registration', {
+    hotelName: hotelName.value,
+    username: username.value,
+    email: email.value,
+    password: password.value
+  });
 }
 </script>
 
@@ -112,7 +102,6 @@ export default {
       <pv-password 
         id="passwordRepeatHotelForm" 
         v-model="passwordRepeat"
-        ref="passwordRepeatInputHotelForm" 
         :class="{'p-invalid': (submitted && !passwordRepeat) || (submitted && password !== passwordRepeat && passwordRepeat)}"
         :feedback="false"
         toggleMask
@@ -124,7 +113,6 @@ export default {
       <small id="passwordMismatchHotelForm-error" class="p-error" v-if="submitted && password !== passwordRepeat && passwordRepeat">Las contraseñas no coinciden.</small>
     </div>
     
-    <!-- Mensaje de error específico del formulario (ej. contraseñas no coinciden) -->
     <pv-message severity="error" v-if="formErrorMessage" class="mt-3">{{ formErrorMessage }}</pv-message>
     
     <div class="flex justify-content-end align-items-center mt-4">
@@ -132,8 +120,8 @@ export default {
         type="submit" 
         label="Enviar Solicitud de Registro"
         icon="pi pi-check"
-        :loading="loading" 
-        :disabled="loading"
+        :loading="props.loading" 
+        :disabled="props.loading"
         class="register-hotel-button" 
       />
     </div>

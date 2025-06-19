@@ -1,35 +1,30 @@
-<script>
-export default {
-  name: "LoginForm",
-  props: {
-    loading: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data() {
-    return {
-      email: '',
-      password: '',
-      submitted: false
-    };
-  },
-  methods: {
-    handleSubmit() {
-      this.submitted = true;
+<script setup>
+import { ref } from 'vue';
 
-      if (!this.email || !this.password) {
-        // Los mensajes de error individuales se mostrarán bajo cada campo
-        return;
-      }
-      
-      // Emitir los datos del formulario al componente padre
-      this.$emit('submit-login', {
-        email: this.email,
-        password: this.password
-      });
-    }
+const props = defineProps({
+  loading: {
+    type: Boolean,
+    default: false
   }
+});
+
+const emit = defineEmits(['submit-login']);
+
+const email = ref('');
+const password = ref('');
+const submitted = ref(false);
+
+function handleSubmit() {
+  submitted.value = true;
+
+  if (!email.value || !password.value) {
+    return;
+  }
+
+  emit('submit-login', {
+    email: email.value,
+    password: password.value
+  });
 }
 </script>
 
@@ -68,8 +63,8 @@ export default {
       <pv-button 
         type="submit" 
         label="Iniciar sesión"
-        :loading="loading"
-        :disabled="loading"
+        :loading="props.loading"
+        :disabled="props.loading"
         class="login-button"
       />
     </div>

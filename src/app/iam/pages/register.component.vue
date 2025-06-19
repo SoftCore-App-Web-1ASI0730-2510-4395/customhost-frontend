@@ -1,42 +1,29 @@
-<script>
+<script setup>
+import { ref } from 'vue';
 import { Card, Toast, Message } from "primevue";
 import RegisterForm from '../components/registerForm.component.vue';
 
-export default {
-  name: "registerComponent",
-  components: {
-    'pv-card': Card,
-    'pv-toast': Toast,
-    'pv-message': Message,
-    RegisterForm
-  },
-  data() {
-    return {
-      loading: false,
-      errorMessage: ''
-    }
-  },
-  methods: {
-    handleRegistration(formData) {
-      this.errorMessage = '';
-      this.loading = true;
+const loading = ref(false);
+const errorMessage = ref('');
 
-      // Aquí implementarías la lógica de registro
-      console.log("Datos recibidos del formulario:", formData);
+function handleRegistration(formData) {
+  errorMessage.value = '';
+  loading.value = true;
 
-      setTimeout(() => {
-        // Simulación de registro exitoso/fallido
-        console.log("Registrando:", formData.username, formData.email);
-        // this.$toast.add({severity:'success', summary: 'Registro Exitoso', detail:'Cuenta creada correctamente', life: 3000});
-        // this.$router.push('/iam/login');
+  // Aquí implementarías la lógica de registro
+  console.log("Datos recibidos del formulario:", formData);
 
-        // O en caso de error del servidor:
-        // this.errorMessage = 'Error al registrar el usuario. Inténtalo de nuevo.';
+  setTimeout(() => {
+    // Simulación de registro exitoso/fallido
+    console.log("Registrando:", formData.username, formData.email);
+    // this.$toast.add({severity:'success', summary: 'Registro Exitoso', detail:'Cuenta creada correctamente', life: 3000});
+    // this.$router.push('/iam/login');
 
-        this.loading = false;
-      }, 1500);
-    }
-  }
+    // O en caso de error del servidor:
+    // errorMessage.value = 'Error al registrar el usuario. Inténtalo de nuevo.';
+
+    loading.value = false;
+  }, 1500);
 }
 </script>
 

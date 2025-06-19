@@ -1,45 +1,40 @@
-<script>
-export default {
-  name: "RegisterForm",
-  props: {
-    loading: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data() {
-    return {
-      username: '',
-      email: '',
-      password: '',
-      passwordRepeat: '',
-      submitted: false,
-      formErrorMessage: '' // Mensaje de error específico del formulario (ej. contraseñas no coinciden)
-    };
-  },
-  methods: {
-    handleSubmit() {
-      this.submitted = true;
-      this.formErrorMessage = '';
+<script setup>
+import { ref } from 'vue';
 
-      if (!this.username || !this.email || !this.password || !this.passwordRepeat) {
-        // Los mensajes de error individuales se mostrarán bajo cada campo
-        return;
-      }
-
-      if (this.password !== this.passwordRepeat) {
-        this.formErrorMessage = 'Las contraseñas no coinciden.';
-        return;
-      }
-      
-      // Emitir los datos del formulario al componente padre
-      this.$emit('submit-registration', {
-        username: this.username,
-        email: this.email,
-        password: this.password
-      });
-    }
+const props = defineProps({
+  loading: {
+    type: Boolean,
+    default: false
   }
+});
+
+const emit = defineEmits(['submit-registration']);
+
+const username = ref('');
+const email = ref('');
+const password = ref('');
+const passwordRepeat = ref('');
+const submitted = ref(false);
+const formErrorMessage = ref('');
+
+function handleSubmit() {
+  submitted.value = true;
+  formErrorMessage.value = '';
+
+  if (!username.value || !email.value || !password.value || !passwordRepeat.value) {
+    return;
+  }
+
+  if (password.value !== passwordRepeat.value) {
+    formErrorMessage.value = 'Las contraseñas no coinciden.';
+    return;
+  }
+
+  emit('submit-registration', {
+    username: username.value,
+    email: email.value,
+    password: password.value
+  });
 }
 </script>
 
@@ -92,7 +87,6 @@ export default {
       <pv-password 
         id="passwordRepeatRegister" 
         v-model="passwordRepeat"
-        ref="passwordRepeatInputRegister" 
         :class="{'p-invalid': (submitted && !passwordRepeat) || (submitted && password !== passwordRepeat && passwordRepeat)}"
         :feedback="false"
         toggleMask
@@ -104,15 +98,14 @@ export default {
       <small id="passwordMismatchRegister-error" class="p-error" v-if="submitted && password !== passwordRepeat && passwordRepeat">Las contraseñas no coinciden.</small>
     </div>
     
-    <!-- Mensaje de error específico del formulario -->
     <pv-message severity="error" v-if="formErrorMessage" class="mt-3">{{ formErrorMessage }}</pv-message>
     
     <div class="flex justify-content-end align-items-center mt-4">
       <pv-button 
         type="submit" 
         label="Registrarse"
-        :loading="loading"
-        :disabled="loading"
+        :loading="props.loading"
+        :disabled="props.loading"
         class="register-button" 
       />
     </div>

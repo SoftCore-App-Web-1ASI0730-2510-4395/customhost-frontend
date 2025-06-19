@@ -15,7 +15,7 @@ import CustomerRequestPetitionsTable from '../components/customer-request-petiti
 
 import {staffService} from "../services/request-staff.service.js";
 
-const API_URL = 'http://localhost:3001'
+const API_URL = import.meta.env.VITE_API_BASE_URL
 
 // Reactive data
 const requests = ref([])

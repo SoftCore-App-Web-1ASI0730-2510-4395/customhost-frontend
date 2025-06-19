@@ -136,6 +136,20 @@
       "paymentDate": "2025-06-19T01:34:38.199Z",
       "createdAt": "2025-06-19T01:34:38.199Z",
       "id": 3
+    },
+    {
+      "userId": 1,
+      "roomId": 5,
+      "hotelId": 2,
+      "amount": 1600,
+      "currency": "USD",
+      "checkInDate": "2025-06-12",
+      "checkOutDate": "2025-06-20",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-19T02:06:13.770Z",
+      "createdAt": "2025-06-19T02:06:13.770Z",
+      "id": 4
     }
   ],
   "rooms": [
@@ -179,7 +193,7 @@
       "hotelId": 2,
       "number": "106",
       "type": "Suite",
-      "status": "Available",
+      "status": "Occupied",
       "price": 200,
       "floor": 1,
       "id": 5
@@ -202,6 +216,14 @@
       "checkOutDate": "2025-06-21",
       "status": "confirmed",
       "id": 1
+    },
+    {
+      "userId": 1,
+      "roomId": 5,
+      "checkInDate": "2025-06-12",
+      "checkOutDate": "2025-06-20",
+      "status": "confirmed",
+      "id": 2
     }
   ],
   "staffMembers": [
@@ -247,6 +269,39 @@
       "description": "Air conditioning not working",
       "status": "in-progress",
       "createdAt": "2025-05-02T09:30:00"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "hotelId": 1,
+      "roomId": 5,
+      "type": "Limpieza",
+      "description": "mate una persona",
+      "status": "Resolved",
+      "priority": "Alta",
+      "createdAt": "2025-06-19T02:08:12.074Z",
+      "assignedTo": 4,
+      "completedAt": "2025-06-19T02:08:39.007Z",
+      "history": [
+        {
+          "timestamp": "2025-06-19T02:08:28.955Z",
+          "action": "Assigned",
+          "changedBy": 4,
+          "notes": "Petition assigned to the personal 4"
+        },
+        {
+          "timestamp": "2025-06-19T02:08:30.326Z",
+          "action": "Resolved",
+          "changedBy": 4,
+          "notes": "The task has been completed successfully"
+        },
+        {
+          "timestamp": "2025-06-19T02:08:39.007Z",
+          "action": "Resolved",
+          "changedBy": 4,
+          "notes": "The task has been completed successfully"
+        }
+      ]
     }
   ],
   "roomIotDevices": [],

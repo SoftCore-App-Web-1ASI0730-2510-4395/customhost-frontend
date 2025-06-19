@@ -30,7 +30,8 @@ export default {
   setup(props) {
     const facade = {
       markNotificationAsRead: async (id) => {
-        await axios.patch(`http://localhost:3000/notifications/${id}`, { read: true });
+        const API_URL = import.meta.env.VITE_API_BASE_URL;
+        await axios.patch(`${API_URL}/notifications/${id}`, { read: true });
       }
     };
 

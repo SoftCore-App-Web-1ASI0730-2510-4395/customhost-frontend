@@ -29,10 +29,11 @@ onMounted(async () => {
     // Cargamos las reservas con detalles de huésped y habitación
     bookings.value = await getBookingsWithDetails()
 
-    const usersResponse = await fetch('http://localhost:3001/api/v1/users').then(res => res.json())
+    const API_URL = import.meta.env.VITE_API_BASE_URL
+    const usersResponse = await fetch(`${API_URL}/users`).then(res => res.json())
     guests.value = usersResponse.filter(u => u.role === 'guest')
 
-    const roomsResponse = await fetch('http://localhost:3001/api/v1/rooms').then(res => res.json())
+    const roomsResponse = await fetch(`${API_URL}/rooms`).then(res => res.json())
     rooms.value = roomsResponse
   } catch (error) {
     console.error('Error al cargar datos:', error)

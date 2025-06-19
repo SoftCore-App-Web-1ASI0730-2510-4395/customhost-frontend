@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from 'vue'
+
 defineProps({
   requests: Array,
   staffMembers: Array,
@@ -19,6 +21,13 @@ const handleResolveRequest = (id) => {
 const handleDeleteRequest = (id) => {
   emit('deleteRequest', id)
 }
+
+// Función para obtener el nombre del staff asignado
+function getStaffName(staffId) {
+  if (!staffId) return 'Sin asignar';
+  const staff = staffMembers.find(s => String(s.id) === String(staffId));
+  return staff ? staff.name : 'Sin asignar';
+  }
 </script>
 
 <template>

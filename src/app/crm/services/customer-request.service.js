@@ -44,7 +44,15 @@ export const deleteCustomerRequest = async (id) => {
 }
 
 export const assignStaffToRequest = async (id, staffId) => {
-    return getAndModifyRequest(id, request => request.assignStaff(staffId))
+    try {
+        const response = await axios.patch(`http://localhost:5232/api/v1/crm/service-request/${id}/assign`, {
+            staff_id: String(staffId)
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error al asignar staff:', error?.response?.data || error);
+        throw error;
+    }
 }
 
 export const resolveCustomerRequest = async (id) => {

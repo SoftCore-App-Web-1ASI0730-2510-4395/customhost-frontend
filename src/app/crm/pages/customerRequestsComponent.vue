@@ -28,12 +28,6 @@ const priorityOptions = ref(['Baja', 'Media', 'Alta', 'Urgente'])
 const selectedRoom = ref(null)
 const requestDialog = ref(false)
 const staffMembers = ref([])
-const requestForm = ref({
-  roomId: null,
-  type: null,
-  description: '',
-  priority: 'Media'
-})
 
 // Computed
 const filteredRequests = computed(() => {
@@ -194,7 +188,7 @@ onMounted(() => {
             @delete-request="deleteRequestById"
         >
           <template #subtitle v-if="selectedRoom">
-            Habitación #{{ selectedRoom.roomNumber }} - {{ selectedRoom.type }}
+            Habitación #{{ selectedRoom.number }} - {{ selectedRoom.type }}
           </template>
         </CustomerRequestPetitionsTable>
       </div>
@@ -205,8 +199,8 @@ onMounted(() => {
         :rooms="rooms"
         :request-types="requestTypes"
         :priority-options="priorityOptions"
-        :form="requestForm"
         @update:model-value="(value) => requestDialog = value"
+        @update:form="(value) => requestForm = value"
         @submit="saveRequest"
     />
   </div>

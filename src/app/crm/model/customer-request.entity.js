@@ -11,7 +11,7 @@ export default class CustomerRequest {
                     status,
                     priority,
                     createdAt,
-                    assignedTo = null,
+                    assignedTo = '' || null,
                     completedAt = null,
                     history = [],
                 }) {

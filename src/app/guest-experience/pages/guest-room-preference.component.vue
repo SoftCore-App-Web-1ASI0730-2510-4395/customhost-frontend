@@ -18,10 +18,10 @@
     <div v-else-if="roomsWithDevices.length > 0" class="grid gap-6">
       <div v-for="room in roomsWithDevices" :key="room.room.id" class="col-12 md:col-6 lg:col-4">
         <RoomCardComponent
-          :room="room.room"
-          :devices="room.devices"
-          :userId="userId"
-          @edit-room-config="handleEditRoomConfig"
+            :room="room.room"
+            :devices="room.devices"
+            :userId="userId"
+            @edit-room-config="handleEditRoomConfig"
         />
       </div>
     </div>
@@ -50,11 +50,11 @@
                   <!-- Slider para números -->
                   <template v-if="schema === 'number'">
                     <input
-                      type="range"
-                      :min="getMin(key)"
-                      :max="getMax(key)"
-                      v-model.number="device.preferences[key]"
-                      class="config-slider"
+                        type="range"
+                        :min="getMin(key)"
+                        :max="getMax(key)"
+                        v-model.number="device.preferences[key]"
+                        class="config-slider"
                     />
                     <span class="config-value">{{ device.preferences[key] }}{{ getUnit(key) }}</span>
                   </template>
@@ -121,11 +121,11 @@ const handleEditRoomConfig = (room) => {
     id: room.id,
     roomNumber: room.roomNumber,
     devices: (room.devices && room.devices.length)
-      ? room.devices.map(d => ({
+        ? room.devices.map(d => ({
           ...d,
           preferences: { ...d.preferences },
         }))
-      : []
+        : []
   };
   showEditModal.value = true;
 };

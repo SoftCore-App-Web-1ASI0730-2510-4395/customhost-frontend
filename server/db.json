@@ -150,6 +150,48 @@
       "paymentDate": "2025-06-19T02:06:13.770Z",
       "createdAt": "2025-06-19T02:06:13.770Z",
       "id": 4
+    },
+    {
+      "userId": 1,
+      "roomId": 6,
+      "hotelId": 2,
+      "amount": 2500,
+      "currency": "USD",
+      "checkInDate": "2025-07-21",
+      "checkOutDate": "2025-07-31",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-19T02:30:24.277Z",
+      "createdAt": "2025-06-19T02:30:24.277Z",
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "roomId": 1,
+      "hotelId": 1,
+      "amount": 1800,
+      "currency": "USD",
+      "checkInDate": "2025-08-18",
+      "checkOutDate": "2025-08-30",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-19T02:31:05.909Z",
+      "createdAt": "2025-06-19T02:31:05.909Z",
+      "id": 6
+    },
+    {
+      "userId": 1,
+      "roomId": 2,
+      "hotelId": 1,
+      "amount": 1800,
+      "currency": "USD",
+      "checkInDate": "2025-12-18",
+      "checkOutDate": "2025-12-27",
+      "paymentMethod": "credit_card",
+      "status": "paid",
+      "paymentDate": "2025-06-19T03:18:41.641Z",
+      "createdAt": "2025-06-19T03:18:41.641Z",
+      "id": 7
     }
   ],
   "rooms": [
@@ -157,7 +199,7 @@
       "hotelId": 1,
       "number": "101",
       "type": "Standard Double",
-      "status": "Available",
+      "status": "Occupied",
       "price": 150,
       "floor": 1,
       "id": 1
@@ -166,7 +208,7 @@
       "hotelId": 1,
       "number": "102",
       "type": "Deluxe Twin",
-      "status": "Available",
+      "status": "Occupied",
       "price": 200,
       "floor": 1,
       "id": 2
@@ -202,7 +244,7 @@
       "hotelId": 2,
       "number": "201",
       "type": "Deluxe",
-      "status": "Available",
+      "status": "Occupied",
       "price": 250,
       "floor": 2,
       "id": 6
@@ -224,6 +266,30 @@
       "checkOutDate": "2025-06-20",
       "status": "confirmed",
       "id": 2
+    },
+    {
+      "userId": 1,
+      "roomId": 6,
+      "checkInDate": "2025-07-21",
+      "checkOutDate": "2025-07-31",
+      "status": "confirmed",
+      "id": 3
+    },
+    {
+      "userId": 1,
+      "roomId": 1,
+      "checkInDate": "2025-08-18",
+      "checkOutDate": "2025-08-30",
+      "status": "confirmed",
+      "id": 4
+    },
+    {
+      "userId": 1,
+      "roomId": 2,
+      "checkInDate": "2025-12-18",
+      "checkOutDate": "2025-12-27",
+      "status": "confirmed",
+      "id": 5
     }
   ],
   "staffMembers": [

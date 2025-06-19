@@ -4,9 +4,17 @@
   <div class="text-4xl font-extrabold text-center mb-8 text-gray-800">
     ¡Bienvenido, {{ usuarioNombre }}!
   </div>
-  <div style="max-width: 500px; margin: 0 auto;">
-    <h3 class="text-center mb-2" style="font-weight:600;">Gráfico de pagos 2025</h3>
-    <canvas id="paymentsBarChart" height="400"></canvas>
+  <div style="max-width: 900px; margin: 0 auto;">
+    <div class="flex justify-between items-center mb-2" style="gap: 1rem;">
+      <h3 class="text-center" style="font-weight:600;">Gráfico de pagos {{ selectedYear }}</h3>
+      <div>
+        <label for="year-select" style="margin-right: 8px;">Año:</label>
+        <select id="year-select" v-model="selectedYear" @change="updateChart" style="padding: 4px 8px; border-radius: 6px;">
+          <option v-for="year in availableYears" :key="year" :value="year">{{ year }}</option>
+        </select>
+      </div>
+    </div>
+    <canvas id="paymentsBarChart" width="900" height="500"></canvas>
   </div>
   <div style="max-width: 900px; margin: 32px auto 0 auto;">
     <h3 class="text-center mb-2" style="font-weight:600;">Habitaciones disponibles</h3>
@@ -52,22 +60,88 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { homeFacade } from '../services/home.facade.js';
 import Chart from 'chart.js/auto';
 
 const availableRooms = ref([]);
 const iotDevicesWithIssues = ref([]);
-const usuarioNombre      = ref('Juan Pérez'); // TODO: desde sesión
-// 1) Gráfico de pagos
-function groupPaymentsByMonth(payments) {
+const usuarioNombre = ref('Juan Pérez'); // TODO: desde sesión
+
+const paramurl = ref(null);
+
+// Año seleccionado y años disponibles
+const currentYear = new Date().getFullYear();
+const selectedYear = ref(currentYear);
+const availableYears = ref([currentYear]);
+
+let allPayments = []; // Guardar todos los pagos para filtrar por año
+
+function groupPaymentsByMonth(payments, year) {
+  // Inicializa los 12 meses en 0
   const months = {};
+  for (let m = 0; m < 12; m++) {
+    const key = `${year}-${String(m + 1).padStart(2, '0')}`;
+    months[key] = 0;
+  }
   payments.forEach(payment => {
-    const date = new Date(payment.paymentDate || payment.createdAt);
-    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-    months[key] = (months[key] || 0) + payment.amount;
+    let dateObj = payment.checkInDate; // <-- Cambia aquí
+    if (!dateObj) return;
+    if (typeof dateObj === 'string') {
+      dateObj = new Date(dateObj);
+    }
+    if (!(dateObj instanceof Date) || isNaN(dateObj.getTime())) return;
+    const y = dateObj.getUTCFullYear();
+    const m = dateObj.getUTCMonth(); // 0-11
+    if (y === year) {
+      const key = `${y}-${String(m + 1).padStart(2, '0')}`;
+      months[key] += Number(payment.amount) || 0;
+    }
   });
   return months;
+}
+
+// Utilidad para mostrar el mes en texto
+function formatMonthYear(key) {
+  const [year, month] = key.split('-');
+  const meses = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+  return `${meses[parseInt(month, 10) - 1]} ${year}`;
+}
+
+let chartInstance = null;
+
+function renderChart() {
+  const grouped = groupPaymentsByMonth(allPayments, Number(selectedYear.value));
+  const keys = Object.keys(grouped);
+  const labels = keys.map(formatMonthYear);
+  const data = keys.map(key => grouped[key]);
+
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  chartInstance = new Chart(document.getElementById('paymentsBarChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ label: 'Total Pagos (USD)', data, backgroundColor: '#10b981' }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false }, title: { display: false } },
+      scales: {
+        x: { title: { display: true, text: 'Mes' } },
+        y: { title: { display: true, text: 'Monto (USD)' } }
+      }
+    }
+  });
+}
+
+function updateChart() {
+  renderChart();
 }
 
 async function fetchAvailableRooms() {
@@ -109,30 +183,36 @@ async function fetchIotDevicesWithIssues() {
 }
 
 onMounted(async () => {
-  // a) Inicializar gráfico de pagos
-  const payments = await homeFacade.getAllPayments();
-  const grouped = groupPaymentsByMonth(payments);
-  const labels = Object.keys(grouped).sort();
-  const data = labels.map(label => grouped[label]);
+  // Obtén todos los pagos una sola vez
+  allPayments = await homeFacade.getAllPayments(paramurl.value);
 
-  new Chart(document.getElementById('paymentsBarChart'), {
-    type: 'bar',
-    data: { labels, datasets: [{ label: 'Total Pagos (USD)', data, backgroundColor: '#10b981' }] },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false }, title: { display: false } },
-      scales: {
-        x: { title: { display: true, text: 'Mes' } },
-        y: { title: { display: true, text: 'Monto (USD)' } }
-      }
+  // Determina los años disponibles a partir de los pagos (por paymentDate)
+  const yearsSet = new Set();
+  allPayments.forEach(payment => {
+    let dateObj = payment.paymentDate;
+    if (typeof dateObj === 'string') dateObj = new Date(dateObj);
+    if (dateObj instanceof Date && !isNaN(dateObj.getTime())) {
+      yearsSet.add(dateObj.getUTCFullYear());
     }
   });
+  // Siempre incluye el año actual por si no hay pagos este año
+  if (!yearsSet.has(currentYear)) yearsSet.add(currentYear);
+  availableYears.value = Array.from(yearsSet).sort();
 
-  // b) Cargar y loggear habitaciones disponibles
+  // Si el año seleccionado no está en la lista, selecciona el más reciente
+  if (!availableYears.value.includes(selectedYear.value)) {
+    selectedYear.value = availableYears.value[availableYears.value.length - 1];
+  }
+
+  renderChart();
+
   await fetchAvailableRooms();
-
-  // c) Cargar y loggear dispositivos IoT cuyo status ≠ "Working"
   await fetchIotDevicesWithIssues();
+});
+
+// Actualiza la gráfica si el año cambia
+watch(selectedYear, () => {
+  updateChart();
 });
 </script>
 

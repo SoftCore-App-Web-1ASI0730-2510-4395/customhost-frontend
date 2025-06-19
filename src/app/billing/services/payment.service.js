@@ -35,10 +35,21 @@ export const createPayment = async (paymentData) => {
 
 /**
  * Obtiene todos los pagos
+ * @param {any} paramurl - Parámetro opcional para filtrar pagos
  */
-export const getAllPayments = async () => {
+export const getAllPayments = async (paramurl) => {
     try {
-        const response = await axios.get(API_URL);
+        let url = API_URL;
+        if (paramurl) {
+            // Si es un objeto, construye query string
+            if (typeof paramurl === 'object') {
+                const params = new URLSearchParams(paramurl).toString();
+                url += `?${params}`;
+            } else if (typeof paramurl === 'string') {
+                url += `?${paramurl}`;
+            }
+        }
+        const response = await axios.get(url);
         return response.data.map(p => new Payment(p));
     } catch (error) {
         console.error('Error fetching all payments:', error);

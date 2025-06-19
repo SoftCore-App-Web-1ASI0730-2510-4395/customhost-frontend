@@ -28,7 +28,7 @@ const fetchData = async () => {
   try {
     const [staffRes, requestsRes] = await Promise.all([
       axios.get(`${API_URL}/api/v1/staff-members`),
-      axios.get(`${API_URL}/api/v1/crm/service-request?status_ne=Resolved`)
+      axios.get(`${API_URL}/api/v1/crm/service-request?status_ne=Completed`)
     ])
     staffMembers.value = staffRes.data
     activeRequests.value = requestsRes.data
@@ -65,8 +65,10 @@ const confirmDelete = async () => {
 };
 
 const handleSaveNewStaff = async (newStaffData) => {
+  console.log('Datos recibidos en handleSaveNewStaff:', newStaffData);
   try {
     const createdStaff = await staffService.createStaffMember(newStaffData);
+    console.log('Respuesta del backend al crear personal:', createdStaff);
     staffMembers.value.push(createdStaff);
     addDialogVisible.value = false;
     console.log('Personal agregado exitosamente');

@@ -19,7 +19,7 @@ const selectedRoom = defineModel('selectedRoom')
           dataKey="id"
           class="p-datatable-sm"
       >
-        <pv-column field="number" header="Número"></pv-column>
+        <pv-column field="roomNumber" header="Número"></pv-column>
         <pv-column field="type" header="Tipo"></pv-column>
         <pv-column field="status" header="Estado">
           <template #body="{data}">

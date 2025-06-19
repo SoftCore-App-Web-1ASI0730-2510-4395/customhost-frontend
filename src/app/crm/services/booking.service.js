@@ -2,7 +2,7 @@
 import axios from 'axios';
 import Booking from '../model/booking.entity.js';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/bookings';
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/booking';
 const USERS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/users';
 const ROOMS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
 
@@ -71,7 +71,7 @@ export const deleteBooking = async (id) => {
     }
     try {
         const response = await axios.delete(`${API_URL}/${id}`);
-        if (response.status !== 200 && response.status !== 204) {
+        if (response.status >= 300) {
             // Log detallado para depuración
             console.error('Respuesta inesperada al eliminar:', response.status, response.data);
             throw new Error('No se pudo eliminar la reserva en el backend');
@@ -109,7 +109,7 @@ export const getBookingsWithDetails = async () => {
                 user,
                 room,
                 fullName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
-                roomNumber: room?.number || 'N/A'
+                roomNumber: room?.roomNumber || 'N/A'
             }
         })
     } catch (error) {

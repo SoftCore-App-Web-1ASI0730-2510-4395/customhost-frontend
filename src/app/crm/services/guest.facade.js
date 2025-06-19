@@ -40,7 +40,7 @@ export default {
                     id,
                     ...rest,
                     guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
-                    roomNumber: room?.number || 'N/A',
+                    roomNumber: room?.roomNumber || 'N/A',
                     roomType: room?.type || 'Tipo desconocido',
                     totalPrice: payment?.amount || 0,
                     // status de cuarto se puede actualizar tras eliminar
@@ -152,7 +152,7 @@ export default {
             }
             // Obtener la reserva antes de eliminar para saber el roomId
             const booking = await getBookingById(bookingId);
-            await deleteBooking(bookingId);
+            await deleteBooking(bookingId); // Si falla aquí, sí lanzamos error
             // Esperar un poco para asegurar que la eliminación se procese antes de actualizar el cuarto
             await new Promise(resolve => setTimeout(resolve, 200));
             // Cambiar el estado del cuarto a 'Available' después de eliminar la reserva usando PATCH
@@ -166,15 +166,19 @@ export default {
                     body: JSON.stringify({ status: 'Available' })
                 });
                 if (!response.ok) {
-                    // Log detallado para depuración
+                    // Log detallado para depuración, pero NO lanzamos error fatal
                     const errorText = await response.text();
-                    console.error(`Error actualizando habitación ${booking.roomId}:`, response.status, errorText);
-                    throw new Error(`Error actualizando habitación ${booking.roomId}`);
+                    console.warn(`La reserva fue eliminada, pero hubo un error actualizando la habitación ${booking.roomId}:`, response.status, errorText);
                 }
             }
         } catch (error) {
-            console.error('Error eliminando reserva:', error);
-            throw new Error('No se pudo eliminar la reserva');
+            // Solo lanzamos error si falla la eliminación, no el update del cuarto
+            if (error.message && error.message.includes('No se pudo eliminar la reserva')) {
+                throw new Error('No se pudo eliminar la reserva');
+            } else {
+                // Otros errores solo se loguean
+                console.error('Error eliminando reserva (no fatal):', error);
+            }
         }
     },
 

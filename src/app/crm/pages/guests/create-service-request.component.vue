@@ -77,7 +77,7 @@ export default {
         const userRooms = await GuestFacade.getUserRooms(userId.value);
         roomOptions.value = userRooms.map(room => ({
           id: room.id,
-          label: `#${room.number} - ${room.type} (${room.status})`
+          label: `#${room.roomNumber} - ${room.type} (${room.status})`
         }));
         hotelId.value = userRooms.length > 0 ? userRooms[0].hotelId : 1;
       } catch (e) {

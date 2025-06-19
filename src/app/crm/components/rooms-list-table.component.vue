@@ -1,7 +1,7 @@
 <template>
   <DataTable :value="rooms" class="p-datatable-sm" dataKey="id">
     <Column field="hotelId" :header="t('dashboard.rooms_management.hotelId')" />
-    <Column field="number" :header="t('dashboard.rooms_management.room')" />
+    <Column field="roomNumber" :header="t('dashboard.rooms_management.room')" />
     <Column field="type" :header="t('dashboard.rooms_management.type')" />
     <Column field="status" :header="t('dashboard.rooms_management.status')" />
     <Column field="price" :header="t('dashboard.rooms_management.price')" />

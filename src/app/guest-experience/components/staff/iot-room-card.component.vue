@@ -1,7 +1,7 @@
 <template>
   <div class="room-card">
     <div class="room-header">
-      <h3>{{ t('iot_room_configuration.room') }} #{{ room.number }} - {{ room.type }}</h3>
+      <h3>{{ t('iot_room_configuration.room') }} #{{ room.roomNumber }} - {{ room.type }}</h3>
       <span :class="['status-badge', room.status?.toLowerCase()]">{{ room.status }}</span>
     </div>
     <hr />
@@ -9,7 +9,7 @@
     <ul class="device-list">
       <li v-for="device in room.devices" :key="device.roomDeviceId" class="device-item">
         <span class="device-icon pi pi-eye"></span>
-        <span class="device-name">{{ device.name }}</span>
+        <span class="device-name">{{ device.ioTDevice?.name || getDeviceNameById(device.iotDeviceId) }}</span>
         <span :class="['device-status', device.status]">{{ t('iot_room_configuration.' + device.status) }}</span>
         <button class="settings-button" @click="openSettings(device)">
           <span class="pi pi-cog"></span>
@@ -34,7 +34,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+// Función utilitaria para obtener el nombre del dispositivo por id
+import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import RoomDevicePreferencesModalComponent from './room-device-preferences-modal.component.vue';
 import { RoomDeviceManagementFacade } from '../../services/room-device-management.facade.js';
@@ -45,8 +46,25 @@ const props = defineProps({
   room: Object
 });
 
-const room = props.room; // ⬅️ ESTA LÍNEA ES LA CLAVE
+const room = props.room;
 const emit = defineEmits(['updated']);
+
+// Obtener todos los dispositivos IoT para hacer el match por id
+const allDevices = ref([]);
+onMounted(async () => {
+  allDevices.value = await RoomDeviceManagementFacade.getAllIotDevices();
+  console.log('room.devices en mounted:', room.devices);
+});
+
+const getDeviceNameById = (id) => {
+  const device = allDevices.value.find(d => d.id === id);
+  return device ? device.name : 'Desconocido';
+};
+
+const getDeviceTypeById = (id) => {
+  const device = allDevices.value.find(d => d.id === id);
+  return device ? device.deviceType : '';
+};
 
 const openSettings = async (device) => {
   console.log("Opening settings for device:", device);

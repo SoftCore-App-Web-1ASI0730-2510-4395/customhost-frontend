@@ -54,9 +54,9 @@ const getStatusSeverity = (status) => {
 
 const getRequestSeverity = (status) => {
   switch (status) {
-    case 'Pending': return 'danger'
-    case 'In progress': return 'warn'
-    case 'Resolved': return 'success'
+    case 'Open': return 'info'
+    case 'InProgress': return 'warn'
+    case 'Completed': return 'success'
     default: return 'info'
   }
 }
@@ -76,12 +76,12 @@ const saveRequest = async (formData) => {
     ...formData,
     userId: 1,
     hotelId: 1,
-    status: 'pending'
+    status: 'Open'
   }
 
   const newRequest = await createCustomerRequest(payload)
   allRequests.value.push(newRequest)
-  pendingRequests.value = allRequests.value.filter(req => req.status !== 'Resolved')
+  pendingRequests.value = allRequests.value.filter(req => req.status !== 'Completed')
   requestDialog.value = false
 }
 
@@ -121,13 +121,13 @@ const fetchStaffForAssignment = async () => {
 const fetchData = async () => {
   try {
     const [roomsRes, requestsRes] = await Promise.all([
-      axios.get(`${API_URL}/rooms`),
+      axios.get(`${API_URL}/api/v1/rooms`),
       getCustomerRequests(),
     ]);
 
     rooms.value = roomsRes.data?.map(room => ({
       id: room.id,
-      number: room.number,
+      roomNumber: room.roomNumber,
       type: room.type,
       status: room.status,
       pendingRequests: requestsRes.filter(req =>

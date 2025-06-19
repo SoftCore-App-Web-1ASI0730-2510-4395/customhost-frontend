@@ -18,7 +18,7 @@
 
         <div class="mb-4">
           <h4>Habitación</h4>
-          <p>{{ paymentData.room.number }} - {{ paymentData.room.type }}</p>
+          <p>{{ paymentData.room.roomNumber }} - {{ paymentData.room.type }}</p>
           <p><strong>Precio por noche:</strong> ${{ paymentData.room.price }} USD</p>
           <p><strong>Total a pagar:</strong> ${{ totalAmount }} USD</p>
           <p><i class="text-sm">Entrada: {{ formattedCheckIn }}</i></p>

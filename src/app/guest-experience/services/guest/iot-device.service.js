@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { IotDevice } from '../../model/iot-device.entity.js';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/iotDevices'; // Endpoint para dispositivos IoT
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/io-t-devices'; // Endpoint para dispositivos IoT
 
 /**
  * Obtener todos los dispositivos
@@ -12,6 +12,7 @@ export const getDevices = async () => {
     try {
         const response = await axios.get(API_URL);
         console.log('Datos recibidos desde API:', response.data);
+        // Adaptar para pasar el objeto completo al constructor
         return response.data.map(d => new IotDevice(d));
     } catch (error) {
         console.error(
@@ -47,31 +48,40 @@ export const getDeviceById = async (id) => {
 export const getDevicesByRoom = async (roomId) => {
     try {
         // Obtener roomDevices
-        const roomDeviceResponse = await axios.get(`http://localhost:3001/roomDevices?roomId=${roomId}`);
+        const roomDeviceResponse = await axios.get(`http://localhost:5232/room-devices?roomId=${roomId}`);
         const roomDevices = roomDeviceResponse.data;
+        console.log('roomDevices:', roomDevices);
 
         if (!roomDevices.length) return [];
 
         // Obtener iotDevices
-        const allIotDevicesResponse = await axios.get('http://localhost:3001/iotDevices');
+        const allIotDevicesResponse = await axios.get('http://localhost:5232/io-t-devices');
         const allIotDevices = allIotDevicesResponse.data;
+        console.log('allIotDevices:', allIotDevices);
 
         // Obtener roomDevicePreferences
-        const roomDevicePrefsResponse = await axios.get('http://localhost:3001/roomDevicePreferences');
+        const roomDevicePrefsResponse = await axios.get('http://localhost:5232/room-device-preferences');
         const roomDevicePreferences = roomDevicePrefsResponse.data;
+        console.log('roomDevicePreferences:', roomDevicePreferences);
 
         // Mapear dispositivos con sus preferencias base y roomDeviceId
-        return roomDevices.map(rd => {
+        const mapped = roomDevices.map(rd => {
             const iot = allIotDevices.find(i => i.id === rd.iotDeviceId);
+            if (!iot) {
+                console.warn('No se encontró IoT device para roomDevice:', rd, 'iotDeviceId:', rd.iotDeviceId);
+            }
             const preference = roomDevicePreferences.find(p => p.roomDeviceId === rd.id);
             return {
                 ...iot,
                 roomDeviceId: rd.id,
+                iotDeviceId: rd.iotDeviceId, // <-- Aseguramos que siempre esté presente
                 roomDevicePreferenceId: preference?.id,
                 status: rd.status,
                 preferences: preference?.preferences || {}
             };
         });
+        console.log('mapped devices:', mapped);
+        return mapped;
     } catch (error) {
         console.error(`Error fetching devices for room ${roomId}:`, error);
         return [];
@@ -168,7 +178,7 @@ export const updateDeviceProperties = async (id, properties) => {
  */
 export const createRoomDevicePreference = async (roomDeviceId, preferences) => {
     try {
-        const response = await axios.post('http://localhost:3001/roomDevicePreferences', {
+        const response = await axios.post('http://localhost:5232/room-device-preferences', {
             roomDeviceId,
             preferences
         });
@@ -189,7 +199,7 @@ export const createRoomDevicePreference = async (roomDeviceId, preferences) => {
  */
 export const updateRoomDevicePreferences = async (roomDevicePreferenceId, preferences) => {
     try {
-        const response = await axios.patch(`http://localhost:3001/roomDevicePreferences/${roomDevicePreferenceId}`, {
+        const response = await axios.patch(`http://localhost:5232/room-device-preferences/${roomDevicePreferenceId}`, {
             preferences
         });
         console.log(`Preferencias del roomDevicePreference ${roomDevicePreferenceId} actualizadas`);
@@ -209,7 +219,7 @@ export const updateRoomDevicePreferences = async (roomDevicePreferenceId, prefer
  */
 export const getRoomDevicePreferenceByRoomDeviceId = async (roomDeviceId) => {
     try {
-        const response = await axios.get(`http://localhost:3001/roomDevicePreferences?roomDeviceId=${roomDeviceId}`);
+        const response = await axios.get(`http://localhost:5232/room-device-preferences?roomDeviceId=${roomDeviceId}`);
         return response.data && response.data.length > 0 ? response.data[0] : null;
     } catch (error) {
         console.error(

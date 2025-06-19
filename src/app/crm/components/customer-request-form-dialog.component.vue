@@ -29,6 +29,16 @@ watch(() => props.form, (newVal) => {
 const handleFormUpdate = () => {
   emit('update:form', requestForm.value)
 }
+
+const handleRoomSelect = (roomId) => {
+  const selectedRoom = props.rooms.find(r => r.id === roomId)
+  if (selectedRoom) {
+    requestForm.value.roomId = selectedRoom.id
+    requestForm.value.hotelId = selectedRoom.hotelId || 1 // Asume hotelId=1 si no existe en el objeto room
+    requestForm.value.userId = 1 // Asigna un userId fijo, cámbialo si es necesario
+    handleFormUpdate()
+  }
+}
 </script>
 
 <template>
@@ -42,20 +52,32 @@ const handleFormUpdate = () => {
     <form @submit.prevent="$emit('submit', requestForm)">
       <div class="p-fluid">
         <div class="field mb-3">
+          <label>Título</label>
+          <pv-input-text
+            v-model="requestForm.title"
+            placeholder="Título de la petición"
+            class="w-full"
+            @update:modelValue="handleFormUpdate"
+          />
+        </div>
+        <input type="hidden" v-model="requestForm.hotelId" />
+        <input type="hidden" v-model="requestForm.userId" />
+        <div class="field mb-3">
           <label>Habitación</label>
           <pv-select
               v-model="requestForm.roomId"
               :options="props.rooms"
-              optionLabel="number"
+              optionLabel="roomNumber"
               optionValue="id"
               placeholder="Seleccione habitación"
               class="w-full"
               :filter="true"
               filterPlaceholder="Buscar habitación..."
-              @update:modelValue="handleFormUpdate"
+              :appendTo="'body'"
+              @update:modelValue="handleRoomSelect"
           >
             <template #option="slotProps">
-              <div>{{ slotProps.option.number }} - {{ slotProps.option.type }}</div>
+              <div>{{ slotProps.option.roomNumber }} - {{ slotProps.option.type }}</div>
             </template>
           </pv-select>
         </div>

@@ -4,7 +4,7 @@
     <!-- Nombre del cuarto y tipo -->
     <div class="flex justify-content-between align-items-center mb-3">
       <h3 class="text-xl font-bold m-0">
-        {{ room.number ? 'Habitación ' + room.number : '' }} - {{ room.type }}
+        {{ room.roomNumber ? 'Habitación ' + room.roomNumber : '' }} - {{ room.type }}
       </h3>
       <pv-badge :value="room.status" :severity="getRoomStatusSeverity(room.status)" />
     </div>
@@ -23,9 +23,9 @@
           <!-- Mostrar configuración visual -->
           <div v-if="Object.keys(device.preferences || {}).length > 0">
             <div
-              v-for="(value, key) in device.preferences"
-              :key="key"
-              class="device-config-row"
+                v-for="(value, key) in device.preferences"
+                :key="key"
+                class="device-config-row"
             >
               <span class="device-config-label">{{ getFriendlyLabel(device, key) }}:</span>
               <span class="device-config-value">

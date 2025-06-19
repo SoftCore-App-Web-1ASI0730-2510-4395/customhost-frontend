@@ -29,6 +29,13 @@
         {{ data.status }}
       </template>
     </Column>
+    <Column header="Acciones">
+      <template #body="{ data }">
+        <button @click="$emit('delete-booking', data.id)" class="p-button p-button-danger p-button-sm">
+          <i class="pi pi-trash"></i>
+        </button>
+      </template>
+    </Column>
   </DataTable>
 </template>
 

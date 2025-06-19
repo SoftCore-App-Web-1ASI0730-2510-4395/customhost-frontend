@@ -70,8 +70,8 @@ const departments = computed(() => {
         <pv-column field="status" header="Status" sortable="true">
           <template #body="{data}">
             <pv-tag
-                :value="data.status === 'active' ? 'Active' : 'Inactive'"
-                :severity="data.status === 'active' ? 'success' : 'danger'"
+                :value="data.status === 'Active' ? 'Active' : 'Inactive'"
+                :severity="data.status === 'Active' ? 'success' : 'danger'"
             />
           </template>
         </pv-column>

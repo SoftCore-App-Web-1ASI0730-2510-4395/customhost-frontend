@@ -41,9 +41,9 @@
     <!-- Modal de edición -->
     <pv-dialog v-model:visible="showEditModal" header="Editar Configuración" :modal="true">
       <IoTDeviceEditConfig
-        :configKey="editingConfigKey"
-        :device="device"
-        @update="onUpdatePreference"
+          :configKey="editingConfigKey"
+          :device="device"
+          @update="onUpdatePreference"
       />
       <template #footer>
         <pv-button label="Guardar" icon="pi pi-save" severity="success" @click="saveConfig" />

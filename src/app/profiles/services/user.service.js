@@ -3,7 +3,7 @@
 import axios from 'axios';
 import User from '../model/user.entity.js';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/users';
+const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/users';
 
 /**
  * Obtiene un usuario por ID y devuelve una instancia del modelo User

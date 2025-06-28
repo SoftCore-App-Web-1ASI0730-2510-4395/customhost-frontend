@@ -4,7 +4,8 @@ import jsonServer from 'json-server';
 const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
-const port = 3001;
+const port = 5332;
+
 
 const routes= {
     "/api/v1/*": "/$1"

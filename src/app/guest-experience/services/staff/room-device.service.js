@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { iotDeviceService } from './iot-device.service.js';
 import * as roomService from '../../../crm/services/rooms.service.js';
+
+
 const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1';
 
 export const roomDeviceService = {
@@ -19,7 +21,7 @@ export const roomDeviceService = {
 
     async getAvailableDevicesForRoom(roomId) {
         const allDevices = await iotDeviceService.getAllIotDevices();
-        const roomDevicesRes = await axios.get(`${API_URL}/room-devices?roomId=${roomId}`);
+        const roomDevicesRes = await axios.get(`${API_URL}/room-devices/room/${roomId}`);
         const usedDeviceTypes = new Set(roomDevicesRes.data.map(rd => {
             const device = allDevices.find(d => d.id === rd.iotDeviceId);
             return device?.deviceType;

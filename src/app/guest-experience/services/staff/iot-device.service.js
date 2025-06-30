@@ -11,7 +11,7 @@ export const iotDeviceService = {
 
     async getAllIotDevices() {
         const res = await axios.get(`${API_URL}/io-t-devices`);
-        return res.data.map(d => new IotDevice(d.id, d.name, d.deviceType, d.configSchema));
+        return res.data.map(d => new IotDevice(d));
     },
 
 

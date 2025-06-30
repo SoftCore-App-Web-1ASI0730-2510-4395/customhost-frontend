@@ -22,9 +22,11 @@
           <label>{{ t('iot_room_configuration.iot_device') }}:</label>
           <select v-model="form.iotDeviceId" required>
             <option disabled value="">{{ t('iot_room_configuration.select_device') }}</option>
+            <!--   {{ getDeviceNameById(device.id) }} ({{ getDeviceTypeById(device.id) }})-->
             <option v-for="device in availableDevices" :key="device.id" :value="device.id">
-              {{ getDeviceNameById(device.id) }} ({{ getDeviceTypeById(device.id) }})
+              {{ device.name }}
             </option>
+
           </select>
 
           <label>{{ t('iot_room_configuration.status') }}:</label>
@@ -110,6 +112,10 @@ const getDeviceTypeById = (id) => {
 </script>
 
 <style scoped>
+
+option{
+  color:black;
+}
 .add-device-button {
   background-color: #00c48c;
   color: white;

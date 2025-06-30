@@ -1,8 +1,8 @@
 export class RoomDevice {
-    constructor(id, roomId, iotDeviceId, status) {
+    constructor(id, roomId, ioTDeviceId, status) {
         this.id = id;
         this.roomId = roomId;
-        this.iotDeviceId = iotDeviceId;
+        this.ioTDeviceId = ioTDeviceId;
         this.status = status; // 'working', 'maintenance', 'inactive'
     }
 }

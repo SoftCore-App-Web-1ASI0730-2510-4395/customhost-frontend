@@ -23,10 +23,15 @@ export const roomDeviceService = {
         const allDevices = await iotDeviceService.getAllIotDevices();
         const roomDevicesRes = await axios.get(`${API_URL}/room-devices/room/${roomId}`);
         const usedDeviceTypes = new Set(roomDevicesRes.data.map(rd => {
-            const device = allDevices.find(d => d.id === rd.iotDeviceId);
+            const device = allDevices.find(d => d.id === rd.ioTDeviceId);
             return device?.deviceType;
         }));
-        return allDevices.filter(d => !usedDeviceTypes.has(d.deviceType));
+        console.log('❌ usedDeviceTypes:', [...usedDeviceTypes]); // <--- 🔍
+
+        const filtered = allDevices.filter(d => !usedDeviceTypes.has(d.deviceType));
+        console.log('✅ availableDevices:', filtered); // <--- 🔍
+
+        return filtered;
     },
 
     async getRoomsWithDevices() {

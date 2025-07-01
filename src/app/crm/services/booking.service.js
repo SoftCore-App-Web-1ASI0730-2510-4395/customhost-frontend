@@ -124,7 +124,7 @@ export const getBookingsWithDetails = async () => {
  */
 export const getBookingsByUserId = async (userId) => {
     try {
-        const response = await axios.get(`${API_URL}?userId=${userId}`);
+        const response = await axios.get(`${API_URL}/user/${userId}`);
         return response.data.map(b => new Booking(b));
     } catch (error) {
         console.error(`Error al obtener reservas del usuario ${userId}:`, error);

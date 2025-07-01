@@ -1,6 +1,6 @@
 // src/crm/application/guest.facade.js
 
-import {getBookings, getBookingById, deleteBooking} from './booking.service.js';
+import {getBookingsByUserId, getBookingById, deleteBooking} from './booking.service.js';
 import { getUserById } from '../../profiles/services/user.service.js';
 import { getNotificationsByUserId } from './notification.service.js';
 import { getCustomerRequests, createCustomerRequest} from "./customer-request.service.js";
@@ -21,7 +21,7 @@ export default {
     async getGuestBookings(userId) {
         try {
             const [bookings, user] = await Promise.all([
-                getBookings(),
+                getBookingsByUserId(userId),
                 getUserById(userId)
             ]);
 

@@ -85,6 +85,7 @@ export default {
           roomId: paymentData.value.room.id,
           hotelId: paymentData.value.hotel.id,
           amount: paymentData.value.amount,
+          totalPrice: paymentData.value.amount, // agregado para backend
           currency: 'USD',
           checkInDate: paymentData.value.checkInDate,
           checkOutDate: paymentData.value.checkOutDate,

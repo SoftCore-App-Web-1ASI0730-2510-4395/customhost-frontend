@@ -37,6 +37,7 @@ export const getBookingById = async (bookingId) => {
  */
 export const createBooking = async (bookingData) => {
     try {
+        console.log('Datos enviados a createBooking:', bookingData); // Log para depuración
         const response = await axios.post(API_URL, bookingData);
         const data = response.data;
         // Reordena el objeto para que el id esté primero y no se sobrescriba
@@ -44,7 +45,7 @@ export const createBooking = async (bookingData) => {
         const ordered = { id, ...rest };
         return new Booking(ordered);
     } catch (error) {
-        console.error('Error al crear reserva:', error);
+        console.error('Error al crear reserva:', error?.response?.data || error.message);
         throw error;
     }
 };

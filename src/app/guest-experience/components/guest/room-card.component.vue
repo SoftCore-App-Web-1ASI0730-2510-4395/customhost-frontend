@@ -11,7 +11,7 @@
 
     <!-- Información del hotel -->
     <div class="hotel-info mb-3">
-      <strong>Hotel:</strong> {{ hotel.name }}
+      <strong>Hotel:</strong> {{ hotel?.name || 'Desconocido' }}
     </div>
 
     <!-- Lista de dispositivos -->
@@ -71,6 +71,11 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+  hotel: {
+    type: Object,
+    required: false,
+    default: () => ({})
+  },
   userId: {
     type: Number,
     required: true
@@ -78,12 +83,9 @@ const props = defineProps({
 });
 const emit = defineEmits(['edit-room-config']);
 
-// Obtiene el hotel asociado a esta habitación
-const hotel = computed(() => {
-  return hotels.find(hotel => hotel.id === props.room.hotelId) || {};
-});
+// El hotel ya viene como prop, no usar lista fija
+// const hotel = computed(() => props.hotel || {});
 
-// Mapea severidad del estado de la habitación
 const getRoomStatusSeverity = (status) => {
   switch (status?.toLowerCase()) {
     case 'available':
@@ -102,11 +104,6 @@ const onEditConfig = () => {
   emit('edit-room-config', { ...props.room, devices: props.devices });
 };
 
-// Datos simulados de hoteles (usa tu servicio real)
-const hotels = [
-  { id: 1, name: "Hotel Sheraton Center" },
-  { id: 2, name: "Barcelona Beach Resort" }
-];
 
 // Etiquetas amigables por tipo de dispositivo y clave
 const friendlyLabels = {

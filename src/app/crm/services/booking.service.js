@@ -123,11 +123,32 @@ export const getBookingsWithDetails = async () => {
  * Obtiene las reservas de un usuario específico
  */
 export const getBookingsByUserId = async (userId) => {
+    if (!userId) throw new Error('userId es requerido');
     try {
         const response = await axios.get(`${API_URL}/user/${userId}`);
         return response.data.map(b => new Booking(b));
     } catch (error) {
-        console.error(`Error al obtener reservas del usuario ${userId}:`, error);
+        console.error('Error al obtener reservas por usuario:', error);
+        return [];
+    }
+};
+
+/**
+ * Obtiene los cuartos (rooms) asociados a un usuario por su userId
+ */
+export const getRoomsForUser = async (userId) => {
+    try {
+        // 1. Obtener las reservas del usuario
+        const bookingsRes = await axios.get(`${API_URL}/user/${userId}`);
+        const bookings = bookingsRes.data;
+        // 2. Extraer los roomId únicos
+        const roomIds = [...new Set(bookings.map(b => b.roomId))];
+        // 3. Obtener detalles de cada cuarto
+        const roomPromises = roomIds.map(roomId => axios.get(`${ROOMS_URL}/${roomId}`));
+        const roomsRes = await Promise.all(roomPromises);
+        return roomsRes.map(res => res.data);
+    } catch (error) {
+        console.error('Error al obtener cuartos del usuario:', error);
         return [];
     }
 };

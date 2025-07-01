@@ -51,6 +51,11 @@ export const roomDeviceService = {
 
     async deleteRoomDevice(roomDeviceId) {
         return axios.delete(`${API_URL}/room-devices/${roomDeviceId}`);
+    },
+
+    async getDevicesForRoom(roomId) {
+        const response = await axios.get(`${API_URL}/room-devices/room/${roomId}`);
+        return response.data;
     }
 
 }

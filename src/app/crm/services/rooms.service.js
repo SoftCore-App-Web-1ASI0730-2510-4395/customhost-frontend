@@ -97,8 +97,8 @@ export const deleteRoom = async (id) => {
  */
 export async function getRoomsByIds(ids) {
     if (!ids || ids.length === 0) return [];
-    // Usamos fetch porque axios apunta a /api/v1/rooms y aquí necesitamos el mock server
-    const res = await fetch('http://localhost:5232/rooms');
+    // Usar la URL real del backend
+    const res = await fetch(API_URL);
     const allRooms = await res.json();
     return allRooms.filter(room => ids.includes(room.id));
 }

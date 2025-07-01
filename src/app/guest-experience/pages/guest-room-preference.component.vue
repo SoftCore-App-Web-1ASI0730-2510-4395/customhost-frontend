@@ -14,12 +14,19 @@
       <pv-progress-spinner />
     </div>
 
+    <!-- Mensaje de inicio de sesión -->
+    <div v-if="!userId" class="flex flex-column align-items-center justify-content-center mt-6">
+      <i class="pi pi-user text-6xl text-orange-500 mb-3"></i>
+      <span class="text-xl text-center text-gray-600">Inicia sesión, por favor.</span>
+    </div>
+
     <!-- Habitaciones con dispositivos -->
     <div v-else-if="roomsWithDevices.length > 0" class="grid gap-6">
       <div v-for="room in roomsWithDevices" :key="room.room.id" class="col-12 md:col-6 lg:col-4">
         <RoomCardComponent
             :room="room.room"
             :devices="room.devices"
+            :hotel="room.hotel"
             :userId="userId"
             @edit-room-config="handleEditRoomConfig"
         />
@@ -93,10 +100,13 @@
 import { ref, onMounted } from 'vue';
 import RoomCardComponent from '../components/guest/room-card.component.vue';
 import GuestRoomDeviceFacade from '../services/guest/guest-room-device.facade.js';
+import { RoomDeviceManagementFacade } from '../services/room-device-management.facade.js';
+import { getRoomsForUser } from '../../crm/services/booking.service.js';
 
 const facade = new GuestRoomDeviceFacade();
 
-const userId = parseInt(localStorage.getItem('userId'), 10);
+const userId = 1;
+
 const roomsWithDevices = ref([]);
 const loading = ref(true);
 const showEditModal = ref(false);
@@ -106,8 +116,25 @@ const message = ref(null);
 const loadUserRoomsAndDevices = async () => {
   loading.value = true;
   try {
-    const data = await facade.getUserRoomsAndDevices(userId);
-    roomsWithDevices.value = data.rooms || [];
+    // 1. Obtener solo las habitaciones del usuario
+    const allRooms = await getRoomsForUser(userId);
+    // 2. Para cada habitación, obtener hotel y devices enriquecidos
+    const result = [];
+    for (const room of allRooms) {
+      let hotel = {};
+      if (room.hotelId) {
+        try {
+          const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/hotel/${room.hotelId}`);
+          hotel = resp.ok ? await resp.json() : {};
+        } catch (e) {
+          console.error('Error obteniendo hotel:', e);
+          hotel = {};
+        }
+      }
+      const devices = await RoomDeviceManagementFacade.getDevicesWithUserPreferences(room.id, userId);
+      result.push({ room, hotel, devices });
+    }
+    roomsWithDevices.value = result;
   } catch (error) {
     console.error('Error cargando datos:', error);
   } finally {
@@ -215,7 +242,11 @@ const getMax = (key) => {
   return 100;
 };
 
-onMounted(loadUserRoomsAndDevices);
+onMounted(async () => {
+  console.log('Montando guest-room-preference.component.vue');
+  await loadUserRoomsAndDevices();
+  console.log('roomsWithDevices después de cargar:', roomsWithDevices.value);
+});
 </script>
 
 <style scoped>

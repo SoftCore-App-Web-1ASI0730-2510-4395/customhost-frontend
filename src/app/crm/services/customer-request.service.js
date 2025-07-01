@@ -24,18 +24,48 @@ export const getCustomerRequests = async () => {
 }
 
 export const createCustomerRequest = async (requestData) => {
-    // Solo enviar los campos requeridos por el backend
+    // Validación de campos obligatorios y restricciones
+    if (!requestData.title || requestData.title.length < 1 || requestData.title.length > 200) {
+        throw new Error('El título es obligatorio y debe tener entre 1 y 200 caracteres.')
+    }
+    if (!requestData.description || requestData.description.length < 1 || requestData.description.length > 1000) {
+        throw new Error('La descripción es obligatoria y debe tener entre 1 y 1000 caracteres.')
+    }
+    if (!requestData.type) {
+        throw new Error('El tipo de solicitud es obligatorio.')
+    }
+    if (!requestData.priority) {
+        throw new Error('La prioridad es obligatoria.')
+    }
+    if (!Number.isInteger(requestData.userId) || requestData.userId <= 0) {
+        throw new Error('El userId debe ser un entero positivo.')
+    }
+    if (!Number.isInteger(requestData.hotelId) || requestData.hotelId <= 0) {
+        throw new Error('El hotelId debe ser un entero positivo.')
+    }
+    if (!Number.isInteger(requestData.roomId) || requestData.roomId <= 0) {
+        throw new Error('El roomId debe ser un entero positivo.')
+    }
     const payload = {
-        title: requestData.title || '',
-        description: requestData.description || '',
-        type: requestData.type || '',
-        priority: requestData.priority || '',
+        title: requestData.title,
+        description: requestData.description,
+        type: requestData.type,
+        priority: requestData.priority,
         userId: requestData.userId,
         hotelId: requestData.hotelId,
         roomId: requestData.roomId
     }
-    const response = await axios.post(API_URL, payload)
-    return new CustomerRequest(response.data)
+    // Imprimir el payload antes de enviarlo
+    console.log('Payload enviado a backend:', payload)
+    try {
+        const response = await axios.post(API_URL, payload)
+        return new CustomerRequest(response.data)
+    } catch (error) {
+        if (error.response) {
+            console.error('Respuesta de error del backend:', error.response.data)
+        }
+        throw error
+    }
 }
 
 

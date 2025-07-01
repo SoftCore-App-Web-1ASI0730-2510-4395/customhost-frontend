@@ -21,14 +21,33 @@ export const getPaymentsByUserId = async (userId) => {
  */
 export const createPayment = async (paymentData) => {
     try {
+        // Solo enviar los campos requeridos por el backend
+        const {
+            bookingId,
+            userId,
+            hotelId,
+            roomId,
+            amount,
+            currency,
+            paymentDate,
+            status,
+            paymentMethod
+        } = paymentData;
         const response = await axios.post(API_URL, {
-            ...paymentData,
-            createdAt: new Date().toISOString()
+            bookingId,
+            userId,
+            hotelId,
+            roomId,
+            amount,
+            currency,
+            paymentDate,
+            status,
+            paymentMethod
         });
 
         return new Payment(response.data);
     } catch (error) {
-        console.error('Error creating payment:', error);
+        console.error('Error creando el pago:', error?.response?.data || error.message);
         throw error;
     }
 };

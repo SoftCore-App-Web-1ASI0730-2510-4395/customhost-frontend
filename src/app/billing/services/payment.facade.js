@@ -39,34 +39,34 @@ export default {
     },
 
     /**
-     * Realiza el pago y crea una reserva (booking) asociada
+     * Realiza la reserva y luego el pago asociado
      *
      * @param {Object} paymentData - Datos del pago a guardar
-     * @returns {Promise<Payment>} - Pago creado
+     * @returns {Promise<{payment: Payment, booking: any}>} - Pago y reserva creados
      */
     async processPayment(paymentData) {
         try {
-            // 1. Guardar el pago
-            const createdPayment = await createPayment({
-                ...paymentData,
-                status: 'paid',
-                paymentDate: new Date().toISOString()
-            });
-
-            // 2. Crear una reserva (booking) basada en este pago
+            // 1. Crear la reserva (booking) primero
             const bookingData = {
                 userId: paymentData.userId,
+                hotelId: paymentData.hotelId, // agregado
                 roomId: paymentData.roomId,
                 checkInDate: paymentData.checkInDate,
                 checkOutDate: paymentData.checkOutDate,
+                totalPrice: paymentData.totalPrice, // agregado
                 status: 'confirmed'
             };
-            // Si el backend retorna un id, asegúrate de ponerlo primero al crear el objeto de booking
-            // Pero aquí bookingData aún no tiene id, el id lo asigna el backend en createBooking
             const createdBooking = await createBooking(bookingData);
-            // Si quieres que el id esté primero en el objeto final:
-            const { id, ...rest } = createdBooking;
-            const orderedBooking = { id, ...rest };
+            const { id: bookingId, ...rest } = createdBooking;
+            const orderedBooking = { id: bookingId, ...rest };
+
+            // 2. Guardar el pago usando el bookingId generado
+            const createdPayment = await createPayment({
+                ...paymentData,
+                bookingId, // ahora sí existe
+                status: 'paid',
+                paymentDate: new Date().toISOString()
+            });
 
             // 3. Marcar habitación como "Occupied"
             await this.markRoomAsOccupied(paymentData.roomId);
@@ -89,19 +89,26 @@ export default {
     async markRoomAsOccupied(roomId) {
         try {
             const API_ROOMS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
-            const response = await fetch(`${API_ROOMS_URL}/${roomId}`, {
-                method: 'PATCH',
+            // 1. Obtener los datos actuales de la habitación
+            const getResponse = await fetch(`${API_ROOMS_URL}/${roomId}`);
+            if (!getResponse.ok) {
+                throw new Error(`No se pudo obtener la habitación ${roomId}`);
+            }
+            const roomData = await getResponse.json();
+            // 2. Modificar solo el campo status
+            const updatedRoom = { ...roomData, status: 'Occupied' };
+            // 3. Enviar PUT con todos los campos completos
+            const putResponse = await fetch(`${API_ROOMS_URL}/${roomId}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ status: 'Occupied' })
+                body: JSON.stringify(updatedRoom)
             });
-
-            if (!response.ok) {
+            if (!putResponse.ok) {
                 throw new Error(`Error updating room ${roomId}`);
             }
-
-            return await response.json();
+            return await putResponse.json();
         } catch (error) {
             console.error('Error marcando habitación como ocupada:', error);
             throw error;

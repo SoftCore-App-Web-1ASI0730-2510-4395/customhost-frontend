@@ -5,6 +5,11 @@
     <Card class="card p-4 shadow-1 border-round-lg">
       <form @submit.prevent="submitRequest">
         <div class="field">
+          <label for="title" class="block font-medium mb-2">Título</label>
+          <pv-input id="title" v-model="request.title" placeholder="Título de la solicitud" class="w-full" maxlength="200" />
+        </div>
+
+        <div class="field">
           <label for="type" class="block font-medium mb-2">Tipo de Solicitud</label>
           <pv-select id="type" v-model="request.type" :options="types" placeholder="Selecciona..." class="w-full" />
         </div>
@@ -95,11 +100,13 @@ export default {
       try {
         await GuestFacade.submitServiceRequest({
           ...request.value,
+          title: request.value.type, // El título será igual al tipo
           userId: userId.value,
           hotelId: hotelId.value
         });
         // Limpiar formulario tras enviar
         request.value = {
+          title: '',
           type: '',
           description: '',
           priority: '',

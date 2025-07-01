@@ -1,6 +1,6 @@
 // src/crm/application/guest.facade.js
 
-import {getBookingsByUserId, getBookingById, deleteBooking} from './booking.service.js';
+import {getBookings, getBookingsByUserId, getBookingById, deleteBooking} from './booking.service.js';
 import { getUserById } from '../../profiles/services/user.service.js';
 import { getNotificationsByUserId } from './notification.service.js';
 import { getCustomerRequests, createCustomerRequest} from "./customer-request.service.js";

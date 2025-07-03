@@ -157,18 +157,10 @@ export default {
             await new Promise(resolve => setTimeout(resolve, 200));
             // Cambiar el estado del cuarto a 'Available' después de eliminar la reserva usando PATCH
             if (booking && booking.roomId) {
-                const API_ROOMS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
-                const response = await fetch(`${API_ROOMS_URL}/${booking.roomId}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ status: 'Available' })
-                });
-                if (!response.ok) {
+                const response = await apiClient.patch(`/api/v1/rooms/${booking.roomId}`, { status: 'Available' });
+                if (!response.status === 200) {
                     // Log detallado para depuración, pero NO lanzamos error fatal
-                    const errorText = await response.text();
-                    console.warn(`La reserva fue eliminada, pero hubo un error actualizando la habitación ${booking.roomId}:`, response.status, errorText);
+                    console.warn(`La reserva fue eliminada, pero hubo un error actualizando la habitación ${booking.roomId}:`, response.status);
                 }
             }
         } catch (error) {

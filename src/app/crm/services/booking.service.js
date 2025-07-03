@@ -1,17 +1,17 @@
 // src/services/booking.service.js
-import axios from 'axios';
+import apiClient from '../../shared/services/api-service.js';
 import Booking from '../model/booking.entity.js';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/booking';
-const USERS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/users';
-const ROOMS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
+const API_URL = '/api/v1/booking';
+const USERS_URL = '/api/v1/users';
+const ROOMS_URL = '/api/v1/rooms';
 
 /**
  * Obtiene todas las reservas y las instancias con el modelo Booking
  */
 export const getBookings = async () => {
     try {
-        const response = await axios.get(API_URL);
+        const response = await apiClient.get(API_URL);
         return response.data.map(b => new Booking(b));
     } catch (error) {
         console.error('Error al obtener reservas:', error);
@@ -24,7 +24,7 @@ export const getBookings = async () => {
  */
 export const getBookingById = async (bookingId) => {
     try {
-        const response = await axios.get(`${API_URL}/${bookingId}`);
+        const response = await apiClient.get(`${API_URL}/${bookingId}`);
         return new Booking(response.data);
     } catch (error) {
         console.error('Error al obtener reserva por ID:', error);
@@ -38,7 +38,7 @@ export const getBookingById = async (bookingId) => {
 export const createBooking = async (bookingData) => {
     try {
         console.log('Datos enviados a createBooking:', bookingData); // Log para depuración
-        const response = await axios.post(API_URL, bookingData);
+        const response = await apiClient.post(API_URL, bookingData);
         const data = response.data;
         // Reordena el objeto para que el id esté primero y no se sobrescriba
         const { id, ...rest } = data;
@@ -55,7 +55,7 @@ export const createBooking = async (bookingData) => {
  */
 export const updateBooking = async (id, bookingData) => {
     try {
-        const response = await axios.put(`${API_URL}/${id}`, bookingData);
+        const response = await apiClient.put(`${API_URL}/${id}`, bookingData);
         return new Booking(response.data);
     } catch (error) {
         console.error('Error al actualizar reserva:', error);
@@ -71,7 +71,7 @@ export const deleteBooking = async (id) => {
         throw new Error('El id de la reserva no puede ser null o undefined');
     }
     try {
-        const response = await axios.delete(`${API_URL}/${id}`);
+        const response = await apiClient.delete(`${API_URL}/${id}`);
         if (response.status >= 300) {
             // Log detallado para depuración
             console.error('Respuesta inesperada al eliminar:', response.status, response.data);
@@ -92,9 +92,9 @@ export const deleteBooking = async (id) => {
 export const getBookingsWithDetails = async () => {
     try {
         const [bookingsRes, usersRes, roomsRes] = await Promise.all([
-            axios.get(API_URL),
-            axios.get(USERS_URL),
-            axios.get(ROOMS_URL)
+            apiClient.get(API_URL),
+            apiClient.get(USERS_URL),
+            apiClient.get(ROOMS_URL)
         ])
 
         const bookings = bookingsRes.data.map(b => new Booking(b))
@@ -125,7 +125,7 @@ export const getBookingsWithDetails = async () => {
 export const getBookingsByUserId = async (userId) => {
     if (!userId) throw new Error('userId es requerido');
     try {
-        const response = await axios.get(`${API_URL}/user/${userId}`);
+        const response = await apiClient.get(`${API_URL}/user/${userId}`);
         return response.data.map(b => new Booking(b));
     } catch (error) {
         console.error('Error al obtener reservas por usuario:', error);
@@ -139,12 +139,12 @@ export const getBookingsByUserId = async (userId) => {
 export const getRoomsForUser = async (userId) => {
     try {
         // 1. Obtener las reservas del usuario
-        const bookingsRes = await axios.get(`${API_URL}/user/${userId}`);
+        const bookingsRes = await apiClient.get(`${API_URL}/user/${userId}`);
         const bookings = bookingsRes.data;
         // 2. Extraer los roomId únicos
         const roomIds = [...new Set(bookings.map(b => b.roomId))];
         // 3. Obtener detalles de cada cuarto
-        const roomPromises = roomIds.map(roomId => axios.get(`${ROOMS_URL}/${roomId}`));
+        const roomPromises = roomIds.map(roomId => apiClient.get(`${ROOMS_URL}/${roomId}`));
         const roomsRes = await Promise.all(roomPromises);
         return roomsRes.map(res => res.data);
     } catch (error) {

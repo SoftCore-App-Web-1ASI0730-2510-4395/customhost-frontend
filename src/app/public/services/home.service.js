@@ -1,16 +1,16 @@
 // src/services/home.service.js
-import axios from 'axios'
+import apiClient from '../../shared/services/api-service.js';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1'
+const API_URL = '/api/v1'
 
 export const getHotelDashboardStats = async () => {
     try {
         const [roomsRes, bookingsRes, serviceRequestsRes, usersRes, iotDevicesRes] = await Promise.all([
-            axios.get(`${API_URL}/rooms`),
-            axios.get(`${API_URL}/bookings`),
-            axios.get(`${API_URL}/crm/serviceRequests`),
-            axios.get(`${API_URL}/users`),
-            axios.get(`${API_URL}/io-t-devices`)
+            apiClient.get(`${API_URL}/rooms`),
+            apiClient.get(`${API_URL}/bookings`),
+            apiClient.get(`${API_URL}/crm/serviceRequests`),
+            apiClient.get(`${API_URL}/users`),
+            apiClient.get(`${API_URL}/io-t-devices`)
         ])
 
         const rooms = roomsRes.data

@@ -44,14 +44,19 @@ export default {
   </div>
 </template>
 
-<style scoped>
+<style>
 .sticky-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   background: white;
   width: 100%;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+body, .app-layout, #app {
+  padding-top: 64px !important;
 }
 span {
   font-family: "Anta", sans-serif;

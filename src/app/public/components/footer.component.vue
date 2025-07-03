@@ -20,21 +20,15 @@ const currentYear = ref(new Date().getFullYear())
   text-align: center;
   border-top: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
   font-size: 0.9rem;
+  width: 100%;
+  /* Elimina position: fixed y bottom para sticky footer */
 }
 
 .footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
 }
 
-.footer a {
-  color: var(--color-primary-light);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.footer a:hover {
-  color: #ffffff;
-  text-decoration: underline;
+body, .app-layout, #app {
+  padding-bottom: 60px !important;
 }
 </style>

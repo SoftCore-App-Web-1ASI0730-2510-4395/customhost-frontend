@@ -29,19 +29,31 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="app-layout">
     <!-- Header y Sidebar -->
     <header-bar v-if="!isAuthPath" v-model:visible="isSideBarVisible" />
     <side-bar v-if="!isAuthPath" v-model:visible="isSideBarVisible" />
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <router-view />
+    </main>
+    <!-- Footer -->
+    <footer-component />
   </div>
-
-  <!-- Contenido principal -->
-  <router-view />
-
-  <!-- Footer siempre visible o condicional si lo deseas -->
-  <footer-component />
 </template>
 
-<style scoped>
-/* Puedes agregar estilos adicionales aquí si necesitas personalizar cómo se muestra el footer */
+<style>
+.app-layout {
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  background: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+}
+.main-content {
+  flex: 1 0 auto;
+  min-height: 60vh;
+  padding-top: 0;
+}
 </style>

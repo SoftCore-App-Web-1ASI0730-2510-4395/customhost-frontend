@@ -1,4 +1,3 @@
-@ -1,177 +0,0 @@
 <script setup>
 import { ref } from 'vue';
 
@@ -12,7 +11,6 @@ const props = defineProps({
 const emit = defineEmits(['submit-registration']);
 
 const username = ref('');
-const email = ref('');
 const password = ref('');
 const passwordRepeat = ref('');
 const submitted = ref(false);
@@ -22,7 +20,7 @@ function handleSubmit() {
   submitted.value = true;
   formErrorMessage.value = '';
 
-  if (!username.value || !email.value || !password.value || !passwordRepeat.value) {
+  if (!username.value || !password.value || !passwordRepeat.value) {
     return;
   }
 
@@ -31,9 +29,13 @@ function handleSubmit() {
     return;
   }
 
+  if (password.value.length < 6) {
+    formErrorMessage.value = 'La contraseña debe tener al menos 6 caracteres.';
+    return;
+  }
+
   emit('submit-registration', {
     username: username.value,
-    email: email.value,
     password: password.value
   });
 }
@@ -49,23 +51,9 @@ function handleSubmit() {
           :class="{'p-invalid': submitted && !username}"
           aria-describedby="usernameRegister-error"
           class="w-full"
-          placeholder="Nombre de usuario"
+          placeholder="Ingresa tu nombre de usuario"
       />
       <small id="usernameRegister-error" class="p-error" v-if="submitted && !username">El nombre de usuario es requerido.</small>
-    </div>
-
-    <div class="field mt-4">
-      <label for="emailRegister" class="block">Email</label>
-      <pv-input-text
-          id="emailRegister"
-          v-model="email"
-          type="email"
-          :class="{'p-invalid': submitted && !email}"
-          aria-describedby="emailRegister-error"
-          class="w-full"
-          placeholder="Email"
-      />
-      <small id="emailRegister-error" class="p-error" v-if="submitted && !email">El email es requerido.</small>
     </div>
 
     <div class="field mt-4">
@@ -74,105 +62,107 @@ function handleSubmit() {
           id="passwordRegister"
           v-model="password"
           :class="{'p-invalid': submitted && !password}"
-          :feedback="false"
-          toggleMask
           aria-describedby="passwordRegister-error"
           class="w-full"
-          placeholder="Contraseña"
+          placeholder="Ingresa tu contraseña"
+          toggleMask
+          :feedback="false"
       />
       <small id="passwordRegister-error" class="p-error" v-if="submitted && !password">La contraseña es requerida.</small>
     </div>
 
     <div class="field mt-4">
-      <label for="passwordRepeatRegister" class="block">Repetir Contraseña</label>
+      <label for="passwordRepeatRegister" class="block">Confirmar contraseña</label>
       <pv-password
           id="passwordRepeatRegister"
           v-model="passwordRepeat"
-          :class="{'p-invalid': (submitted && !passwordRepeat) || (submitted && password !== passwordRepeat && passwordRepeat)}"
-          :feedback="false"
-          toggleMask
+          :class="{'p-invalid': submitted && !passwordRepeat}"
           aria-describedby="passwordRepeatRegister-error"
           class="w-full"
-          placeholder="Repetir Contraseña"
+          placeholder="Confirma tu contraseña"
+          toggleMask
+          :feedback="false"
       />
-      <small id="passwordRepeatRegister-error" class="p-error" v-if="submitted && !passwordRepeat">Por favor, repite la contraseña.</small>
-      <small id="passwordMismatchRegister-error" class="p-error" v-if="submitted && password !== passwordRepeat && passwordRepeat">Las contraseñas no coinciden.</small>
+      <small id="passwordRepeatRegister-error" class="p-error" v-if="submitted && !passwordRepeat">La confirmación de contraseña es requerida.</small>
     </div>
 
     <pv-message severity="error" v-if="formErrorMessage" class="mt-3">{{ formErrorMessage }}</pv-message>
 
-    <div class="flex justify-content-end align-items-center mt-4">
+    <div class="button-container mt-4">
       <pv-button
           type="submit"
-          label="Registrarse"
-          :loading="props.loading"
-          :disabled="props.loading"
-          class="register-button"
+          label="Registrarse como Usuario"
+          class="w-full register-button"
+          :loading="loading"
+          :disabled="loading"
       />
     </div>
 
-    <div class="text-center mt-4">
-      <p>¿Ya tienes una cuenta? <router-link to="/iam/login">Inicia sesión aquí</router-link></p>
+    <div class="login-link-container mt-4">
+      <p class="text-center">
+        ¿Ya tienes una cuenta?
+        <router-link to="/iam/login" class="login-link">Iniciar sesión</router-link>
+      </p>
+    </div>
+
+    <div class="alternative-registration mt-3">
+      <p class="text-center">
+        ¿Eres un hotel?
+        <router-link to="/iam/register-hotel" class="hotel-link">Regístrate como hotel</router-link>
+      </p>
     </div>
   </form>
 </template>
 
 <style scoped>
-/* Estilos específicos del formulario de registro */
 .register-form {
-  padding: 1rem 0;
+  width: 100%;
 }
 
 .field {
   margin-bottom: 1rem;
 }
 
-.field label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-}
-
-.p-error {
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+.button-container {
+  margin-top: 1.5rem;
 }
 
 .register-button {
-  min-width: 120px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-/* Ajustes para el campo de contraseña pv-password */
-.register-form .field :deep(.p-password.w-full) {
-  display: flex;
+.register-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
-.register-form .field :deep(.p-password.w-full .p-password-input) {
-  flex-grow: 1;
-}
-
-.mt-3 {
-  margin-top: 0.75rem;
-}
-.mt-4 {
-  margin-top: 1rem;
-}
-.w-full {
-  width: 100%;
-}
-.block {
-  display: block;
-}
-.flex {
-  display: flex;
-}
-.justify-content-end {
-  justify-content: flex-end;
-}
-.align-items-center {
-  align-items: center;
-}
-.text-center {
+.login-link-container,
+.alternative-registration {
   text-align: center;
+}
+
+.login-link,
+.hotel-link {
+  color: var(--p-primary-color);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-link:hover,
+.hotel-link:hover {
+  color: var(--p-primary-600);
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .register-form {
+    padding: 0 0.5rem;
+  }
 }
 </style>

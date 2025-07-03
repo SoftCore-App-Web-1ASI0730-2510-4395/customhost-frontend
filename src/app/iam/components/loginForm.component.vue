@@ -11,19 +11,19 @@ const props = defineProps({
 
 const emit = defineEmits(['submit-login']);
 
-const email = ref('');
+const username = ref('');
 const password = ref('');
 const submitted = ref(false);
 
 function handleSubmit() {
   submitted.value = true;
 
-  if (!email.value || !password.value) {
+  if (!username.value || !password.value) {
     return;
   }
 
   emit('submit-login', {
-    email: email.value,
+    username: username.value,
     password: password.value
   });
 }
@@ -32,16 +32,16 @@ function handleSubmit() {
 <template>
   <form @submit.prevent="handleSubmit" class="login-form">
     <div class="field">
-      <label for="emailLogin" class="block">Email</label>
+      <label for="usernameLogin" class="block">Usuario</label>
       <pv-input-text
-          id="emailLogin"
-          v-model="email"
-          :class="{'p-invalid': submitted && !email}"
-          aria-describedby="emailLogin-error"
+          id="usernameLogin"
+          v-model="username"
+          :class="{'p-invalid': submitted && !username}"
+          aria-describedby="usernameLogin-error"
           class="w-full"
-          placeholder="Email"
+          placeholder="Usuario"
       />
-      <small id="emailLogin-error" class="p-error" v-if="submitted && !email">El email es requerido.</small>
+      <small id="usernameLogin-error" class="p-error" v-if="submitted && !username">El usuario es requerido.</small>
     </div>
 
     <div class="field mt-4">
@@ -97,7 +97,6 @@ function handleSubmit() {
   margin-top: 0.25rem;
 }
 
-.
 
 .forgot-password {
   color: var( #64748b);

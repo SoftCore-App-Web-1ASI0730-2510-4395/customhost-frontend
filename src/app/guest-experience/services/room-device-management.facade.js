@@ -27,41 +27,38 @@ export const RoomDeviceManagementFacade = {
         roomDeviceService.resetRoomDeviceForm(form, selectedDeviceConfig, preferences),
 
     /**
-     * Obtiene los dispositivos IoT de una habitación con la info completa y preferencias del usuario
+     * Obtiene los dispositivos IoT de una habitación con la info completa y preferencias del dispositivo en ese cuarto
      * @param {number} roomId
-     * @param {number} userId
      * @returns {Promise<Array>} devices enriched
      */
-    async getDevicesWithUserPreferences(roomId, userId) {
+    async getDevicesWithRoomDevicePreferences(roomId) {
         if (!roomId) throw new Error('roomId no puede ser null o undefined');
-        if (!userId) throw new Error('userId no puede ser null o undefined');
         // 1. Obtener todos los room-devices de la habitación (incluye ioTDevice)
         const roomDevices = await roomDeviceService.getDevicesForRoom(roomId); // debe traer ioTDevice
-        // 2. Obtener todas las preferencias de usuario y filtrar por userId
-        let allUserPrefs = [];
+        // 2. Obtener todas las preferencias de room-device
+        let allRoomDevicePrefs = [];
         try {
             const apiBase = import.meta.env.VITE_API_BASE_URL;
-            const response = await fetch(`${apiBase}/api/v1/user-device-preferences`);
-            if (!response.ok) throw new Error('Respuesta no OK al obtener preferencias de usuario');
-            const allPrefs = await response.json();
-            allUserPrefs = allPrefs.filter(p => p.userId === userId);
+            const response = await fetch(`${apiBase}/api/v1/room-device-preferences`);
+            if (!response.ok) throw new Error('Respuesta no OK al obtener preferencias de room-device');
+            allRoomDevicePrefs = await response.json();
         } catch (err) {
-            console.error('Error obteniendo preferencias de usuario:', err);
-            allUserPrefs = [];
+            console.error('Error obteniendo preferencias de room-device:', err);
+            allRoomDevicePrefs = [];
         }
         // 3. Mapear cada roomDevice a un objeto enriquecido
         return roomDevices.map(rd => {
-            const pref = allUserPrefs.find(p => p.deviceId === rd.ioTDeviceId);
+            const pref = allRoomDevicePrefs.find(p => p.roomDeviceId === rd.id);
             return {
                 id: rd.id,
                 roomDeviceId: rd.id,
                 ioTDeviceId: rd.ioTDeviceId,
-                name: pref?.customName || rd.ioTDevice?.name || 'Dispositivo',
+                name: rd.ioTDevice?.name || 'Dispositivo',
                 type: rd.ioTDevice?.deviceType || '',
                 configSchema: rd.ioTDevice?.configSchema ? JSON.parse(rd.ioTDevice.configSchema) : {},
                 status: rd.status,
-                preferences: pref?.overrides ? JSON.parse(pref.overrides) : {},
-                lastUpdated: pref?.lastUpdated || null
+                preferences: pref?.preferences ? (typeof pref.preferences === 'string' ? JSON.parse(pref.preferences) : pref.preferences) : {},
+                lastUpdated: pref?.createdAt || null
             };
         });
     }

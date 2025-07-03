@@ -168,7 +168,8 @@ const loadUserRoomsAndDevices = async () => {
           hotel = {};
         }
       }
-      const devices = await RoomDeviceManagementFacade.getDevicesWithUserPreferences(room.id, userId);
+      // Cambiar aquí para usar RoomDeviceManagementFacade.getDevicesWithRoomDevicePreferences
+      const devices = await RoomDeviceManagementFacade.getDevicesWithRoomDevicePreferences(room.id);
       result.push({ room, hotel, devices });
     }
     roomsWithDevices.value = result;
@@ -256,38 +257,39 @@ const showMessage = (text, type = 'success') => {
 const saveRoomConfig = async () => {
   try {
     const updatePromises = (editRoomData.value.devices || []).map(async d => {
-      const preferenceId = d.preferenceId || d.id;
-      const deviceId = d.deviceId;
-      const customName = d.customName || d.name || null;
-      let overrides = null;
+      // Buscar preferencia existente para este roomDeviceId
+      let existingPref = null;
+      let roomDeviceId = d.roomDeviceId || d.id;
+      console.log('[saveRoomConfig] Intentando obtener preferencia para roomDeviceId:', roomDeviceId, d);
       try {
-        overrides = d.preferences ? JSON.stringify(d.preferences) : null;
+        const resp = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/room-device-preferences/room-device/${roomDeviceId}`);
+        // El backend devuelve un array, tomamos el primer elemento
+        existingPref = Array.isArray(resp.data) ? resp.data[0] : resp.data;
+        console.log('[saveRoomConfig] Preferencia encontrada:', existingPref);
       } catch (e) {
-        console.error('Error serializando overrides:', d.preferences, e);
-      }
-      // Validaciones y log
-      if (!preferenceId || typeof preferenceId !== 'number') {
-        console.error('Falta preferenceId o no es número:', d);
+        console.error('[saveRoomConfig] No existe preferencia previa para este roomDeviceId, solo se permite PUT. Error:', e);
+        showMessage('No existe preferencia previa para este dispositivo, no se puede guardar.', 'error');
         return;
       }
-      if (!deviceId || typeof deviceId !== 'number') {
-        console.error('Falta deviceId o no es número:', d);
+      if (!existingPref || !existingPref.id) {
+        console.warn('[saveRoomConfig] No existe preferencia previa para este dispositivo, no se puede guardar.', { roomDeviceId, existingPref });
+        showMessage('No existe preferencia previa para este dispositivo, no se puede guardar.', 'error');
         return;
       }
       const payload = {
-        userId: userId,
-        deviceId,
-        customName,
-        overrides
+        roomDeviceId: roomDeviceId,
+        preferences: JSON.stringify(d.preferences)
       };
-      console.log('Intentando PUT:', {
-        url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/user-device-preferences/${preferenceId}`,
-        payload
-      });
-      await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/user-device-preferences/${preferenceId}`,
-        payload
-      );
+      console.log('[saveRoomConfig] Guardando preferencias para roomDeviceId:', roomDeviceId, 'Payload:', payload, 'Existe:', !!existingPref);
+      try {
+        const putResp = await axios.put(
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/room-device-preferences/${existingPref.id}`,
+          payload
+        );
+        console.log('[saveRoomConfig] Respuesta PUT:', putResp.data);
+      } catch (err) {
+        console.error('[saveRoomConfig] Error en PUT room-device-preferences:', err, 'Payload:', payload);
+      }
     });
     await Promise.all(updatePromises);
     showMessage('Configuración guardada correctamente.', 'success');
@@ -295,7 +297,7 @@ const saveRoomConfig = async () => {
     await loadUserRoomsAndDevices();
   } catch (error) {
     showMessage('Error al guardar la configuración.', 'error');
-    console.error('Error al guardar preferencias:', error);
+    console.error('[saveRoomConfig] Error al guardar preferencias:', error);
   }
 };
 

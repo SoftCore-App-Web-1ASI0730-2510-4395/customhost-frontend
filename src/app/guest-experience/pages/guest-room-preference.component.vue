@@ -256,7 +256,6 @@ const showMessage = (text, type = 'success') => {
 const saveRoomConfig = async () => {
   try {
     const updatePromises = (editRoomData.value.devices || []).map(async d => {
-      const preferenceId = d.preferenceId || d.id;
       const deviceId = d.deviceId;
       const customName = d.customName || d.name || null;
       let overrides = null;
@@ -265,14 +264,16 @@ const saveRoomConfig = async () => {
       } catch (e) {
         console.error('Error serializando overrides:', d.preferences, e);
       }
-      // Validaciones y log
-      if (!preferenceId || typeof preferenceId !== 'number') {
-        console.error('Falta preferenceId o no es número:', d);
-        return;
-      }
-      if (!deviceId || typeof deviceId !== 'number') {
-        console.error('Falta deviceId o no es número:', d);
-        return;
+      // Buscar preferencia existente para este usuario y dispositivo
+      let existingPref = null;
+      try {
+        const resp = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/user-device-preferences/user/${userId}`);
+        const prefs = resp.data || [];
+        existingPref = prefs.find(p => p.deviceId === deviceId);
+        console.log('Preferencias existentes para userId', userId, ':', prefs);
+        console.log('Preferencia encontrada para deviceId', deviceId, ':', existingPref);
+      } catch (e) {
+        console.warn('No se pudo obtener preferencias previas para este usuario:', e);
       }
       const payload = {
         userId: userId,
@@ -280,14 +281,27 @@ const saveRoomConfig = async () => {
         customName,
         overrides
       };
-      console.log('Intentando PUT:', {
-        url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/user-device-preferences/${preferenceId}`,
-        payload
-      });
-      await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/user-device-preferences/${preferenceId}`,
-        payload
-      );
+      if (existingPref) {
+        // PUT si existe
+        console.log('Intentando PUT:', {
+          url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/user-device-preferences/${existingPref.id}`,
+          payload
+        });
+        await axios.put(
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/user-device-preferences/${existingPref.id}`,
+          payload
+        );
+      } else {
+        // POST si no existe
+        console.log('Intentando POST:', {
+          url: `${import.meta.env.VITE_API_BASE_URL}/api/v1/user-device-preferences`,
+          payload
+        });
+        await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/user-device-preferences`,
+          payload
+        );
+      }
     });
     await Promise.all(updatePromises);
     showMessage('Configuración guardada correctamente.', 'success');

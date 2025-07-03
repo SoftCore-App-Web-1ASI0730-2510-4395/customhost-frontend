@@ -70,35 +70,45 @@ export default class GuestRoomDeviceFacade {
                 const devicesWithPrefs = await Promise.all(devicesRaw.map(async (roomDevice) => {
                     let preferences = {};
                     try {
+                        // Siempre obtener preferencias solo para este roomDeviceId
                         const prefResp = await axios.get(`${API_BASE_URL}/api/v1/room-device-preferences/room-device/${roomDevice.id}`);
                         if (prefResp.data && prefResp.data.preferences) {
-                            preferences = prefResp.data.preferences;
+                            // Si es string, parsear, si es objeto, asignar directo
+                            if (typeof prefResp.data.preferences === 'string') {
+                                try {
+                                    preferences = JSON.parse(prefResp.data.preferences);
+                                } catch (e) {
+                                    console.error('[DEBUG] Error al parsear preferencias:', prefResp.data.preferences, e);
+                                    preferences = {};
+                                }
+                            } else {
+                                preferences = prefResp.data.preferences;
+                            }
+                        } else {
+                            preferences = {};
                         }
                         console.log(`[FACADE] Preferencias para roomDeviceId ${roomDevice.id}:`, preferences);
                     } catch (err) {
+                        // Si no hay preferencias, dejar objeto vacío
                         console.warn(`[FACADE] No hay preferencias para roomDeviceId ${roomDevice.id}`);
-                    }
-                    // Parsear preferencias si vienen como string
-                    if (typeof preferences === 'string') {
-                        try {
-                            preferences = JSON.parse(preferences);
-                        } catch (e) {
-                            preferences = {};
-                        }
+                        preferences = {};
                     }
                     // Obtener info completa del iotDevice
                     let ioTDevice = null;
                     try {
                         const iotResp = await axios.get(`${API_BASE_URL}/api/v1/io-t-devices/${roomDevice.iotDeviceId}`);
                         ioTDevice = iotResp.data;
+                        console.log('[DEBUG] IoTDevice obtenido:', ioTDevice);
                     } catch (err) {
-                        console.warn(`[FACADE] No se pudo obtener info de IoTDevice para roomDeviceId ${roomDevice.id}`);
+                        console.warn(`[FACADE] No se pudo obtener info de IoTDevice para roomDeviceId ${roomDevice.id}`, err);
                     }
-                    return {
+                    const result = {
                         ...roomDevice,
-                        ...(ioTDevice || {}),
+                        iotDevice: ioTDevice,
                         preferences
                     };
+                    console.log('[DEBUG] Resultado deviceWithPrefs:', result);
+                    return result;
                 }));
                 console.log(`[FACADE] devicesWithPrefs para habitación ${roomId}:`, devicesWithPrefs);
                 roomsWithDevices.push({ room, hotel, devices: devicesWithPrefs });
@@ -140,9 +150,11 @@ export default class GuestRoomDeviceFacade {
         } catch (e) {
             throw new Error('No existe preferencia previa para este dispositivo. El guest solo puede modificar (PUT), no crear (POST).');
         }
+        // Hacer una copia profunda de las preferencias para evitar referencias compartidas
+        const preferencesCopy = JSON.parse(JSON.stringify(preferences));
         const payload = {
             roomDeviceId,
-            preferences: JSON.stringify(preferences)
+            preferences: JSON.stringify(preferencesCopy)
         };
         try {
             // Solo PUT

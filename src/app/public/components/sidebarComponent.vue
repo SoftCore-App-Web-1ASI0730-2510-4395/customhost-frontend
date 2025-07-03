@@ -1,135 +1,142 @@
-<script>
+<script setup>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useAuth } from '../../shared/composables/useAuth.js';
 import { Drawer as PvDrawer } from "primevue";
 
-export default {
-  name: "side-bar",
-  components: { PvDrawer },
-  props: {
-    visible: {
-      type: Boolean,
-      default: false
-    }
-  },
-  emits: ['update:visible'],
-  data() {
-    return {
-      userType: 'guest', // 'guest', 'staff'
-    }
-  },
-  methods: {
-    updateVisibility() {
-      this.$emit('update:visible', false);
-    },
-    isActive(path) {
-      return this.$route.path === path;
-    },
-    handleUserTypeChange(type) {
-      this.userType = type;
-    }
-  },
-  computed: {
-    sidebar_items() {
-      return [
-        //staff
-        {
-          name: this.$t('sidebar_items.home'),
-          path: '/staff-home',
-          type: 'staff',
-          icon: 'pi pi-home',
-        },
-        {
-          name: this.$t('sidebar_items.rooms'),
-          path: '/crm/rooms',
-          type: 'staff',
-          icon: 'pi pi-building',
-        },
-        {
-          name: this.$t('sidebar_items.staff-devices'),
-          path: '/guest-experience/staff-devices',
-          type: 'staff',
-          icon: 'pi pi-mobile'
-        },
-        {
-          name: this.$t('sidebar_items.customer-requests'),
-          path: '/crm/customer-requests',
-          type: 'staff',
-          icon: 'pi pi-inbox'
-        },
-        {
-          name: this.$t('sidebar_items.bookings-tracker'),
-          path: '/crm/bookings-tracker',
-          type: 'staff',
-          icon: 'pi pi-chart-line'
-        },
-        {
-          name: this.$t('sidebar_items.request-staff'),
-          path: '/crm/request-staff',
-          type: 'staff',
-          icon: 'pi pi-users'
-        },
-
-
-        //guest
-        {
-          name: this.$t('sidebar_items.home'),
-          path: '/guest-home',
-          type: 'guest',
-          icon: 'pi pi-home',
-        },
-
-        {
-          name: this.$t('sidebar_items.book-now'),
-          path: '/crm/guest/hotel-room-selection',
-          type: 'guest',
-          icon: 'pi pi-building', // Mejor icono para habitaciones
-        },
-        {
-          name: this.$t('sidebar_items.preferences'),
-          path: '/guest-experience/preferences',
-          type: 'guest',
-          icon: 'pi pi-cog'
-        },
-        {
-          name: this.$t('sidebar_items.my-bookings'),
-          path: '/crm/my-bookings',
-          type: 'guest',
-          icon: 'pi pi-list'
-        },
-        {
-          name: this.$t('sidebar_items.customer-service'),
-          path: '/crm/customer-service',
-          type: 'guest',
-          icon: 'pi pi-comments'
-        },
-        {
-          name: this.$t('sidebar_items.notifications'),
-          path: '/crm/guest/notifications',
-          type: 'guest',
-          icon: 'pi pi-cog'
-        },
-
-
-        //ambos
-        {
-          name: this.$t('sidebar_items.profile'),
-          path: '/profiles/profile',
-          type: 'both',
-          icon: 'pi pi-user'
-        },
-      ];
-    },
-    filteredItems() {
-      return this.sidebar_items.filter(item => {
-        return item.type === this.userType ||
-            item.type === 'both'
-
-      });
-    }
-  },
-  created() {
-    //En teoría aca deberíamos obtener el rol del usuario, en caso se use algún "store" en vue.
+// Props y emits
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false
   }
+});
+
+const emit = defineEmits(['update:visible']);
+
+// Composables
+const route = useRoute();
+const { t } = useI18n();
+const { userRole } = useAuth();
+
+// Mapeo de roles para compatibilidad con el sidebar existente
+const userType = computed(() => {
+  switch (userRole.value) {
+    case 'ADMIN':
+      return 'staff'; // Los admins ven el menú de staff
+    case 'STAFF':
+      return 'staff';
+    case 'GUEST':
+      return 'guest';
+    default:
+      return 'guest'; // Fallback por defecto
+  }
+});
+
+// Methods
+function updateVisibility() {
+  emit('update:visible', false);
 }
+
+function isActive(path) {
+  return route.path === path;
+}
+
+// Computed properties
+const sidebar_items = computed(() => {
+  return [
+    //staff
+    {
+      name: t('sidebar_items.home'),
+      path: '/staff-home',
+      type: 'staff',
+      icon: 'pi pi-home',
+    },
+    {
+      name: t('sidebar_items.rooms'),
+      path: '/crm/rooms',
+      type: 'staff',
+      icon: 'pi pi-building',
+    },
+    {
+      name: t('sidebar_items.staff-devices'),
+      path: '/guest-experience/staff-devices',
+      type: 'staff',
+      icon: 'pi pi-mobile'
+    },
+    {
+      name: t('sidebar_items.customer-requests'),
+      path: '/crm/customer-requests',
+      type: 'staff',
+      icon: 'pi pi-inbox'
+    },
+    {
+      name: t('sidebar_items.bookings-tracker'),
+      path: '/crm/bookings-tracker',
+      type: 'staff',
+      icon: 'pi pi-chart-line'
+    },
+    {
+      name: t('sidebar_items.request-staff'),
+      path: '/crm/request-staff',
+      type: 'staff',
+      icon: 'pi pi-users'
+    },
+
+    //guest
+    {
+      name: t('sidebar_items.home'),
+      path: '/guest-home',
+      type: 'guest',
+      icon: 'pi pi-home',
+    },
+    {
+      name: t('sidebar_items.book-now'),
+      path: '/crm/guest/hotel-room-selection',
+      type: 'guest',
+      icon: 'pi pi-building', // Mejor icono para habitaciones
+    },
+    {
+      name: t('sidebar_items.preferences'),
+      path: '/guest-experience/preferences',
+      type: 'guest',
+      icon: 'pi pi-cog'
+    },
+    {
+      name: t('sidebar_items.my-bookings'),
+      path: '/crm/my-bookings',
+      type: 'guest',
+      icon: 'pi pi-list'
+    },
+    {
+      name: t('sidebar_items.customer-service'),
+      path: '/crm/customer-service',
+      type: 'guest',
+      icon: 'pi pi-comments'
+    },
+    {
+      name: t('sidebar_items.notifications'),
+      path: '/crm/guest/notifications',
+      type: 'guest',
+      icon: 'pi pi-cog'
+    },
+
+    //ambos
+    {
+      name: t('sidebar_items.profile'),
+      path: '/profiles/profile',
+      type: 'both',
+      icon: 'pi pi-user'
+    },
+  ];
+});
+
+const filteredItems = computed(() => {
+  return sidebar_items.value.filter(item => {
+    return item.type === userType.value || item.type === 'both';
+  });
+});
 </script>
 
 <template>
@@ -141,18 +148,6 @@ export default {
   >
     <div class="sidebar-header">
       <h3 class="text-2xl">{{ $t('dashboard.title') }}</h3>
-      <div class="user-type-switch">
-        <button
-          v-for="type in ['guest', 'staff']"
-          :key="type"
-          :class="['switch-btn', { active: userType === type }]"
-          @click="handleUserTypeChange(type)"
-        >
-          <i v-if="type === 'guest'" class="pi pi-user"></i>
-          <i v-else-if="type === 'staff'" class="pi pi-users"></i>
-          <span>{{ $t('sidebar_items.' + type) }}</span>
-        </button>
-      </div>
     </div>
     <div class="sidebar-content">
       <ul class="sidebar-menu">
@@ -217,32 +212,5 @@ export default {
 
 i {
   font-size: 1.25rem;
-}
-
-.user-type-switch {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  justify-content: center;
-}
-.switch-btn {
-  background: #fff;
-  border: 1px solid #fa8f45;
-  color: #fa8f45;
-  border-radius: 20px;
-  padding: 0.3rem 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, border 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1rem;
-}
-.switch-btn.active, .switch-btn:hover {
-  background: #fa8f45;
-  color: #fff;
-  border: 1px solid #fa8f45;
 }
 </style>

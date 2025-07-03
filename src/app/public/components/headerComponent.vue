@@ -1,10 +1,11 @@
 <script>
 import {SelectButton as PvSelectButton, Toolbar as PvToolbar} from "primevue";
 import LanguageSwitcher from "./languageSwitcher.component.vue";
+import UserInfo from "../../shared/components/UserInfo.component.vue";
 
 export default {
   name: "headerBar",
-  components: {LanguageSwitcher, PvSelectButton, PvToolbar},
+  components: {UserInfo, LanguageSwitcher, PvSelectButton, PvToolbar},
   emits: ['update:visible'],
   props: {
     visible: {
@@ -34,8 +35,7 @@ export default {
       <template #end>
         <div class="flex align-items-center gap-3">
           <div class="user-info flex align-items-center gap-2">
-            <i class="pi pi-user"></i>
-            <span>Juan Pérez</span>
+            <UserInfo />
           </div>
           <language-switcher />
         </div>

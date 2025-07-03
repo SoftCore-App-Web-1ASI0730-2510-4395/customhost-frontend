@@ -15,9 +15,9 @@
           <p><i class="pi pi-calendar-times mr-2"></i><strong>Salida:</strong> {{ checkOutDate }}</p>
         </div>
         <div class="col-12 md:col-6">
-          <!-- Mostrar huésped y total solo en modo edición -->
+          <!-- Mostrar hotel y total solo en modo edición -->
           <template v-if="mode === 'edit'">
-            <p><i class="pi pi-user mr-2"></i><strong>Huésped:</strong> {{ booking.guestName }}</p>
+            <p><i class="pi pi-building mr-2"></i><strong>Hotel:</strong> {{ hotel?.name || 'Cargando...' }}</p>
             <p><i class="pi pi-money-bill mr-2"></i><strong>Total:</strong> ${{ booking.totalPrice }} USD</p>
           </template>
         </div>
@@ -45,7 +45,8 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref, onMounted } from 'vue';
+import { getHotelById } from '../../services/hotels.service.js';
 
 export default {
   name: 'BookingCard',
@@ -62,6 +63,17 @@ export default {
   },
   emits: ['delete-booking', 'view-booking'],
   setup(props, { emit }) {
+    const hotel = ref(null);
+    onMounted(async () => {
+      if (props.booking.hotelId) {
+        try {
+          hotel.value = await getHotelById(props.booking.hotelId);
+        } catch (e) {
+          hotel.value = { name: 'Desconocido' };
+        }
+      }
+    });
+
     const statusSeverity = computed(() => {
       switch (props.booking.status) {
         case 'active':
@@ -85,7 +97,7 @@ export default {
     const handleDelete = () => emit('delete-booking', props.booking.id);
     const handleView   = () => emit('view-booking', props.booking.id);
 
-    return { statusSeverity, checkInDate, checkOutDate, handleDelete, handleView };
+    return { statusSeverity, checkInDate, checkOutDate, handleDelete, handleView, hotel };
   }
 };
 </script>

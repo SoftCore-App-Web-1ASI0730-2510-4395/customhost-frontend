@@ -355,6 +355,44 @@ const getMax = (key) => {
   return 100;
 };
 
+function getDisplayValue(key, value) {
+  // Limpia el key para mostrarlo bonito
+  const cleanKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  if (Array.isArray(value)) {
+    // Mostrar arrays como texto plano separado por coma
+    return value.length
+      ? value.map(v => getFriendlyValue(key, v)).join(', ')
+      : 'Ninguno';
+  }
+  if (typeof value === 'boolean') {
+    return value ? 'Sí' : 'No';
+  }
+  if (value === null || value === undefined || value === '') {
+    return 'Sin valor';
+  }
+  let cleanValue = String(getFriendlyValue(key, value)).replace(/_/g, ' ');
+  cleanValue = cleanValue.replace(/%/g, '').replace(/"/g, '').replace(/\[/g, '').replace(/\]/g, '');
+  if (key === 'currentValue' || key === 'temperature') {
+    let temp = parseFloat(cleanValue);
+    let color = '#4f8cff';
+    let icon = 'pi pi-thermometer';
+    if (!isNaN(temp)) {
+      if (temp <= 18) {
+        color = '#2196f3';
+        icon = 'pi pi-snowflake';
+      } else if (temp >= 26) {
+        color = '#f44336';
+        icon = 'pi pi-fire';
+      } else {
+        color = '#f7b731';
+        icon = 'pi pi-thermometer';
+      }
+    }
+    return `${cleanValue}`;
+  }
+  return cleanValue;
+}
+
 onMounted(async () => {
   console.log('Montando guest-room-preference.component.vue');
   await loadUserRoomsAndDevices();
@@ -434,17 +472,6 @@ onMounted(async () => {
     max-width: 100vw;
     min-width: 0;
     padding: 0.7rem 0.2rem 0.7rem 0.2rem;
-  }
-  .device-config-fields {
-    max-width: 100vw;
-    min-width: 0;
-    width: 100%;
-    padding: 0.5rem 0.1rem 0.5rem 0.1rem;
-  }
-  .config-slider {
-    width: 100%;
-    min-width: 60px;
-    max-width: 100%;
   }
 }
 
@@ -662,7 +689,6 @@ onMounted(async () => {
   grid-template-rows: repeat(2, 1fr);
   gap: 1rem;
 }
-
 .modal-btn {
   padding: 0.6rem 1.5rem;
   border-radius: 8px;
@@ -674,9 +700,11 @@ onMounted(async () => {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   box-shadow: 0 2px 8px rgba(80,180,255,0.08);
+  display: inline-flex;
+  align-items: center;
 }
 .modal-btn.cancel {
-  background: linear-gradient(90deg, #ff5f6d 0%, #ffc371 100%);
+  background: linear-gradient(90deg, #ff5f6d 0%, #ff7e5f 100%);
   color: #fff;
 }
 .modal-btn.cancel:hover {

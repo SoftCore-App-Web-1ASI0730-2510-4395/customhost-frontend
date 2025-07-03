@@ -46,6 +46,11 @@ export default {
      */
     async processPayment(paymentData) {
         try {
+            // Validar totalPrice antes de crear la reserva
+            if (!paymentData.totalPrice || isNaN(paymentData.totalPrice) || paymentData.totalPrice <= 0) {
+                console.error('No se puede crear la reserva: totalPrice inválido:', paymentData.totalPrice);
+                throw new Error('El monto total de la reserva es inválido. No se puede procesar el pago.');
+            }
             // 1. Crear la reserva (booking) primero
             const bookingData = {
                 userId: paymentData.userId,

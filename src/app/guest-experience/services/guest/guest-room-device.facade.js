@@ -78,6 +78,14 @@ export default class GuestRoomDeviceFacade {
                     } catch (err) {
                         console.warn(`[FACADE] No hay preferencias para roomDeviceId ${roomDevice.id}`);
                     }
+                    // Parsear preferencias si vienen como string
+                    if (typeof preferences === 'string') {
+                        try {
+                            preferences = JSON.parse(preferences);
+                        } catch (e) {
+                            preferences = {};
+                        }
+                    }
                     // Obtener info completa del iotDevice
                     let ioTDevice = null;
                     try {
@@ -115,19 +123,34 @@ export default class GuestRoomDeviceFacade {
     }
 
     /**
-     * Guarda la preferencia de un dispositivo en una habitación (para IoT)
-     * Si existe la preferencia, actualiza (PATCH); si no, crea (POST)
-     * @param {Object} params - { roomDeviceId, preferences }
+     * Guarda la preferencia de un dispositivo en una habitación (RoomDevicePreference)
+     * Solo permite PUT, nunca POST. Si no existe, lanza error claro.
      */
-    async saveRoomDevicePreference({ roomDeviceId, preferences }) {
-        // Buscar si ya existe la preferencia
-        const existingPref = await getRoomDevicePreferenceByRoomDeviceId(roomDeviceId);
-        if (existingPref) {
-            // PATCH
-            return await updateRoomDevicePreferences(existingPref.id, preferences);
-        } else {
-            // POST
-            return await createRoomDevicePreference(roomDeviceId, preferences);
+    async saveRoomDevicePreference(roomDeviceId, preferences) {
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+        // Buscar la preferencia existente para este roomDeviceId
+        let existingPref = null;
+        try {
+            const resp = await axios.get(`${API_BASE_URL}/api/v1/room-device-preferences/room-device/${roomDeviceId}`);
+            if (resp.data && resp.data.id) {
+                existingPref = resp.data;
+            } else {
+                throw new Error('No existe preferencia previa para este dispositivo. El guest solo puede modificar (PUT), no crear (POST).');
+            }
+        } catch (e) {
+            throw new Error('No existe preferencia previa para este dispositivo. El guest solo puede modificar (PUT), no crear (POST).');
+        }
+        const payload = {
+            roomDeviceId,
+            preferences: JSON.stringify(preferences)
+        };
+        try {
+            // Solo PUT
+            const response = await axios.put(`${API_BASE_URL}/api/v1/room-device-preferences/${existingPref.id}`, payload);
+            return response.data;
+        } catch (error) {
+            console.error('Error guardando preferencia de RoomDevice:', error);
+            throw error;
         }
     }
 
@@ -146,10 +169,7 @@ export default class GuestRoomDeviceFacade {
             for (const device of devices) {
                 // Se espera que cada device tenga roomDeviceId y preferences
                 if (device.roomDeviceId && device.preferences) {
-                    await this.saveRoomDevicePreference({
-                        roomDeviceId: device.roomDeviceId,
-                        preferences: device.preferences
-                    });
+                    await this.saveRoomDevicePreference(device.roomDeviceId, device.preferences);
                 }
             }
         }

@@ -21,28 +21,38 @@ export default {
 </script>
 
 <template>
-  <pv-toolbar style="background: var(--color-secondary); color: var(--color-primary-light);">
-    <template #start>
-      <div class="flex gap-3 justify-content-center align-items-center">
-        <button class="border-none bg-transparent cursor-pointer" @click="toggleMenu">
-          <i class="pi pi-bars" />
-        </button>
-        <span class="font-semibold text-2xl">Custom Host</span>
-      </div>
-    </template>
-    <template #end>
-      <div class="flex align-items-center gap-3">
-        <div class="user-info flex align-items-center gap-2">
-          <i class="pi pi-user"></i>
-          <span>Juan Pérez</span>
+  <div class="sticky-header">
+    <pv-toolbar style="background: var(--color-secondary); color: var(--color-primary-light);">
+      <template #start>
+        <div class="flex gap-3 justify-content-center align-items-center">
+          <button class="border-none bg-transparent cursor-pointer" @click="toggleMenu">
+            <i class="pi pi-bars" />
+          </button>
+          <span class="font-semibold text-2xl">Custom Host</span>
         </div>
-        <language-switcher />
-      </div>
-    </template>
-  </pv-toolbar>
+      </template>
+      <template #end>
+        <div class="flex align-items-center gap-3">
+          <div class="user-info flex align-items-center gap-2">
+            <i class="pi pi-user"></i>
+            <span>Juan Pérez</span>
+          </div>
+          <language-switcher />
+        </div>
+      </template>
+    </pv-toolbar>
+  </div>
 </template>
 
 <style scoped>
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
 span {
   font-family: "Anta", sans-serif;
   letter-spacing: max(1px, 0.1vw);

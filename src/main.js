@@ -87,10 +87,7 @@ app
     .component('pv-textarea', Textarea)
     .component('pv-toolbar', Toolbar)
     .component('pv-toast', Toast)
-    .component('pv-input-text', InputText)
     .component('pv-password', Password)
-    .component('pv-card', Card)
-    .component('pv-toast', Toast)
     .component('pv-badge', Badge)
     .component('pv-message', Message)
 

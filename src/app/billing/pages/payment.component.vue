@@ -15,9 +15,28 @@
         <!-- Tarjeta de resumen -->
         <PaymentSummaryCard :payment-data="paymentData" />
 
-        <!-- Botón de pago -->
-        <div class="mt-5 text-center">
-          <pv-button label="Confirmar y Pagar" icon="pi pi-credit-card" @click="handlePayment" />
+        <!-- Stripe Elements SIMULADO -->
+        <div class="mt-5">
+          <h3 class="mb-2">Datos de la Tarjeta (Simulado Stripe)</h3>
+          <form @submit.prevent="handlePayment">
+            <div class="mb-3">
+              <label>Número de tarjeta</label>
+              <input v-model="card.number" maxlength="16" required class="input" placeholder="4242 4242 4242 4242" />
+            </div>
+            <div class="mb-3 flex gap-2">
+              <div>
+                <label>MM/AA</label>
+                <input v-model="card.exp" maxlength="5" required class="input" placeholder="12/34" />
+              </div>
+              <div>
+                <label>CVC</label>
+                <input v-model="card.cvc" maxlength="4" required class="input" placeholder="123" />
+              </div>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="p-button p-component">Confirmar y Pagar</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -43,6 +62,7 @@ export default {
     const router = useRouter();
     const paymentData = ref(null);
     const loading = ref(false);
+    const card = ref({ number: '', exp: '', cvc: '' });
 
     const loadPaymentData = async () => {
       try {
@@ -76,10 +96,15 @@ export default {
         alert("El monto del pago no es válido");
         return;
       }
-
+      // Validación simple de campos de tarjeta
+      if (!card.value.number || !card.value.exp || !card.value.cvc) {
+        alert('Por favor, completa los datos de la tarjeta');
+        return;
+      }
       loading.value = true;
-
       try {
+        // Simular token de Stripe
+        const fakeStripeToken = 'tok_' + Math.random().toString(36).substring(2, 15);
         await PaymentFacade.processPayment({
           userId: paymentData.value.user.id,
           roomId: paymentData.value.room.id,
@@ -89,20 +114,17 @@ export default {
           currency: 'USD',
           checkInDate: paymentData.value.checkInDate,
           checkOutDate: paymentData.value.checkOutDate,
-          paymentMethod: 'credit_card'
+          paymentMethod: 'credit_card',
+          stripeToken: fakeStripeToken // Simulado
         });
-
         alert('✅ Pago realizado exitosamente');
-
         // Limpiar datos temporales
         localStorage.removeItem('selectedRoom');
         localStorage.removeItem('checkInDate');
         localStorage.removeItem('checkOutDate');
         localStorage.removeItem('totalPrice');
-
         // Redirigir
-        router.push({ name: 'preferences' }); // ← Usamos el name definido en el router
-
+        router.push({ name: 'preferences' });
       } catch (error) {
         console.error('Error al procesar el pago:', error);
         alert('❌ Hubo un problema al realizar el pago');

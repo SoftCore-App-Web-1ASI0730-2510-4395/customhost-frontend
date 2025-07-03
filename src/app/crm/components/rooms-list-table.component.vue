@@ -10,6 +10,7 @@
       <template #body="slotProps">
         <Button icon="pi pi-pencil" class="p-button-sm p-button-text" @click="$emit('edit', slotProps.data)" />
         <Button icon="pi pi-trash" class="p-button-sm p-button-text text-red-500" @click="$emit('delete', slotProps.data.id)" />
+        <Button label="Reservar" class="p-button-sm p-button-success ml-2" @click="$emit('reserve', slotProps.data)" />
       </template>
     </Column>
   </DataTable>
@@ -29,5 +30,5 @@ defineProps({
   }
 })
 
-defineEmits(['edit', 'delete'])
+defineEmits(['edit', 'delete', 'reserve'])
 </script>

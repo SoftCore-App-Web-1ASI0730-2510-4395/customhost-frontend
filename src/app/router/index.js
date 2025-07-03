@@ -196,6 +196,12 @@ const routes = [
                 name: 'PaymentPage',
                 component: PaymentComponent,
                 meta: { title: 'PaymentPage' }
+            },
+            {
+                path: 'credit-card',
+                name: 'CreditCardPayment',
+                component: () => import('../billing/pages/credit-card-payment.component.vue'),
+                meta: { title: 'Pago con Tarjeta' }
             }
 
         ]

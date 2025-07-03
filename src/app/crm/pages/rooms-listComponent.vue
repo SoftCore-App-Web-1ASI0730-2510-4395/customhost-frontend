@@ -12,6 +12,7 @@
         :rooms="rooms"
         @edit="editRoom"
         @delete="deleteRoomById"
+        @reserve="reserveRoom"
     />
 
     <rooms-list-form
@@ -99,6 +100,18 @@ const saveRoom = async () => {
     alert('Error al guardar la habitación: ' + error.message)
   }
 }
+
+const reserveRoom = (room) => {
+  // Guardar la habitación seleccionada (incluyendo price) en localStorage
+  console.log('Habitación seleccionada para reservar:', room);
+  console.log('Campo price de la habitación:', room.price);
+  localStorage.setItem('selectedRoom', JSON.stringify(room));
+  // Verificar lo que se guardó
+  const savedRoom = JSON.parse(localStorage.getItem('selectedRoom'));
+  console.log('Habitación guardada en localStorage:', savedRoom);
+  // Redirigir al flujo de pago (ajusta la ruta si es necesario)
+  window.location.href = '/app/billing/pages/payment';
+};
 
 onMounted(async () => {
   try {

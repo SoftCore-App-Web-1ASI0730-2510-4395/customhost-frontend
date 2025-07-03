@@ -93,9 +93,15 @@ export default {
       localStorage.setItem('checkInDate', checkInDate.value);
       localStorage.setItem('checkOutDate', checkOutDate.value);
       localStorage.setItem('totalPrice', totalPrice.value);
+      localStorage.setItem('userId', room.value.userId || '1');
+      localStorage.setItem('hotelId', room.value.hotelId);
+      localStorage.setItem('roomId', room.value.id);
+      localStorage.setItem('currency', 'USD');
+      localStorage.setItem('paymentMethod', 'stripe');
+      localStorage.setItem('status', 'pending');
 
       // Redirigir a pago
-      router.push({ name: 'PaymentPage' });
+      router.push({ name: 'CreditCardPayment' });
     };
 
     return {

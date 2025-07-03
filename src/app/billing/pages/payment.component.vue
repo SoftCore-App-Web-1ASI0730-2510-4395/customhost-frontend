@@ -67,14 +67,34 @@ export default {
     const loadPaymentData = async () => {
       try {
         const selectedRoom = JSON.parse(localStorage.getItem('selectedRoom'));
+        console.log('selectedRoom recuperado:', selectedRoom);
         const userId = parseInt(localStorage.getItem('userId') || '1');
         const checkInDate = localStorage.getItem('checkInDate');
         const checkOutDate = localStorage.getItem('checkOutDate');
-        const totalPrice = parseFloat(localStorage.getItem('totalPrice')) || 0;
 
-        if (!selectedRoom) {
-          throw new Error("No se encontró una habitación seleccionada");
+        // Validar que selectedRoom.price exista
+        if (!selectedRoom || typeof selectedRoom.price === 'undefined') {
+          alert('La habitación seleccionada no tiene precio. Por favor, vuelve a seleccionar la habitación.');
+          router.push({ name: 'hotel-room-selection' });
+          return;
         }
+
+        // Calcular noches y totalPrice de forma robusta y simple
+        let totalPrice = 0;
+        let pricePerNight = 0;
+        let nights = 1;
+        if (selectedRoom && typeof selectedRoom.price !== 'undefined' && checkInDate && checkOutDate) {
+          pricePerNight = Number(selectedRoom.price) || 0;
+          const start = new Date(checkInDate);
+          const end = new Date(checkOutDate);
+          nights = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
+          nights = Math.max(1, Math.round(nights));
+          totalPrice = pricePerNight * nights;
+          localStorage.setItem('totalPrice', totalPrice.toString());
+        } else {
+          totalPrice = parseFloat(localStorage.getItem('totalPrice')) || 0;
+        }
+
 
         const data = await PaymentFacade.preparePaymentData(userId, selectedRoom.id, selectedRoom.hotelId);
 
@@ -82,7 +102,9 @@ export default {
           ...data,
           checkInDate,
           checkOutDate,
-          amount: totalPrice
+          amount: totalPrice,
+          nights,
+          pricePerNight
         };
 
       } catch (error) {
@@ -92,8 +114,10 @@ export default {
     };
 
     const handlePayment = async () => {
-      if (!paymentData.value.amount || paymentData.value.amount <= 0) {
-        alert("El monto del pago no es válido");
+      // Validación reforzada para evitar pagos con total 0 o inválido
+      if (!paymentData.value.amount || isNaN(paymentData.value.amount) || paymentData.value.amount <= 0) {
+        console.warn('Intento de pago con monto inválido:', paymentData.value.amount);
+        alert("El monto del pago no es válido. Por favor, revisa el resumen de tu reserva.");
         return;
       }
       // Validación simple de campos de tarjeta
@@ -105,12 +129,14 @@ export default {
       try {
         // Simular token de Stripe
         const fakeStripeToken = 'tok_' + Math.random().toString(36).substring(2, 15);
+        // Calcular totalPrice de forma robusta antes de enviar
+        const totalPrice = (paymentData.value.pricePerNight || 0) * (paymentData.value.nights || 1);
         await PaymentFacade.processPayment({
           userId: paymentData.value.user.id,
           roomId: paymentData.value.room.id,
           hotelId: paymentData.value.hotel.id,
-          amount: paymentData.value.amount,
-          totalPrice: paymentData.value.amount, // agregado para backend
+          amount: totalPrice,
+          totalPrice: totalPrice, // siempre calculado correctamente
           currency: 'USD',
           checkInDate: paymentData.value.checkInDate,
           checkOutDate: paymentData.value.checkOutDate,

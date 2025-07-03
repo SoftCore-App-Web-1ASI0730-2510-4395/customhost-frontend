@@ -1,14 +1,14 @@
-import axios from 'axios';
+import apiClient from '../../../shared/services/api-service.js';
 import { iotDeviceService } from './iot-device.service.js';
 import * as roomService from '../../../crm/services/rooms.service.js';
 
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1';
+const API_URL = '/api/v1';
 
 export const roomDeviceService = {
 
     async addRoomDevice(roomDevice) {
-        return axios.post(`${API_URL}/room-devices`, roomDevice);
+        return apiClient.post(`${API_URL}/room-devices`, roomDevice);
     },
 
     resetRoomDeviceForm(form, selectedDeviceConfig, preferences) {
@@ -21,7 +21,7 @@ export const roomDeviceService = {
 
     async getAvailableDevicesForRoom(roomId) {
         const allDevices = await iotDeviceService.getAllIotDevices();
-        const roomDevicesRes = await axios.get(`${API_URL}/room-devices/room/${roomId}`);
+        const roomDevicesRes = await apiClient.get(`${API_URL}/room-devices/room/${roomId}`);
         const usedDeviceTypes = new Set(roomDevicesRes.data.map(rd => {
             const device = allDevices.find(d => d.id === rd.ioTDeviceId);
             return device?.deviceType;
@@ -36,25 +36,25 @@ export const roomDeviceService = {
 
     async getRoomsWithDevices() {
         // Consumir el nuevo endpoint que ya retorna la estructura anidada
-        const response = await axios.get('http://localhost:5232/api/v1/rooms/with-devices');
+        const response = await apiClient.get('/api/v1/rooms/with-devices');
         return response.data;
     },
 
     async updateRoomDeviceStatus(roomDeviceId, newStatus) {
-        const existing = await axios.get(`${API_URL}/room-devices/${roomDeviceId}`);
+        const existing = await apiClient.get(`${API_URL}/room-devices/${roomDeviceId}`);
         const updated = {
             ...existing.data,
             status: newStatus
         };
-        return axios.put(`${API_URL}/room-devices/${roomDeviceId}`, updated);
+        return apiClient.put(`${API_URL}/room-devices/${roomDeviceId}`, updated);
     },
 
     async deleteRoomDevice(roomDeviceId) {
-        return axios.delete(`${API_URL}/room-devices/${roomDeviceId}`);
+        return apiClient.delete(`${API_URL}/room-devices/${roomDeviceId}`);
     },
 
     async getDevicesForRoom(roomId) {
-        const response = await axios.get(`${API_URL}/room-devices/room/${roomId}`);
+        const response = await apiClient.get(`${API_URL}/room-devices/room/${roomId}`);
         return response.data;
     }
 

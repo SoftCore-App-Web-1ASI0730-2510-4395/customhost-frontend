@@ -2,6 +2,7 @@ import { iotDeviceService } from './staff/iot-device.service.js';
 import { roomDeviceService } from './staff/room-device.service.js';
 import { roomDevicePreferenceService } from './staff/room-device-preference.service.js';
 import * as roomService from '../../crm/services/rooms.service.js';
+import apiClient from '../../shared/services/api-service.js';
 
 export const RoomDeviceManagementFacade = {
     // IoT Devices
@@ -38,10 +39,8 @@ export const RoomDeviceManagementFacade = {
         // 2. Obtener todas las preferencias de room-device
         let allRoomDevicePrefs = [];
         try {
-            const apiBase = import.meta.env.VITE_API_BASE_URL;
-            const response = await fetch(`${apiBase}/api/v1/room-device-preferences`);
-            if (!response.ok) throw new Error('Respuesta no OK al obtener preferencias de room-device');
-            allRoomDevicePrefs = await response.json();
+            const response = await apiClient.get('/api/v1/room-device-preferences');
+            allRoomDevicePrefs = response.data;
         } catch (err) {
             console.error('Error obteniendo preferencias de room-device:', err);
             allRoomDevicePrefs = [];

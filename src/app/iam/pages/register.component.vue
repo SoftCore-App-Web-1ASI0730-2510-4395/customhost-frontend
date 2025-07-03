@@ -1,30 +1,38 @@
 @ -1,130 +0,0 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useToast } from 'primevue/usetoast';
 import { Card, Toast, Message } from "primevue";
 import RegisterForm from '../components/registerForm.component.vue';
+import { useAuth } from '../../shared/composables/useAuth.js';
 
-const loading = ref(false);
 const errorMessage = ref('');
+const router = useRouter();
+const toast = useToast();
+const { registerUser, isLoading } = useAuth();
 
-function handleRegistration(formData) {
+async function handleRegistration(formData) {
   errorMessage.value = '';
-  loading.value = true;
 
-  // Aquí implementarías la lógica de registro
-  console.log("Datos recibidos del formulario:", formData);
-
-  setTimeout(() => {
-    // Simulación de registro exitoso/fallido
-    console.log("Registrando:", formData.username, formData.email);
-    // this.$toast.add({severity:'success', summary: 'Registro Exitoso', detail:'Cuenta creada correctamente', life: 3000});
-    // this.$router.push('/iam/login');
-
-    // O en caso de error del servidor:
-    // errorMessage.value = 'Error al registrar el usuario. Inténtalo de nuevo.';
-
-    loading.value = false;
-  }, 1500);
+  try {
+    await registerUser(formData);
+    
+    toast.add({
+      severity: 'success', 
+      summary: 'Registro Exitoso', 
+      detail: 'Cuenta creada correctamente. Ahora puedes iniciar sesión.',
+      life: 5000
+    });
+    
+    // Redirigir al login después del registro exitoso
+    setTimeout(() => {
+      router.push('/iam/login');
+    }, 2000);
+    
+  } catch (error) {
+    errorMessage.value = error.message;
+  }
 }
 </script>
 
@@ -39,11 +47,11 @@ function handleRegistration(formData) {
           <h2 class="login-title">Crear cuenta</h2>
         </template>        <template #content>
         <RegisterForm
-            :loading="loading"
+            :loading="isLoading"
             @submit-registration="handleRegistration"
         />
         <!-- Mensaje de error general para la página -->
-        <pv-message severity="error" v-if="errorMessage && !loading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
+        <pv-message severity="error" v-if="errorMessage && !isLoading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
       </template>
       </pv-card>
       <pv-toast position="top-right" />

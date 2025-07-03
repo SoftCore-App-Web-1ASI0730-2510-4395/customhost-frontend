@@ -4,28 +4,28 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Card, Toast, Message } from "primevue";
 import LoginForm from '../components/loginForm.component.vue';
+import { useAuth } from '../../shared/composables/useAuth.js';
 
-const loading = ref(false);
 const errorMessage = ref('');
 const router = useRouter();
+const { login, isLoading } = useAuth();
 
-function handleLogin(formData) {
+async function handleLogin(formData) {
   errorMessage.value = '';
-  loading.value = true;
 
-  // Aquí implementarías la lógica de autenticación
-  console.log("Datos recibidos del formulario:", formData);
-
-  setTimeout(() => {
-    if (formData.email === 'usuario@ejemplo.com' && formData.password === 'contraseña') {
-      // Login exitoso
-      router.push('/');
+  try {
+    const response = await login(formData);
+    
+    // Redirigir según el rol del usuario
+    const userRole = response.role;
+    if (userRole === 'ADMIN' || userRole === 'STAFF') {
+      router.push('/staff-home');
     } else {
-      // Login fallido
-      errorMessage.value = 'Credenciales incorrectas';
+      router.push('/guest-home');
     }
-    loading.value = false;
-  }, 1000);
+  } catch (error) {
+    errorMessage.value = error.message;
+  }
 }
 </script>
 
@@ -41,10 +41,10 @@ function handleLogin(formData) {
         </template>
         <template #content>
           <LoginForm
-              :loading="loading"
+              :loading="isLoading"
               @submit-login="handleLogin"
           />
-          <pv-message severity="error" v-if="errorMessage && !loading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
+          <pv-message severity="error" v-if="errorMessage && !isLoading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
         </template>
       </pv-card>
       <pv-toast position="top-right" />

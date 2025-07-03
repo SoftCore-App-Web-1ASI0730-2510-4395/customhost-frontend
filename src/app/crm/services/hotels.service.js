@@ -1,16 +1,16 @@
 // src/crm/services/hotels.service.js
 
-import axios from 'axios';
+import apiClient from '../../shared/services/api-service.js';
 import Hotel from '../model/hotels.entity';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/hotel';
+const API_URL = '/api/v1/hotel';
 
 /**
  * Obtiene todos los hoteles y devuelve instancias del modelo Hotel
  */
 export const getHotels = async () => {
     try {
-        const response = await axios.get(API_URL);
+        const response = await apiClient.get(API_URL);
         return response.data.map(hotel => new Hotel(hotel));
     } catch (error) {
         console.error('Error al obtener hoteles:', error);
@@ -23,7 +23,7 @@ export const getHotels = async () => {
  */
 export const getHotelById = async (hotelId) => {
     try {
-        const response = await axios.get(`${API_URL}/${hotelId}`);
+        const response = await apiClient.get(`${API_URL}/${hotelId}`);
         return new Hotel(response.data);
     } catch (error) {
         console.error('Error al obtener hotel por ID:', error);

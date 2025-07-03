@@ -1,21 +1,21 @@
-import axios from 'axios'
+import apiClient from '../../shared/services/api-service.js';
 import CustomerRequest from '../model/customer-request.entity.js'
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/crm/service-request'
+const API_URL = '/api/v1/crm/service-request'
 
 // Helper para evitar repetición
 const getAndModifyRequest = async (id, modifyFn) => {
-    const response = await axios.get(`${API_URL}/${id}`)
+    const response = await apiClient.get(`${API_URL}/${id}`)
     const request = new CustomerRequest(response.data)
     modifyFn(request)
-    const updated = await axios.put(`${API_URL}/${id}`, request.toJSON())
+    const updated = await apiClient.put(`${API_URL}/${id}`, request.toJSON())
     return new CustomerRequest(updated.data)
 }
 
 // --- Métodos públicos ---
 export const getCustomerRequests = async () => {
     try {
-        const response = await axios.get(API_URL)
+        const response = await apiClient.get(API_URL)
         return response.data.map(request => new CustomerRequest(request))
     } catch (error) {
         console.error('Error fetching customer requests:', error)
@@ -58,7 +58,7 @@ export const createCustomerRequest = async (requestData) => {
     // Imprimir el payload antes de enviarlo
     console.log('Payload enviado a backend:', payload)
     try {
-        const response = await axios.post(API_URL, payload)
+        const response = await apiClient.post(API_URL, payload)
         return new CustomerRequest(response.data)
     } catch (error) {
         if (error.response) {
@@ -70,12 +70,12 @@ export const createCustomerRequest = async (requestData) => {
 
 
 export const deleteCustomerRequest = async (id) => {
-    await axios.delete(`${API_URL}/${id}`)
+    await apiClient.delete(`${API_URL}/${id}`)
 }
 
 export const assignStaffToRequest = async (id, staffId) => {
     try {
-        const response = await axios.patch(`http://localhost:5232/api/v1/crm/service-request/${id}/assign`, {
+        const response = await apiClient.patch(`/api/v1/crm/service-request/${id}/assign`, {
             staff_id: String(staffId)
         });
         return response.data;

@@ -1,30 +1,42 @@
 @ -1,149 +0,0 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useToast } from 'primevue/usetoast';
 import { Card, Toast, Message } from "primevue";
 import RegisterHotelForm from '../components/registerHotelForm.component.vue';
+import { useAuth } from '../../shared/composables/useAuth.js';
 
-const loading = ref(false);
 const errorMessage = ref('');
+const router = useRouter();
+const toast = useToast();
+const { registerHotel, isLoading } = useAuth();
 
-function handleRegistration(formData) {
+async function handleRegistration(formData) {
   errorMessage.value = '';
-  loading.value = true;
 
-  // Simulación de la lógica de registro del hotel con los datos del formulario hijo
-  console.log("Datos recibidos del formulario:", formData);
-
-  setTimeout(() => {
-    console.log("Registrando Hotel:", formData.hotelName, "Admin:", formData.username, "Email:", formData.email);
-    // Ejemplo de notificación de éxito:
-    // this.$toast.add({severity:'success', summary: 'Solicitud Recibida', detail:'Gracias por registrar tu hotel. Nos pondremos en contacto pronto.', life: 5000});
-    // this.$router.push('/iam/login'); // O a una página de agradecimiento/confirmación
-
-    // Ejemplo de error del servidor:
-    // errorMessage.value = 'Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.';
-
-    loading.value = false;
-  }, 1500);
+  try {
+    // Registrar el hotel con rol ADMIN
+    await registerHotel({
+      username: formData.username,
+      password: formData.password
+    });
+    
+    toast.add({
+      severity: 'success',
+      summary: 'Hotel Registrado',
+      detail: `Hotel "${formData.hotelName}" registrado exitosamente. Ahora puedes iniciar sesión como administrador.`,
+      life: 5000
+    });
+    
+    // Redirigir al login después del registro exitoso
+    setTimeout(() => {
+      router.push('/iam/login');
+    }, 2000);
+    
+  } catch (error) {
+    errorMessage.value = error.message;
+  }
 }
 </script>
 
@@ -42,11 +54,11 @@ function handleRegistration(formData) {
         <template #content>
           <!-- Usar el nuevo componente de formulario -->
           <RegisterHotelForm
-              :loading="loading"
+              :loading="isLoading"
               @submit-registration="handleRegistration"
           />
           <!-- Mensaje de error general para la página -->
-          <pv-message severity="error" v-if="errorMessage && !loading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
+          <pv-message severity="error" v-if="errorMessage && !isLoading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
         </template>
       </pv-card>
       <pv-toast position="top-right" />

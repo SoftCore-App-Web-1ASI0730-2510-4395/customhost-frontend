@@ -31,6 +31,7 @@ import PaymentSummaryCard from '../component/payment-summary-card.component.vue'
 import PaymentFacade from '../services/payment.facade.js';
 import { useRouter } from 'vue-router';
 import { loadStripe } from '@stripe/stripe-js';
+import { updateRoom } from '../../crm/services/rooms.service.js';
 
 const stripePromise = loadStripe('pk_test_51Rgj1MD30eatJd6RTi9Ex1irZpVOITB3yjdQQyHafsscXM2avy46uKS44F72df2dOwPfaqttZzLuXObwRRwBZzmG00x38AYTMC');
 
@@ -118,6 +119,11 @@ const handleStripePayment = async () => {
     };
     console.log('Payload enviado a processPayment:', paymentPayload);
     await PaymentFacade.processPayment(paymentPayload);
+    // Cambiar el status del cuarto a 'Occupied' tras el pago exitoso
+    await updateRoom(paymentData.value.room.id, {
+      ...paymentData.value.room,
+      status: 'Occupied'
+    });
     alert('✅ Pago realizado exitosamente');
     localStorage.removeItem('selectedRoom');
     localStorage.removeItem('checkInDate');

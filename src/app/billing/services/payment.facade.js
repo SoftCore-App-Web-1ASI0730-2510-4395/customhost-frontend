@@ -4,6 +4,7 @@ import { getUserById } from '../../profiles/services/user.service.js';
 import { getRoomById } from '../../crm/services/rooms.service.js';
 import { getHotelById } from '../../crm/services/hotels.service.js';
 import { createPayment, getAllPayments } from './payment.service.js';
+import apiClient from '../../shared/services/api-service.js';
 
 // 👇 Importa servicio de bookings
 import { createBooking } from '../../crm/services/booking.service.js';
@@ -93,27 +94,16 @@ export default {
      */
     async markRoomAsOccupied(roomId) {
         try {
-            const API_ROOMS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
             // 1. Obtener los datos actuales de la habitación
-            const getResponse = await fetch(`${API_ROOMS_URL}/${roomId}`);
-            if (!getResponse.ok) {
-                throw new Error(`No se pudo obtener la habitación ${roomId}`);
-            }
-            const roomData = await getResponse.json();
+            const roomData = await apiClient.get(`/api/v1/rooms/${roomId}`);
+            
             // 2. Modificar solo el campo status
-            const updatedRoom = { ...roomData, status: 'Occupied' };
+            const updatedRoom = { ...roomData.data, status: 'Occupied' };
+            
             // 3. Enviar PUT con todos los campos completos
-            const putResponse = await fetch(`${API_ROOMS_URL}/${roomId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatedRoom)
-            });
-            if (!putResponse.ok) {
-                throw new Error(`Error updating room ${roomId}`);
-            }
-            return await putResponse.json();
+            const response = await apiClient.put(`/api/v1/rooms/${roomId}`, updatedRoom);
+            
+            return response.data;
         } catch (error) {
             console.error('Error marcando habitación como ocupada:', error);
             throw error;

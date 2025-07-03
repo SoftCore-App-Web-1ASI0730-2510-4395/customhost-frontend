@@ -1,13 +1,10 @@
 import { getRoomById } from '../../../crm/services/rooms.service.js';
 import { getDevicesByRoom, updateRoomDevicePreferences, createRoomDevicePreference, getRoomDevicePreferenceByRoomDeviceId, getDeviceById } from './iot-device.service.js';
-import axios from 'axios';
+import apiClient from '../../../shared/services/api-service.js';
 
 // Ajusta estas rutas según la ubicación real en tu proyecto
 import { getBookingsByUserId } from '../../../crm/services/booking.service.js'; // ⬅️ Confirmar ruta
 import { getUserById } from '../../../profiles/services/user.service.js'; // ⬅️ Confirmar ruta
-
-import.meta.env && import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL : '';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default class GuestRoomDeviceFacade {
     constructor() {}
@@ -29,7 +26,7 @@ export default class GuestRoomDeviceFacade {
         userId = 1;
         let user = null;
         try {
-            const userResp = await axios.get(`${API_BASE_URL}/api/v1/users/${userId}`);
+            const userResp = await apiClient.get(`/api/v1/users/${userId}`);
             user = userResp.data;
             console.log('[FACADE] Usuario obtenido:', user);
         } catch (e) {
@@ -37,7 +34,7 @@ export default class GuestRoomDeviceFacade {
             throw new Error("Usuario no encontrado");
         }
         // Obtener reservas del usuario
-        const bookingsResp = await axios.get(`${API_BASE_URL}/api/v1/booking/user/${userId}`);
+        const bookingsResp = await apiClient.get(`/api/v1/booking/user/${userId}`);
         const bookings = bookingsResp.data;
         console.log('[FACADE] Bookings del usuario:', bookings);
         if (!bookings || bookings.length === 0) {
@@ -48,13 +45,13 @@ export default class GuestRoomDeviceFacade {
         const roomsWithDevices = [];
         for (const roomId of roomIds) {
             try {
-                const roomResp = await axios.get(`${API_BASE_URL}/api/v1/rooms/${roomId}`);
+                const roomResp = await apiClient.get(`/api/v1/rooms/${roomId}`);
                 const room = roomResp.data;
                 console.log(`[FACADE] Habitación ${roomId}:`, room);
                 let hotel = null;
                 if (room.hotelId) {
                     try {
-                        const hotelResp = await axios.get(`${API_BASE_URL}/api/v1/hotel/${room.hotelId}`);
+                        const hotelResp = await apiClient.get(`/api/v1/hotel/${room.hotelId}`);
                         hotel = hotelResp.data;
                         console.log(`[FACADE] Hotel para habitación ${roomId}:`, hotel);
                     } catch (err) {
@@ -62,7 +59,7 @@ export default class GuestRoomDeviceFacade {
                     }
                 }
                 // Obtener dispositivos de la habitación (room-devices)
-                const devicesResp = await axios.get(`${API_BASE_URL}/api/v1/room-devices/room/${roomId}`);
+                const devicesResp = await apiClient.get(`/api/v1/room-devices/room/${roomId}`);
                 const devicesRaw = devicesResp.data;
                 console.log(`[FACADE] Dispositivos room-devices para habitación ${roomId}:`, devicesRaw);
 
@@ -71,7 +68,7 @@ export default class GuestRoomDeviceFacade {
                     let preferences = {};
                     try {
                         // Siempre obtener preferencias solo para este roomDeviceId
-                        const prefResp = await axios.get(`${API_BASE_URL}/api/v1/room-device-preferences/room-device/${roomDevice.id}`);
+                        const prefResp = await apiClient.get(`/api/v1/room-device-preferences/room-device/${roomDevice.id}`);
                         if (prefResp.data && prefResp.data.preferences) {
                             // Si es string, parsear, si es objeto, asignar directo
                             if (typeof prefResp.data.preferences === 'string') {
@@ -96,7 +93,7 @@ export default class GuestRoomDeviceFacade {
                     // Obtener info completa del iotDevice
                     let ioTDevice = null;
                     try {
-                        const iotResp = await axios.get(`${API_BASE_URL}/api/v1/io-t-devices/${roomDevice.iotDeviceId}`);
+                        const iotResp = await apiClient.get(`/api/v1/io-t-devices/${roomDevice.iotDeviceId}`);
                         ioTDevice = iotResp.data;
                         console.log('[DEBUG] IoTDevice obtenido:', ioTDevice);
                     } catch (err) {
@@ -137,11 +134,10 @@ export default class GuestRoomDeviceFacade {
      * Solo permite PUT, nunca POST. Si no existe, lanza error claro.
      */
     async saveRoomDevicePreference(roomDeviceId, preferences) {
-        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
         // Buscar la preferencia existente para este roomDeviceId
         let existingPref = null;
         try {
-            const resp = await axios.get(`${API_BASE_URL}/api/v1/room-device-preferences/room-device/${roomDeviceId}`);
+            const resp = await apiClient.get(`/api/v1/room-device-preferences/room-device/${roomDeviceId}`);
             if (resp.data && resp.data.id) {
                 existingPref = resp.data;
             } else {
@@ -158,7 +154,7 @@ export default class GuestRoomDeviceFacade {
         };
         try {
             // Solo PUT
-            const response = await axios.put(`${API_BASE_URL}/api/v1/room-device-preferences/${existingPref.id}`, payload);
+            const response = await apiClient.put(`/api/v1/room-device-preferences/${existingPref.id}`, payload);
             return response.data;
         } catch (error) {
             console.error('Error guardando preferencia de RoomDevice:', error);

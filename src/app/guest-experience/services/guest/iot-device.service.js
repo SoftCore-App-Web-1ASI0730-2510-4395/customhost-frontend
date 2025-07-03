@@ -1,16 +1,16 @@
 // src/guest-experience/services/iot-device.service.js
 
-import axios from 'axios';
+import apiClient from '../../../shared/services/api-service.js';
 import { IotDevice } from '../../model/iot-device.entity.js';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/io-t-devices'; // Endpoint para dispositivos IoT
+const API_URL = '/api/v1/io-t-devices'; // Endpoint para dispositivos IoT
 
 /**
  * Obtener todos los dispositivos
  */
 export const getDevices = async () => {
     try {
-        const response = await axios.get(API_URL);
+        const response = await apiClient.get(API_URL);
         console.log('Datos recibidos desde API:', response.data);
         // Adaptar para pasar el objeto completo al constructor
         return response.data.map(d => new IotDevice(d));
@@ -29,7 +29,7 @@ export const getDevices = async () => {
  */
 export const getDeviceById = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/${id}`);
+        const response = await apiClient.get(`${API_URL}/${id}`);
         console.log(`Dispositivo ${id} obtenido:`, response.data);
         return new IotDevice(response.data);
     } catch (error) {
@@ -47,7 +47,7 @@ export const getDeviceById = async (id) => {
  */
 export const getDevicesByRoom = async (roomId) => {
     try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/room-devices/room/${roomId}`);
+        const response = await apiClient.get(`/api/v1/room-devices/room/${roomId}`);
         console.log(`[IOT-SERVICE] Dispositivos para la habitación ${roomId}:`, response.data);
         return response.data;
     } catch (error) {
@@ -74,7 +74,7 @@ export const createDevice = async (deviceData) => {
             customizable: deviceData.customizable !== false
         };
 
-        const response = await axios.post(API_URL, deviceToCreate);
+        const response = await apiClient.post(API_URL, deviceToCreate);
         console.log('Dispositivo creado:', response.data);
         return new IotDevice(response.data);
     } catch (error) {
@@ -92,7 +92,7 @@ export const createDevice = async (deviceData) => {
  */
 export const updateDevice = async (id, deviceData) => {
     try {
-        const response = await axios.patch(`${API_URL}/${id}`, deviceData);
+        const response = await apiClient.patch(`${API_URL}/${id}`, deviceData);
         console.log(`Dispositivo ${id} actualizado:`, response.data);
         return new IotDevice(response.data);
     } catch (error) {
@@ -110,7 +110,7 @@ export const updateDevice = async (id, deviceData) => {
  */
 export const deleteDevice = async (id) => {
     try {
-        await axios.delete(`${API_URL}/${id}`);
+        await apiClient.delete(`${API_URL}/${id}`);
         console.log(`Dispositivo ${id} eliminado`);
         return true;
     } catch (error) {
@@ -128,7 +128,7 @@ export const deleteDevice = async (id) => {
  */
 export const updateDeviceProperties = async (id, properties) => {
     try {
-        const response = await axios.patch(`${API_URL}/${id}`, { properties });
+        const response = await apiClient.patch(`${API_URL}/${id}`, { properties });
         console.log(`Propiedades del dispositivo ${id} actualizadas`);
         return new IotDevice(response.data);
     } catch (error) {
@@ -146,7 +146,7 @@ export const updateDeviceProperties = async (id, properties) => {
  */
 export const createRoomDevicePreference = async (roomDeviceId, preferences) => {
     try {
-        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/room-device-preferences`, {
+        const response = await apiClient.post(`/api/v1/room-device-preferences`, {
             roomDeviceId,
             preferences
         });
@@ -167,7 +167,7 @@ export const createRoomDevicePreference = async (roomDeviceId, preferences) => {
  */
 export const updateRoomDevicePreferences = async (roomDevicePreferenceId, preferences) => {
     try {
-        const response = await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/v1/room-device-preferences/${roomDevicePreferenceId}`, {
+        const response = await apiClient.put(`/api/v1/room-device-preferences/${roomDevicePreferenceId}`, {
             preferences
         });
         console.log(`Preferencias del roomDevicePreference ${roomDevicePreferenceId} actualizadas`);
@@ -187,7 +187,7 @@ export const updateRoomDevicePreferences = async (roomDevicePreferenceId, prefer
  */
 export const getRoomDevicePreferenceByRoomDeviceId = async (roomDeviceId) => {
     try {
-        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/room-device-preferences/room-device/${roomDeviceId}`);
+        const response = await apiClient.get(`/api/v1/room-device-preferences/room-device/${roomDeviceId}`);
         // El backend real devuelve un objeto o 404, no un array
         return response.data && response.data.id ? response.data : null;
     } catch (error) {

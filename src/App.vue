@@ -48,8 +48,11 @@ export default {
   width: 100vw;
   overflow-x: hidden;
   background: #f8f9fa;
+  display: flex;
+  flex-direction: column;
 }
 .main-content {
+  flex: 1 0 auto;
   min-height: 60vh;
   padding-top: 0;
 }

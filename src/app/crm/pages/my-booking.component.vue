@@ -54,7 +54,23 @@ export default {
     const loadBookings = async () => {
       loading.value = true;
       try {
-        const userId = 1; // Forzar userId a 1 para pruebas
+        // Obtener userId real desde localStorage
+        let userId = null;
+        try {
+          const userData = localStorage.getItem('userData');
+          if (userData) {
+            const parsed = JSON.parse(userData);
+            userId = parsed.id;
+          }
+        } catch (e) {
+          console.error('[my-booking] Error leyendo userId de localStorage:', e);
+        }
+        if (!userId) {
+          showMessage('No se encontró usuario autenticado.', 'error');
+          bookings.value = [];
+          loading.value = false;
+          return;
+        }
         const data = await GuestFacade.getGuestBookings(userId);
         bookings.value = data;
       } catch (error) {

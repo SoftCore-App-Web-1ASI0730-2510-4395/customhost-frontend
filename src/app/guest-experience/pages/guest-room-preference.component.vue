@@ -26,7 +26,7 @@
         <RoomCardComponent
             :room="room.room"
             :devices="room.devices"
-            :hotel="room.hotel"
+            :hotelName="room.hotelName"
             :userId="userId"
             @edit-room-config="handleEditRoomConfig"
         />
@@ -137,11 +137,31 @@ import RoomCardComponent from '../components/guest/room-card.component.vue';
 import GuestRoomDeviceFacade from '../services/guest/guest-room-device.facade.js';
 import { RoomDeviceManagementFacade } from '../services/room-device-management.facade.js';
 import { getRoomsForUser } from '../../crm/services/booking.service.js';
+import { getHotelById } from '../../crm/services/hotels.service.js';
 import axios from 'axios';
 
 const facade = new GuestRoomDeviceFacade();
 
-const userId = 1;
+// Obtener el userId y token desde localStorage (token de usuario)
+let userId = null;
+let userToken = null;
+try {
+  const userData = localStorage.getItem('userData');
+  if (userData) {
+    const parsed = JSON.parse(userData);
+    userId = parsed.id;
+    userToken = parsed.token;
+    console.log('[guest-room-preference] userId obtenido de localStorage:', userId);
+    console.log('[guest-room-preference] token obtenido de localStorage:', userToken);
+  } else {
+    console.warn('[guest-room-preference] No se encontró userData en localStorage');
+  }
+} catch (e) {
+  console.error('[guest-room-preference] Error leyendo userId/token de localStorage:', e);
+}
+
+// Si necesitas pasar el token a tu facade, puedes hacerlo aquí
+document.dispatchEvent(new CustomEvent('userTokenAvailable', { detail: { userId, userToken } }));
 
 const roomsWithDevices = ref([]);
 const loading = ref(true);
@@ -151,40 +171,49 @@ const message = ref(null);
 const iotDevices = ref([]);
 
 const loadUserRoomsAndDevices = async () => {
+  if (!userId) {
+    console.warn('No hay userId, no se puede cargar habitaciones.');
+    loading.value = false;
+    return;
+  }
+  console.log('Iniciando loadUserRoomsAndDevices con userId:', userId);
   loading.value = true;
   try {
-    // 1. Obtener solo las habitaciones del usuario
+    // Usar getRoomsForUser para obtener los cuartos del usuario
     const allRooms = await getRoomsForUser(userId);
-    // 2. Para cada habitación, obtener hotel y devices enriquecidos
+    console.log('Habitaciones obtenidas:', allRooms);
     const result = [];
     for (const room of allRooms) {
-      let hotel = {};
+      console.log('Procesando habitación:', room);
+      let hotelName = null;
       if (room.hotelId) {
         try {
-          const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/hotel/${room.hotelId}`);
-          hotel = resp.ok ? await resp.json() : {};
+          const hotel = await getHotelById(room.hotelId);
+          hotelName = hotel?.name || null;
         } catch (e) {
-          console.error('Error obteniendo hotel:', e);
-          hotel = {};
+          console.warn('No se pudo obtener el hotel para la habitación:', room, 'hotelId:', room.hotelId, e);
         }
       }
-      // Cambiar aquí para usar RoomDeviceManagementFacade.getDevicesWithRoomDevicePreferences
+      // Obtener devices para la room
       const devices = await RoomDeviceManagementFacade.getDevicesWithRoomDevicePreferences(room.id);
-      result.push({ room, hotel, devices });
+      result.push({ room, hotelName, devices });
     }
     roomsWithDevices.value = result;
   } catch (error) {
-    console.error('Error cargando datos:', error);
+    console.error('Error en loadUserRoomsAndDevices:', error);
   } finally {
     loading.value = false;
+    console.log('Finalizando loadUserRoomsAndDevices');
   }
 };
 
 const fetchIoTDevices = async () => {
   try {
-    const resp = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/v1/io-t-devices`);
-    iotDevices.value = resp.ok ? await resp.json() : [];
+    console.log('[fetchIoTDevices] Iniciando fetch de IoT devices...');
+    iotDevices.value = await facade.fetchIoTDevices();
+    console.log('[fetchIoTDevices] IoT devices obtenidos:', iotDevices.value);
   } catch (e) {
+    console.error('[fetchIoTDevices] Error al obtener IoT devices:', e);
     iotDevices.value = [];
   }
 };
@@ -217,8 +246,10 @@ function getDefaultPreferences(configSchema, currentPrefs = {}) {
 }
 
 const handleEditRoomConfig = async (roomWithDevices) => {
+  console.log('[handleEditRoomConfig] Editando configuración para:', roomWithDevices);
   // Asegúrate de tener los IoT devices cargados
   if (!iotDevices.value.length) await fetchIoTDevices();
+  console.log('[handleEditRoomConfig] iotDevices:', iotDevices.value);
   editRoomData.value = {
     id: roomWithDevices.id,
     roomNumber: roomWithDevices.roomNumber,
@@ -229,7 +260,9 @@ const handleEditRoomConfig = async (roomWithDevices) => {
           let configSchema = {};
           try {
             configSchema = iotDevice && iotDevice.configSchema ? JSON.parse(iotDevice.configSchema) : {};
-          } catch (e) {}
+          } catch (e) {
+            console.error('[handleEditRoomConfig] Error al parsear configSchema:', e, iotDevice);
+          }
           return {
             ...d,
             deviceId: getDeviceId(d),
@@ -257,14 +290,13 @@ const showMessage = (text, type = 'success') => {
 const saveRoomConfig = async () => {
   try {
     const updatePromises = (editRoomData.value.devices || []).map(async d => {
-      // Buscar preferencia existente para este roomDeviceId
-      let existingPref = null;
       let roomDeviceId = d.roomDeviceId || d.id;
       console.log('[saveRoomConfig] Intentando obtener preferencia para roomDeviceId:', roomDeviceId, d);
+      let existingPref = null;
       try {
-        const resp = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/room-device-preferences/room-device/${roomDeviceId}`);
-        // El backend devuelve un array, tomamos el primer elemento
-        existingPref = Array.isArray(resp.data) ? resp.data[0] : resp.data;
+        existingPref = await facade.getRoomDevicePreferenceByRoomDeviceId(roomDeviceId);
+        // El backend puede devolver un array, tomamos el primer elemento si es así
+        if (Array.isArray(existingPref)) existingPref = existingPref[0];
         console.log('[saveRoomConfig] Preferencia encontrada:', existingPref);
       } catch (e) {
         console.error('[saveRoomConfig] No existe preferencia previa para este roomDeviceId, solo se permite PUT. Error:', e);
@@ -282,11 +314,8 @@ const saveRoomConfig = async () => {
       };
       console.log('[saveRoomConfig] Guardando preferencias para roomDeviceId:', roomDeviceId, 'Payload:', payload, 'Existe:', !!existingPref);
       try {
-        const putResp = await axios.put(
-          `${import.meta.env.VITE_API_BASE_URL}/api/v1/room-device-preferences/${existingPref.id}`,
-          payload
-        );
-        console.log('[saveRoomConfig] Respuesta PUT:', putResp.data);
+        await facade.updateRoomDevicePreference(existingPref.id, payload);
+        console.log('[saveRoomConfig] Preferencia actualizada correctamente');
       } catch (err) {
         console.error('[saveRoomConfig] Error en PUT room-device-preferences:', err, 'Payload:', payload);
       }

@@ -1,6 +1,5 @@
 // src/app/billing/services/payment.facade.js
 
-import { getUserById } from '../../profiles/services/user.service.js';
 import { getRoomById } from '../../crm/services/rooms.service.js';
 import { getHotelById } from '../../crm/services/hotels.service.js';
 import { createPayment, getAllPayments } from './payment.service.js';
@@ -17,21 +16,74 @@ export default {
      * Prepara los datos del pago con info del usuario, hotel y habitación
      */
     async preparePaymentData(userId, roomId, hotelId) {
+        // Obtener userId real desde localStorage si no se pasa uno válido
+        let realUserId = userId;
+        if (!realUserId || isNaN(realUserId)) {
+            // Obtener userId desde useAuth (reactivo global)
+            try {
+                const { useAuth } = await import('../../shared/composables/useAuth.js');
+                const auth = useAuth();
+                if (auth.user?.value) {
+                    // Mostrar el objeto user para depuración
+                    console.log('[preparePaymentData] user de useAuth:', auth.user.value);
+                    // Intenta con los campos más comunes
+                    realUserId = auth.user.value.id || auth.user.value.userId || auth.user.value.user?.id || auth.user.value.user?.userId;
+                    console.log('[preparePaymentData] userId detectado de useAuth:', realUserId);
+                }
+            } catch (e) {
+                // fallback a localStorage
+                const userData = JSON.parse(localStorage.getItem('userData'));
+                realUserId = userData?.id || userData?.userId || userData?.user?.id || userData?.user?.userId;
+                console.log('[preparePaymentData] userId detectado de localStorage:', realUserId, userData);
+            }
+        } else {
+            console.log('[preparePaymentData] userId recibido como argumento:', realUserId);
+        }
+        // Validación final de userId
+        if (!realUserId || isNaN(realUserId)) {
+            // Forzar a usar el id de localStorage si existe
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            if (userData && userData.id) {
+                realUserId = userData.id;
+                console.warn('[preparePaymentData] userId forzado desde localStorage:', realUserId);
+            } else {
+                console.error('[preparePaymentData] No se pudo determinar un userId válido.');
+                throw new Error('No se pudo determinar el usuario para el pago. Por favor, inicia sesión nuevamente.');
+            }
+        }
         try {
-            const [user, room, hotel] = await Promise.all([
-                getUserById(userId),
+            // Solo obtener user desde localStorage, no llamar a getUserById
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            let user = null;
+            if (userData && userData.id) {
+                user = {
+                    id: userData.id,
+                    username: userData.username || userData.name || '',
+                    email: userData.email || '',
+                    role: userData.role || '',
+                    // Puedes agregar más campos si los necesitas
+                };
+                console.warn('[preparePaymentData] Usuario creado desde localStorage:', user);
+            } else {
+                console.error('[preparePaymentData] No se pudo crear el usuario desde localStorage.');
+            }
+            // Obtener room y hotel normalmente
+            const [room, hotel] = await Promise.all([
                 getRoomById(roomId),
                 getHotelById(hotelId)
             ]);
-
+            console.log('[preparePaymentData] Resultado getRoomById:', room);
+            console.log('[preparePaymentData] Resultado getHotelById:', hotel);
             if (!user || !room || !hotel) {
+                console.error('[preparePaymentData] Datos incompletos:', { user, room, hotel });
                 throw new Error("Datos incompletos para realizar el pago");
             }
 
             return {
                 user,
                 room,
-                hotel
+                hotel,
+                guestName: user.username || user.name || user.fullName || ''
             };
         } catch (error) {
             console.error('Error al preparar datos del pago:', error);

@@ -102,6 +102,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '../../shared/composables/useAuth.js'
 import Card from 'primevue/card'
 import { getHotels } from '../../crm/services/hotels.service.js'
+import { getProfilesByEmail } from '../services/profile.service.js'
 
 const { user } = useAuth()
 const userRole = computed(() => user.value?.role)
@@ -129,12 +130,14 @@ const associatedHotels = ref([])
 
 onMounted(async () => {
   if (userRole.value === 'STAFF' || userRole.value === 'GUEST') {
-    // Aquí deberías reemplazar por la lógica real para obtener los hoteles asociados al usuario
-    // Por ahora, se filtran todos los hoteles donde el usuario es staff o guest (simulado)
-    const allHotels = await getHotels()
-    // Simulación: asocia todos los hoteles al usuario
-    associatedHotels.value = allHotels
-    // Si tienes una relación real, filtra aquí por userId
+    // Obtener los perfiles asociados al email del usuario
+    if (user.value?.email) {
+      const profiles = await getProfilesByEmail(user.value.email)
+      // Cada profile tiene un hotel asociado
+      associatedHotels.value = Array.isArray(profiles)
+        ? profiles.map(p => p.hotel).filter(Boolean)
+        : (profiles?.hotel ? [profiles.hotel] : [])
+    }
   }
 })
 

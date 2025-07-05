@@ -12,7 +12,6 @@ const props = defineProps({
 
 const emit = defineEmits(['payment-success']);
 
-const card = ref({ number: '', exp: '', cvc: '' });
 const loading = ref(false);
 const error = ref('');
 const toast = useToast();
@@ -113,8 +112,10 @@ async function handleStripePayment() {
       </div>
       <form @submit.prevent="handleStripePayment" class="payment-form">
         <h4>Datos de la Tarjeta (Stripe)</h4>
+        <div id="card-element" class="mb-4"></div>
+        <div v-if="cardError" class="text-red-500 mb-2">{{ cardError }}</div>
         <pv-message severity="error" v-if="error">{{ error }}</pv-message>
-        <pv-button type="submit" label="Confirmar y Pagar" :loading="loading" :disabled="loading" class="mt-3" />
+        <pv-button type="submit" label="Confirmar y Pagar" :loading="processing" :disabled="processing" class="mt-3" />
       </form>
     </div>
   </div>

@@ -113,6 +113,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { useAuth } from '../../shared/composables/useAuth.js';
 import { homeFacade } from '../services/home.facade.js';
 import NotificationCard from '../../crm/components/guests/notification-card.component.vue';
 import BookingCard from '../../crm/components/guests/booking-card.component.vue';
@@ -123,8 +124,9 @@ export default {
     // <-- 1) i18n dentro de setup
     const { t } = useI18n();
     const router = useRouter();
+    const { user } = useAuth();
 
-    const usuarioNombre      = ref('Juan Pérez'); // TODO: desde sesión
+    const usuarioNombre      = computed(() => user.value?.username || 'Usuario'); // Dinámico desde sesión
     const searchQuery        = ref('');
     const showDropdown       = ref(false);
 

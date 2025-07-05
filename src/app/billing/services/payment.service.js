@@ -1,14 +1,14 @@
-import axios from 'axios';
+import apiClient from '../../shared/services/api-service.js';
 import Payment from '../model/payment.entity';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/payments';
+const API_URL = '/api/v1/payments';
 
 /**
  * Obtiene todos los pagos de un usuario
  */
 export const getPaymentsByUserId = async (userId) => {
     try {
-        const response = await axios.get(`${API_URL}?userId=${userId}`);
+        const response = await apiClient.get(`${API_URL}?userId=${userId}`);
         return response.data.map(p => new Payment(p));
     } catch (error) {
         console.error('Error fetching payments:', error);
@@ -21,14 +21,33 @@ export const getPaymentsByUserId = async (userId) => {
  */
 export const createPayment = async (paymentData) => {
     try {
-        const response = await axios.post(API_URL, {
-            ...paymentData,
-            createdAt: new Date().toISOString()
+        // Solo enviar los campos requeridos por el backend
+        const {
+            bookingId,
+            userId,
+            hotelId,
+            roomId,
+            amount,
+            currency,
+            paymentDate,
+            status,
+            paymentMethod
+        } = paymentData;
+        const response = await apiClient.post(API_URL, {
+            bookingId,
+            userId,
+            hotelId,
+            roomId,
+            amount,
+            currency,
+            paymentDate,
+            status,
+            paymentMethod
         });
 
         return new Payment(response.data);
     } catch (error) {
-        console.error('Error creating payment:', error);
+        console.error('Error creando el pago:', error?.response?.data || error.message);
         throw error;
     }
 };
@@ -49,7 +68,7 @@ export const getAllPayments = async (paramurl) => {
                 url += `?${paramurl}`;
             }
         }
-        const response = await axios.get(url);
+        const response = await apiClient.get(url);
         return response.data.map(p => new Payment(p));
     } catch (error) {
         console.error('Error fetching all payments:', error);

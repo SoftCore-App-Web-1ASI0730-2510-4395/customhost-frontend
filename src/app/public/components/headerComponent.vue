@@ -1,10 +1,11 @@
 <script>
 import {SelectButton as PvSelectButton, Toolbar as PvToolbar} from "primevue";
 import LanguageSwitcher from "./languageSwitcher.component.vue";
+import UserInfo from "../../shared/components/UserInfo.component.vue";
 
 export default {
   name: "headerBar",
-  components: {LanguageSwitcher, PvSelectButton, PvToolbar},
+  components: {UserInfo, LanguageSwitcher, PvSelectButton, PvToolbar},
   emits: ['update:visible'],
   props: {
     visible: {
@@ -21,28 +22,42 @@ export default {
 </script>
 
 <template>
-  <pv-toolbar style="background: var(--color-secondary); color: var(--color-primary-light);">
-    <template #start>
-      <div class="flex gap-3 justify-content-center align-items-center">
-        <button class="border-none bg-transparent cursor-pointer" @click="toggleMenu">
-          <i class="pi pi-bars" />
-        </button>
-        <span class="font-semibold text-2xl">Custom Host</span>
-      </div>
-    </template>
-    <template #end>
-      <div class="flex align-items-center gap-3">
-        <div class="user-info flex align-items-center gap-2">
-          <i class="pi pi-user"></i>
-          <span>Juan Pérez</span>
+  <div class="sticky-header">
+    <pv-toolbar style="background: var(--color-secondary); color: var(--color-primary-light);">
+      <template #start>
+        <div class="flex gap-3 justify-content-center align-items-center">
+          <button class="border-none bg-transparent cursor-pointer" @click="toggleMenu">
+            <i class="pi pi-bars" />
+          </button>
+          <span class="font-semibold text-2xl">Custom Host</span>
         </div>
-        <language-switcher />
-      </div>
-    </template>
-  </pv-toolbar>
+      </template>
+      <template #end>
+        <div class="flex align-items-center gap-3">
+          <div class="user-info flex align-items-center gap-2">
+            <UserInfo />
+          </div>
+          <language-switcher />
+        </div>
+      </template>
+    </pv-toolbar>
+  </div>
 </template>
 
-<style scoped>
+<style>
+.sticky-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+body, .app-layout, #app {
+  padding-top: 64px !important;
+}
 span {
   font-family: "Anta", sans-serif;
   letter-spacing: max(1px, 0.1vw);

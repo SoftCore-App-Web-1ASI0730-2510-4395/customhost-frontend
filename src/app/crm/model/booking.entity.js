@@ -39,7 +39,7 @@ export default class Booking {
     }
 
     get roomNumber() {
-        return this.room?.number || 'N/A';
+        return this.room?.roomNumber || 'N/A';
     }
     
 }

@@ -1,6 +1,6 @@
 // src/crm/application/guest.facade.js
 
-import {getBookings, getBookingById, deleteBooking} from './booking.service.js';
+import {getBookings, getBookingsByUserId, getBookingById, deleteBooking} from './booking.service.js';
 import { getUserById } from '../../profiles/services/user.service.js';
 import { getNotificationsByUserId } from './notification.service.js';
 import { getCustomerRequests, createCustomerRequest} from "./customer-request.service.js";
@@ -21,7 +21,7 @@ export default {
     async getGuestBookings(userId) {
         try {
             const [bookings, user] = await Promise.all([
-                getBookings(),
+                getBookingsByUserId(userId),
                 getUserById(userId)
             ]);
 
@@ -40,7 +40,7 @@ export default {
                     id,
                     ...rest,
                     guestName: user ? `${user.firstName} ${user.lastName}` : 'Desconocido',
-                    roomNumber: room?.number || 'N/A',
+                    roomNumber: room?.roomNumber || 'N/A',
                     roomType: room?.type || 'Tipo desconocido',
                     totalPrice: payment?.amount || 0,
                     // status de cuarto se puede actualizar tras eliminar
@@ -152,29 +152,25 @@ export default {
             }
             // Obtener la reserva antes de eliminar para saber el roomId
             const booking = await getBookingById(bookingId);
-            await deleteBooking(bookingId);
+            await deleteBooking(bookingId); // Si falla aquí, sí lanzamos error
             // Esperar un poco para asegurar que la eliminación se procese antes de actualizar el cuarto
             await new Promise(resolve => setTimeout(resolve, 200));
             // Cambiar el estado del cuarto a 'Available' después de eliminar la reserva usando PATCH
             if (booking && booking.roomId) {
-                const API_ROOMS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
-                const response = await fetch(`${API_ROOMS_URL}/${booking.roomId}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ status: 'Available' })
-                });
-                if (!response.ok) {
-                    // Log detallado para depuración
-                    const errorText = await response.text();
-                    console.error(`Error actualizando habitación ${booking.roomId}:`, response.status, errorText);
-                    throw new Error(`Error actualizando habitación ${booking.roomId}`);
+                const response = await apiClient.patch(`/api/v1/rooms/${booking.roomId}`, { status: 'Available' });
+                if (!response.status === 200) {
+                    // Log detallado para depuración, pero NO lanzamos error fatal
+                    console.warn(`La reserva fue eliminada, pero hubo un error actualizando la habitación ${booking.roomId}:`, response.status);
                 }
             }
         } catch (error) {
-            console.error('Error eliminando reserva:', error);
-            throw new Error('No se pudo eliminar la reserva');
+            // Solo lanzamos error si falla la eliminación, no el update del cuarto
+            if (error.message && error.message.includes('No se pudo eliminar la reserva')) {
+                throw new Error('No se pudo eliminar la reserva');
+            } else {
+                // Otros errores solo se loguean
+                console.error('Error eliminando reserva (no fatal):', error);
+            }
         }
     },
 

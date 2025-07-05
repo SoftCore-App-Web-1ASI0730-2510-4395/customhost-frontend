@@ -1,7 +1,7 @@
 <template>
   <DataTable :value="rooms" class="p-datatable-sm" dataKey="id">
     <Column field="hotelId" :header="t('dashboard.rooms_management.hotelId')" />
-    <Column field="number" :header="t('dashboard.rooms_management.room')" />
+    <Column field="roomNumber" :header="t('dashboard.rooms_management.room')" />
     <Column field="type" :header="t('dashboard.rooms_management.type')" />
     <Column field="status" :header="t('dashboard.rooms_management.status')" />
     <Column field="price" :header="t('dashboard.rooms_management.price')" />
@@ -10,6 +10,7 @@
       <template #body="slotProps">
         <Button icon="pi pi-pencil" class="p-button-sm p-button-text" @click="$emit('edit', slotProps.data)" />
         <Button icon="pi pi-trash" class="p-button-sm p-button-text text-red-500" @click="$emit('delete', slotProps.data.id)" />
+        <Button label="Reservar" class="p-button-sm p-button-success ml-2" @click="$emit('reserve', slotProps.data)" />
       </template>
     </Column>
   </DataTable>
@@ -29,5 +30,5 @@ defineProps({
   }
 })
 
-defineEmits(['edit', 'delete'])
+defineEmits(['edit', 'delete', 'reserve'])
 </script>

@@ -25,7 +25,7 @@
         class="room-card"
       >
         <div class="room-card-header">
-          <span class="room-number">Habitación {{ room.number }}</span>
+          <span class="room-number">Habitación {{ room.roomNumber }}</span>
         </div>
         <div class="room-card-body">
           <div class="room-type">{{ room.type }}</div>
@@ -66,13 +66,16 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, computed } from 'vue';
+import { useAuth } from '../../shared/composables/useAuth.js';
 import { homeFacade } from '../services/home.facade.js';
 import Chart from 'chart.js/auto';
 
+const { user } = useAuth();
+
 const availableRooms = ref([]);
 const iotDevicesWithIssues = ref([]);
-const usuarioNombre = ref('Juan Pérez'); // TODO: desde sesión
+const usuarioNombre = computed(() => user.value?.username || 'Usuario'); // Dinámico desde sesión
 
 const paramurl = ref({}); // Ahora es un objeto para filtros dinámicos
 

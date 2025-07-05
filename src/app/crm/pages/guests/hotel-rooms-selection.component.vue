@@ -20,7 +20,7 @@
               @click="onRoomSelected(room)"
           >
             <template #title>
-              Habitación {{ room.number }} - {{ room.type }}
+              Habitación {{ room.roomNumber }} - {{ room.type }}
             </template>
             <template #content>
               <div class="flex align-items-center justify-content-between">

@@ -1,6 +1,6 @@
 import { getRoomById } from '../../../crm/services/rooms.service.js';
-import { getDevicesByRoom, updateRoomDevicePreferences, createRoomDevicePreference, getRoomDevicePreferenceByRoomDeviceId } from './iot-device.service.js';
-import { saveUserDevicePreference, getUserDevicePreferences } from '../../../profiles/services/user-preference.service.js';
+import { getDevicesByRoom, updateRoomDevicePreferences, createRoomDevicePreference, getRoomDevicePreferenceByRoomDeviceId, getDeviceById } from './iot-device.service.js';
+import apiClient from '../../../shared/services/api-service.js';
 
 // Ajusta estas rutas según la ubicación real en tu proyecto
 import { getBookingsByUserId } from '../../../crm/services/booking.service.js'; // ⬅️ Confirmar ruta
@@ -22,23 +22,98 @@ export default class GuestRoomDeviceFacade {
      * Obtiene todas las habitaciones reservadas por el usuario + sus dispositivos IoT
      */
     async getUserRoomsAndDevices(userId) {
-        const user = await getUserById(1);
-        if (!user) throw new Error("Usuario no encontrado");
-
-        const bookings = await getBookingsByUserId(1); // Obtiene las reservas del usuario
-        const roomIds = [...new Set(bookings.map(b => b.roomId))]; // ID ��nicos de cuartos
+        // Forzar userId a 1
+        userId = 1;
+        let user = null;
+        try {
+            const userResp = await apiClient.get(`/api/v1/users/${userId}`);
+            user = userResp.data;
+            console.log('[FACADE] Usuario obtenido:', user);
+        } catch (e) {
+            console.error('Error obteniendo usuario:', e);
+            throw new Error("Usuario no encontrado");
+        }
+        // Obtener reservas del usuario
+        const bookingsResp = await apiClient.get(`/api/v1/booking/user/${userId}`);
+        const bookings = bookingsResp.data;
+        console.log('[FACADE] Bookings del usuario:', bookings);
+        if (!bookings || bookings.length === 0) {
+            return { user, rooms: [] };
+        }
+        const roomIds = [...new Set(bookings.map(b => b.roomId))];
+        console.log('[FACADE] roomIds:', roomIds);
         const roomsWithDevices = [];
-
         for (const roomId of roomIds) {
             try {
-                const room = await getRoomById(roomId); // Obtener habitación por ID
-                const devices = await getDevicesByRoom(roomId); // Obtener dispositivos por habitación
-                roomsWithDevices.push({ room, devices });
+                const roomResp = await apiClient.get(`/api/v1/rooms/${roomId}`);
+                const room = roomResp.data;
+                console.log(`[FACADE] Habitación ${roomId}:`, room);
+                let hotel = null;
+                if (room.hotelId) {
+                    try {
+                        const hotelResp = await apiClient.get(`/api/v1/hotel/${room.hotelId}`);
+                        hotel = hotelResp.data;
+                        console.log(`[FACADE] Hotel para habitación ${roomId}:`, hotel);
+                    } catch (err) {
+                        console.warn('No se pudo obtener el hotel para la habitación', roomId, 'hotelId:', room.hotelId, err);
+                    }
+                }
+                // Obtener dispositivos de la habitación (room-devices)
+                const devicesResp = await apiClient.get(`/api/v1/room-devices/room/${roomId}`);
+                const devicesRaw = devicesResp.data;
+                console.log(`[FACADE] Dispositivos room-devices para habitación ${roomId}:`, devicesRaw);
+
+                // JOIN manual: obtener info completa del iotDevice para cada roomDevice
+                const devicesWithPrefs = await Promise.all(devicesRaw.map(async (roomDevice) => {
+                    let preferences = {};
+                    try {
+                        // Siempre obtener preferencias solo para este roomDeviceId
+                        const prefResp = await apiClient.get(`/api/v1/room-device-preferences/room-device/${roomDevice.id}`);
+                        if (prefResp.data && prefResp.data.preferences) {
+                            // Si es string, parsear, si es objeto, asignar directo
+                            if (typeof prefResp.data.preferences === 'string') {
+                                try {
+                                    preferences = JSON.parse(prefResp.data.preferences);
+                                } catch (e) {
+                                    console.error('[DEBUG] Error al parsear preferencias:', prefResp.data.preferences, e);
+                                    preferences = {};
+                                }
+                            } else {
+                                preferences = prefResp.data.preferences;
+                            }
+                        } else {
+                            preferences = {};
+                        }
+                        console.log(`[FACADE] Preferencias para roomDeviceId ${roomDevice.id}:`, preferences);
+                    } catch (err) {
+                        // Si no hay preferencias, dejar objeto vacío
+                        console.warn(`[FACADE] No hay preferencias para roomDeviceId ${roomDevice.id}`);
+                        preferences = {};
+                    }
+                    // Obtener info completa del iotDevice
+                    let ioTDevice = null;
+                    try {
+                        const iotResp = await apiClient.get(`/api/v1/io-t-devices/${roomDevice.iotDeviceId}`);
+                        ioTDevice = iotResp.data;
+                        console.log('[DEBUG] IoTDevice obtenido:', ioTDevice);
+                    } catch (err) {
+                        console.warn(`[FACADE] No se pudo obtener info de IoTDevice para roomDeviceId ${roomDevice.id}`, err);
+                    }
+                    const result = {
+                        ...roomDevice,
+                        iotDevice: ioTDevice,
+                        preferences
+                    };
+                    console.log('[DEBUG] Resultado deviceWithPrefs:', result);
+                    return result;
+                }));
+                console.log(`[FACADE] devicesWithPrefs para habitación ${roomId}:`, devicesWithPrefs);
+                roomsWithDevices.push({ room, hotel, devices: devicesWithPrefs });
             } catch (error) {
                 console.error(`Error al cargar habitación con ID ${roomId}:`, error);
             }
         }
-
+        console.log('[FACADE] Resultado final roomsWithDevices:', roomsWithDevices);
         return { user, rooms: roomsWithDevices };
     }
 
@@ -55,19 +130,35 @@ export default class GuestRoomDeviceFacade {
     }
 
     /**
-     * Guarda la preferencia de un dispositivo en una habitación (para IoT)
-     * Si existe la preferencia, actualiza (PATCH); si no, crea (POST)
-     * @param {Object} params - { roomDeviceId, preferences }
+     * Guarda la preferencia de un dispositivo en una habitación (RoomDevicePreference)
+     * Solo permite PUT, nunca POST. Si no existe, lanza error claro.
      */
-    async saveRoomDevicePreference({ roomDeviceId, preferences }) {
-        // Buscar si ya existe la preferencia
-        const existingPref = await getRoomDevicePreferenceByRoomDeviceId(roomDeviceId);
-        if (existingPref) {
-            // PATCH
-            return await updateRoomDevicePreferences(existingPref.id, preferences);
-        } else {
-            // POST
-            return await createRoomDevicePreference(roomDeviceId, preferences);
+    async saveRoomDevicePreference(roomDeviceId, preferences) {
+        // Buscar la preferencia existente para este roomDeviceId
+        let existingPref = null;
+        try {
+            const resp = await apiClient.get(`/api/v1/room-device-preferences/room-device/${roomDeviceId}`);
+            if (resp.data && resp.data.id) {
+                existingPref = resp.data;
+            } else {
+                throw new Error('No existe preferencia previa para este dispositivo. El guest solo puede modificar (PUT), no crear (POST).');
+            }
+        } catch (e) {
+            throw new Error('No existe preferencia previa para este dispositivo. El guest solo puede modificar (PUT), no crear (POST).');
+        }
+        // Hacer una copia profunda de las preferencias para evitar referencias compartidas
+        const preferencesCopy = JSON.parse(JSON.stringify(preferences));
+        const payload = {
+            roomDeviceId,
+            preferences: JSON.stringify(preferencesCopy)
+        };
+        try {
+            // Solo PUT
+            const response = await apiClient.put(`/api/v1/room-device-preferences/${existingPref.id}`, payload);
+            return response.data;
+        } catch (error) {
+            console.error('Error guardando preferencia de RoomDevice:', error);
+            throw error;
         }
     }
 
@@ -86,10 +177,7 @@ export default class GuestRoomDeviceFacade {
             for (const device of devices) {
                 // Se espera que cada device tenga roomDeviceId y preferences
                 if (device.roomDeviceId && device.preferences) {
-                    await this.saveRoomDevicePreference({
-                        roomDeviceId: device.roomDeviceId,
-                        preferences: device.preferences
-                    });
+                    await this.saveRoomDevicePreference(device.roomDeviceId, device.preferences);
                 }
             }
         }

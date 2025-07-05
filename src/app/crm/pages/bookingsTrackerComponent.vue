@@ -9,6 +9,7 @@
 
     <bookings-tracker-table
         :bookings="bookings"
+        @delete-booking="onDeleteBooking"
     />
   </div>
 </template>
@@ -16,7 +17,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { getBookingsWithDetails } from '../services/booking.service.js'
+import { getBookingsWithDetails, deleteBooking } from '../services/booking.service.js'
 import BookingsTrackerTable from '../components/bookings-tracker-table.component.vue'
 
 
@@ -29,7 +30,7 @@ onMounted(async () => {
     // Cargamos las reservas con detalles de huésped y habitación
     bookings.value = await getBookingsWithDetails()
 
-    const API_URL = import.meta.env.VITE_API_BASE_URL
+    const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1'
     const usersResponse = await fetch(`${API_URL}/users`).then(res => res.json())
     guests.value = usersResponse.filter(u => u.role === 'guest')
 
@@ -39,6 +40,16 @@ onMounted(async () => {
     console.error('Error al cargar datos:', error)
   }
 })
+
+const onDeleteBooking = async (id) => {
+  try {
+    await deleteBooking(id)
+    bookings.value = bookings.value.filter(b => b.id !== id)
+  } catch (error) {
+    console.error('Error al eliminar la reserva:', error)
+    // Aquí puedes mostrar un mensaje al usuario si lo deseas
+  }
+}
 </script>
 
 <style scoped>

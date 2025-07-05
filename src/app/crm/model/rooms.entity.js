@@ -4,17 +4,18 @@ export default class Room {
     constructor({
                     id,
                     hotelId,
-                    number,
+                    roomNumber,
                     type,
                     status,
                     price,
                     floor
                 }) {
-        if (!id) throw new Error("Room must have an ID");
-
-        this.id = id;
+        // Solo exigir id si ya existe (por ejemplo, al obtener del backend)
+        if (id !== undefined && id !== null) {
+            this.id = id;
+        }
         this.hotelId = hotelId;
-        this.number = number;
+        this.roomNumber = roomNumber;
         this.type = type;
         this.status = status;
         this.price = price;

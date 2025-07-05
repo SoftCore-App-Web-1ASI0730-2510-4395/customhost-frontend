@@ -12,7 +12,7 @@
         <ul class="list-none p-0 m-0">
           <li class="flex align-items-center mb-3">
             <i class="pi pi-user text-xl mr-3 text-primary"></i>
-            <span><strong>Nombre:</strong> {{ admin.fullName }}</span>
+            <span><strong>Nombre:</strong> {{ fullName }}</span>
           </li>
           <li class="flex align-items-center mb-3">
             <i class="pi pi-envelope text-xl mr-3 text-primary"></i>
@@ -63,14 +63,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useAuth } from '../../shared/composables/useAuth.js'
 import Card from 'primevue/card'
+
+const { user } = useAuth()
 
 const admin = ref({
   id: 3,
-  firstName: 'Juan',
+  firstName: user.value?.username || 'Usuario',
   lastName: 'Perez',
-  email: 'juan.perez@hotel.com',
+  email: user.value?.email || 'usuario@hotel.com',
   phone: '+34600111222',
   department: 'Management',
   hotelName: 'Hotel Cheraton Center',
@@ -81,6 +84,11 @@ const admin = ref({
   availableRooms: 3,
   cleaningRooms: 1,
   maintenanceRooms: 1
+})
+
+// Computed para el nombre completo
+const fullName = computed(() => {
+  return `${admin.value.firstName} ${admin.value.lastName}`
 })
 
 // Métodos auxiliares

@@ -54,7 +54,7 @@ export default {
     const loadBookings = async () => {
       loading.value = true;
       try {
-        const userId = 1; // TODO: Reemplazar por auth store o dinámico
+        const userId = 1; // Forzar userId a 1 para pruebas
         const data = await GuestFacade.getGuestBookings(userId);
         bookings.value = data;
       } catch (error) {

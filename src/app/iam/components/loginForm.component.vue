@@ -1,3 +1,4 @@
+@ -1,157 +0,0 @@
 <script setup>
 import { ref } from 'vue';
 
@@ -10,19 +11,19 @@ const props = defineProps({
 
 const emit = defineEmits(['submit-login']);
 
-const email = ref('');
+const username = ref('');
 const password = ref('');
 const submitted = ref(false);
 
 function handleSubmit() {
   submitted.value = true;
 
-  if (!email.value || !password.value) {
+  if (!username.value || !password.value) {
     return;
   }
 
   emit('submit-login', {
-    email: email.value,
+    username: username.value,
     password: password.value
   });
 }
@@ -31,44 +32,44 @@ function handleSubmit() {
 <template>
   <form @submit.prevent="handleSubmit" class="login-form">
     <div class="field">
-      <label for="emailLogin" class="block">Email</label>
-      <pv-input-text 
-        id="emailLogin" 
-        v-model="email" 
-        :class="{'p-invalid': submitted && !email}" 
-        aria-describedby="emailLogin-error"
-        class="w-full"
-        placeholder="Email"
+      <label for="usernameLogin" class="block">Usuario</label>
+      <pv-input-text
+          id="usernameLogin"
+          v-model="username"
+          :class="{'p-invalid': submitted && !username}"
+          aria-describedby="usernameLogin-error"
+          class="w-full"
+          placeholder="Usuario"
       />
-      <small id="emailLogin-error" class="p-error" v-if="submitted && !email">El email es requerido.</small>
+      <small id="usernameLogin-error" class="p-error" v-if="submitted && !username">El usuario es requerido.</small>
     </div>
 
     <div class="field mt-4">
       <label for="passwordLogin" class="block">Contraseña</label>
-      <pv-password 
-        id="passwordLogin" 
-        v-model="password" 
-        :class="{'p-invalid': submitted && !password}"
-        :feedback="false"
-        toggleMask
-        aria-describedby="passwordLogin-error"
-        class="w-full"
-        placeholder="Contraseña"
+      <pv-password
+          id="passwordLogin"
+          v-model="password"
+          :class="{'p-invalid': submitted && !password}"
+          :feedback="false"
+          toggleMask
+          aria-describedby="passwordLogin-error"
+          class="w-full"
+          placeholder="Contraseña"
       />
       <small id="passwordLogin-error" class="p-error" v-if="submitted && !password">La contraseña es requerida.</small>
     </div>
-    
+
     <div class="flex justify-content-between align-items-center mt-4">
       <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
-      <pv-button 
-        type="submit" 
-        label="Iniciar sesión"
-        :loading="props.loading"
-        :disabled="props.loading"
-        class="login-button"
+      <pv-button
+          type="submit"
+          label="Iniciar sesión"
+          :loading="props.loading"
+          :disabled="props.loading"
+          class="login-button"
       />
     </div>
-    
+
     <div class="text-center mt-4">
       <p>¿No tienes una cuenta? <router-link to="/iam/register">Regístrate aquí</router-link></p>
     </div>
@@ -96,8 +97,9 @@ function handleSubmit() {
   margin-top: 0.25rem;
 }
 
+
 .forgot-password {
-  color: var(--text-color-secondary, #64748b);
+  color: var( #64748b);
   font-size: 0.9rem;
   text-decoration: none;
 }

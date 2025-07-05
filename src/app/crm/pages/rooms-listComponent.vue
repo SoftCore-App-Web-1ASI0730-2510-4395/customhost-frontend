@@ -12,6 +12,7 @@
         :rooms="rooms"
         @edit="editRoom"
         @delete="deleteRoomById"
+        @reserve="reserveRoom"
     />
 
     <rooms-list-form
@@ -38,7 +39,7 @@ const editingId = ref(null)
 
 const roomForm = reactive({
   hotelId: '',
-  number: '',
+  roomNumber: '',
   type: '',
   status: '',
   price: 0,
@@ -67,26 +68,50 @@ const editRoom = (room) => {
 }
 
 const openNewRoomForm = () => {
-  Object.assign(roomForm, { hotelId: '', number: '', type: '', status: '', price: 0, floor: 1 })
+  Object.assign(roomForm, { hotelId: '', roomNumber: '', type: '', status: '', price: 0, floor: 1 })
   editingId.value = null
   roomDialog.value = true
 }
 
 const saveRoom = async () => {
   try {
+    // Validación y conversión de tipos
+    if (!roomForm.hotelId || !roomForm.roomNumber || !roomForm.type || !roomForm.status) {
+      alert('Todos los campos son obligatorios.');
+      return;
+    }
+    const payload = {
+      ...roomForm,
+      hotelId: Number(roomForm.hotelId),
+      price: Number(roomForm.price),
+      floor: Number(roomForm.floor)
+    };
     if (editingId.value) {
-      const updated = await updateRoom(editingId.value, { ...roomForm })
+      const updated = await updateRoom(editingId.value, payload)
       const index = rooms.value.findIndex(r => r.id === editingId.value)
       rooms.value[index] = updated
     } else {
-      const created = await createRoom({ ...roomForm })
+      const created = await createRoom(payload)
       rooms.value.push(created)
     }
     roomDialog.value = false
   } catch (error) {
     console.error('Error saving room:', error.message)
+    alert('Error al guardar la habitación: ' + error.message)
   }
 }
+
+const reserveRoom = (room) => {
+  // Guardar la habitación seleccionada (incluyendo price) en localStorage
+  console.log('Habitación seleccionada para reservar:', room);
+  console.log('Campo price de la habitación:', room.price);
+  localStorage.setItem('selectedRoom', JSON.stringify(room));
+  // Verificar lo que se guardó
+  const savedRoom = JSON.parse(localStorage.getItem('selectedRoom'));
+  console.log('Habitación guardada en localStorage:', savedRoom);
+  // Redirigir al flujo de pago (ajusta la ruta si es necesario)
+  window.location.href = '/app/billing/pages/payment';
+};
 
 onMounted(async () => {
   try {

@@ -15,16 +15,18 @@
           <select v-model="form.roomId" required>
             <option disabled value="">{{ t('iot_room_configuration.select_room') }}</option>
             <option v-for="room in rooms" :key="room.id" :value="room.id">
-              {{ t('iot_room_configuration.room') }} {{ room.number }}
+              {{ t('iot_room_configuration.room') }} {{ room.roomNumber }}
             </option>
           </select>
 
           <label>{{ t('iot_room_configuration.iot_device') }}:</label>
           <select v-model="form.iotDeviceId" required>
             <option disabled value="">{{ t('iot_room_configuration.select_device') }}</option>
+            <!--   {{ getDeviceNameById(device.id) }} ({{ getDeviceTypeById(device.id) }})-->
             <option v-for="device in availableDevices" :key="device.id" :value="device.id">
-              {{ device.name }} ({{ device.deviceType }})
+              {{ device.name }}
             </option>
+
           </select>
 
           <label>{{ t('iot_room_configuration.status') }}:</label>
@@ -68,6 +70,7 @@ const emit = defineEmits(['updated']);
 const showModal = ref(false);
 const form = ref({ roomId: '', iotDeviceId: '', status: '' });
 const rooms = ref([]);
+const allDevices = ref([]); // Lista de todos los dispositivos IoT
 const availableDevices = ref([]);
 const selectedDeviceConfig = ref(null);
 const preferences = ref({});
@@ -96,9 +99,23 @@ watch(() => form.value.roomId, async (roomId) => {
 onMounted(async () => {
   rooms.value = await RoomDeviceManagementFacade.getRooms();
 });
+
+// Funciones utilitarias
+const getDeviceNameById = (id) => {
+  const device = allDevices.value.find(d => d.id === id);
+  return device ? device.name : 'Desconocido';
+};
+const getDeviceTypeById = (id) => {
+  const device = allDevices.value.find(d => d.id === id);
+  return device ? device.deviceType : '';
+};
 </script>
 
 <style scoped>
+
+option{
+  color:black;
+}
 .add-device-button {
   background-color: #00c48c;
   color: white;

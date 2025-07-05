@@ -1,11 +1,11 @@
-import axios from 'axios'
+import apiClient from '../../shared/services/api-service.js';
 import { StaffMember } from '../model/request-staff.entity.js'
 
-const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1'
+const API_URL = '/api/v1'
 
 export const staffService = {
     async getAllStaffMembers() {
-        const response = await axios.get(`${API_URL}/staffMembers`)
+        const response = await apiClient.get(`${API_URL}/staff-members`)
         return response.data.map(data => new StaffMember(data))
     },
 
@@ -19,7 +19,7 @@ export const staffService = {
     },
 
     async deleteStaffMember(id) {
-        await axios.delete(`${API_URL}/staffMembers/${id}`)
+        await apiClient.delete(`${API_URL}/staff-members/${id}`)
         return true
     },
 
@@ -32,7 +32,7 @@ export const staffService = {
     },
 
     async getStaffMemberById(id) {
-        const response = await axios.get(`${API_URL}/staffMembers/${id}`);
+        const response = await apiClient.get(`${API_URL}/staff-members/${id}`);
         return new StaffMember(response.data);
     },
 
@@ -43,10 +43,10 @@ export const staffService = {
 
     async createStaffMember(staffData) {
         try {
-            const response = await axios.post(`${API_URL}/staffMembers`, {
+            const response = await apiClient.post(`${API_URL}/staff-members`, {
                 ...staffData,
                 createdAt: new Date().toISOString(),
-                status: 'active'
+                status: 'Active'
             });
             return new StaffMember(response.data);
         } catch (error) {
@@ -57,7 +57,7 @@ export const staffService = {
 
     async updateStaffMember(id, staffData) {
         try {
-            const response = await axios.put(`${API_URL}/staffMembers/${id}`, staffData);
+            const response = await apiClient.put(`${API_URL}/staff-members/${id}`, staffData);
             return new StaffMember(response.data);
         } catch (error) {
             console.error('Error updating staff info', error);

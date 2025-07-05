@@ -8,7 +8,7 @@
         </div>
         <div class="field mb-3">
           <label>Room Number</label>
-          <InputText v-model="room.number" required />
+          <InputText v-model="room.roomNumber" required />
         </div>
         <div class="field mb-3">
           <label>Type</label>

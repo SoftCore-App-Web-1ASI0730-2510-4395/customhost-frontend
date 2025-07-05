@@ -4,6 +4,7 @@ import { getUserById } from '../../profiles/services/user.service.js';
 import { getRoomById } from '../../crm/services/rooms.service.js';
 import { getHotelById } from '../../crm/services/hotels.service.js';
 import { createPayment, getAllPayments } from './payment.service.js';
+import apiClient from '../../shared/services/api-service.js';
 
 // 👇 Importa servicio de bookings
 import { createBooking } from '../../crm/services/booking.service.js';
@@ -39,34 +40,39 @@ export default {
     },
 
     /**
-     * Realiza el pago y crea una reserva (booking) asociada
+     * Realiza la reserva y luego el pago asociado
      *
      * @param {Object} paymentData - Datos del pago a guardar
-     * @returns {Promise<Payment>} - Pago creado
+     * @returns {Promise<{payment: Payment, booking: any}>} - Pago y reserva creados
      */
     async processPayment(paymentData) {
         try {
-            // 1. Guardar el pago
-            const createdPayment = await createPayment({
-                ...paymentData,
-                status: 'paid',
-                paymentDate: new Date().toISOString()
-            });
-
-            // 2. Crear una reserva (booking) basada en este pago
+            // Validar totalPrice antes de crear la reserva
+            if (!paymentData.totalPrice || isNaN(paymentData.totalPrice) || paymentData.totalPrice <= 0) {
+                console.error('No se puede crear la reserva: totalPrice inválido:', paymentData.totalPrice);
+                throw new Error('El monto total de la reserva es inválido. No se puede procesar el pago.');
+            }
+            // 1. Crear la reserva (booking) primero
             const bookingData = {
                 userId: paymentData.userId,
+                hotelId: paymentData.hotelId, // agregado
                 roomId: paymentData.roomId,
                 checkInDate: paymentData.checkInDate,
                 checkOutDate: paymentData.checkOutDate,
+                totalPrice: paymentData.totalPrice, // agregado
                 status: 'confirmed'
             };
-            // Si el backend retorna un id, asegúrate de ponerlo primero al crear el objeto de booking
-            // Pero aquí bookingData aún no tiene id, el id lo asigna el backend en createBooking
             const createdBooking = await createBooking(bookingData);
-            // Si quieres que el id esté primero en el objeto final:
-            const { id, ...rest } = createdBooking;
-            const orderedBooking = { id, ...rest };
+            const { id: bookingId, ...rest } = createdBooking;
+            const orderedBooking = { id: bookingId, ...rest };
+
+            // 2. Guardar el pago usando el bookingId generado
+            const createdPayment = await createPayment({
+                ...paymentData,
+                bookingId, // ahora sí existe
+                status: 'paid',
+                paymentDate: new Date().toISOString()
+            });
 
             // 3. Marcar habitación como "Occupied"
             await this.markRoomAsOccupied(paymentData.roomId);
@@ -88,20 +94,16 @@ export default {
      */
     async markRoomAsOccupied(roomId) {
         try {
-            const API_ROOMS_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/rooms';
-            const response = await fetch(`${API_ROOMS_URL}/${roomId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ status: 'Occupied' })
-            });
-
-            if (!response.ok) {
-                throw new Error(`Error updating room ${roomId}`);
-            }
-
-            return await response.json();
+            // 1. Obtener los datos actuales de la habitación
+            const roomData = await apiClient.get(`/api/v1/rooms/${roomId}`);
+            
+            // 2. Modificar solo el campo status
+            const updatedRoom = { ...roomData.data, status: 'Occupied' };
+            
+            // 3. Enviar PUT con todos los campos completos
+            const response = await apiClient.put(`/api/v1/rooms/${roomId}`, updatedRoom);
+            
+            return response.data;
         } catch (error) {
             console.error('Error marcando habitación como ocupada:', error);
             throw error;

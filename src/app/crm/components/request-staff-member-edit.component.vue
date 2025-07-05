@@ -15,12 +15,12 @@ const formData = ref({
   phone: '',
   email: '',
   department: '',
-  status: 'active'
+  status: 'Active'
 });
 
 const statusOptions = [
-  { label: 'Active', value: 'active' },
-  { label: 'Inactive', value: 'inactive' }
+  { label: 'Active', value: 'Active' },
+  { label: 'Inactive', value: 'Inactive' }
 ];
 
 watch(() => props.staffMember, (newVal) => {
@@ -31,7 +31,7 @@ watch(() => props.staffMember, (newVal) => {
       phone: newVal.phone,
       email: newVal.email,
       department: newVal.department,
-      status: newVal.status || 'active'
+      status: newVal.status || 'Active'
     };
   }
 }, { immediate: true });

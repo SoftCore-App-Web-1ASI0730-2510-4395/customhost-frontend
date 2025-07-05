@@ -14,7 +14,7 @@ const formData = ref({
   phone: '',
   email: '',
   department: '',
-  password: ''
+  hotelId: '' // Nuevo campo para hotelId
 });
 
 const save = () => {
@@ -22,7 +22,11 @@ const save = () => {
     alert('Nombre y apellido son requeridos');
     return;
   }
-  emit('save', formData.value);
+  if (!formData.value.hotelId || isNaN(formData.value.hotelId) || Number(formData.value.hotelId) <= 0) {
+    alert('hotelId es requerido y debe ser un número positivo');
+    return;
+  }
+  emit('save', { ...formData.value, hotelId: Number(formData.value.hotelId) });
   emit('update:visible', false);
 };
 </script>
@@ -57,6 +61,14 @@ const save = () => {
         <div class="form-group">
           <label>Email*</label>
           <pv-input-text v-model="formData.email" class="w-full" />
+        </div>
+      </div>
+
+      <!-- Fila 2.5: hotelId -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>ID del Hotel*</label>
+          <pv-input-text v-model="formData.hotelId" class="w-full" type="number" min="1" />
         </div>
       </div>
 

@@ -1,7 +1,7 @@
-import axios from 'axios';
+import apiClient from '../../../shared/services/api-service.js';
 import { IotDevice} from "../../model/iot-device.entity.js";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+const API_URL = '/api/v1';
 
 console.log('API_URL:', API_URL);
 
@@ -10,8 +10,8 @@ export const iotDeviceService = {
 
 
     async getAllIotDevices() {
-        const res = await axios.get(`${API_URL}/iotDevices`);
-        return res.data.map(d => new IotDevice(d.id, d.name, d.deviceType, d.configSchema));
+        const res = await apiClient.get(`${API_URL}/io-t-devices`);
+        return res.data.map(d => new IotDevice(d));
     },
 
 

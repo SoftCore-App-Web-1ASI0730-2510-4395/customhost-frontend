@@ -12,7 +12,6 @@ const emit = defineEmits(['submit-registration']);
 
 const hotelName = ref('');
 const username = ref('');
-const email = ref('');
 const password = ref('');
 const passwordRepeat = ref('');
 const submitted = ref(false);
@@ -22,7 +21,7 @@ function handleSubmit() {
   submitted.value = true;
   formErrorMessage.value = '';
 
-  if (!hotelName.value || !username.value || !email.value || !password.value || !passwordRepeat.value) {
+  if (!hotelName.value || !username.value || !password.value || !passwordRepeat.value) {
     return;
   }
 
@@ -31,10 +30,14 @@ function handleSubmit() {
     return;
   }
 
+  if (password.value.length < 6) {
+    formErrorMessage.value = 'La contraseña debe tener al menos 6 caracteres.';
+    return;
+  }
+
   emit('submit-registration', {
     hotelName: hotelName.value,
     username: username.value,
-    email: email.value,
     password: password.value
   });
 }
@@ -44,151 +47,137 @@ function handleSubmit() {
   <form @submit.prevent="handleSubmit" class="register-hotel-form">
     <div class="field">
       <label for="hotelNameForm" class="block">Nombre del Hotel</label>
-      <pv-input-text 
-        id="hotelNameForm" 
-        v-model="hotelName" 
-        :class="{'p-invalid': submitted && !hotelName}" 
-        aria-describedby="hotelNameForm-error"
-        class="w-full"
-        placeholder="Ej: Gran Hotel Vista Hermosa"
+      <pv-input-text
+          id="hotelNameForm"
+          v-model="hotelName"
+          :class="{'p-invalid': submitted && !hotelName}"
+          aria-describedby="hotelNameForm-error"
+          class="w-full"
+          placeholder="Ingresa el nombre del hotel"
       />
-      <small id="hotelNameForm-error" class="p-error" v-if="submitted && !hotelName">El nombre del hotel es obligatorio.</small>
+      <small id="hotelNameForm-error" class="p-error" v-if="submitted && !hotelName">El nombre del hotel es requerido.</small>
     </div>
 
     <div class="field mt-4">
-      <label for="usernameHotelForm" class="block">Usuario Administrador</label>
-      <pv-input-text 
-        id="usernameHotelForm" 
-        v-model="username" 
-        :class="{'p-invalid': submitted && !username}" 
-        aria-describedby="usernameHotelForm-error"
-        class="w-full"
-        placeholder="Crea un nombre de usuario para el administrador"
+      <label for="usernameHotelForm" class="block">Nombre de usuario</label>
+      <pv-input-text
+          id="usernameHotelForm"
+          v-model="username"
+          :class="{'p-invalid': submitted && !username}"
+          aria-describedby="usernameHotelForm-error"
+          class="w-full"
+          placeholder="Ingresa el nombre de usuario del administrador"
       />
-      <small id="usernameHotelForm-error" class="p-error" v-if="submitted && !username">El nombre de usuario es obligatorio.</small>
+      <small id="usernameHotelForm-error" class="p-error" v-if="submitted && !username">El nombre de usuario es requerido.</small>
     </div>
 
     <div class="field mt-4">
-      <label for="emailHotelForm" class="block">Email de Contacto del Hotel</label>
-      <pv-input-text 
-        id="emailHotelForm" 
-        v-model="email" 
-        type="email"
-        :class="{'p-invalid': submitted && !email}" 
-        aria-describedby="emailHotelForm-error"
-        class="w-full"
-        placeholder="ejemplo@hotel.com"
+      <label for="passwordHotelForm" class="block">Contraseña</label>
+      <pv-password
+          id="passwordHotelForm"
+          v-model="password"
+          :class="{'p-invalid': submitted && !password}"
+          aria-describedby="passwordHotelForm-error"
+          class="w-full"
+          placeholder="Ingresa la contraseña"
+          toggleMask
+          :feedback="false"
       />
-      <small id="emailHotelForm-error" class="p-error" v-if="submitted && !email">El email de contacto es obligatorio.</small>
+      <small id="passwordHotelForm-error" class="p-error" v-if="submitted && !password">La contraseña es requerida.</small>
     </div>
 
     <div class="field mt-4">
-      <label for="passwordHotelForm" class="block">Contraseña de Administrador</label>
-      <pv-password 
-        id="passwordHotelForm" 
-        v-model="password" 
-        :class="{'p-invalid': submitted && !password}"
-        :feedback="false"
-        toggleMask
-        aria-describedby="passwordHotelForm-error"
-        class="w-full"
-        placeholder="Crea una contraseña segura"
+      <label for="passwordRepeatHotelForm" class="block">Confirmar contraseña</label>
+      <pv-password
+          id="passwordRepeatHotelForm"
+          v-model="passwordRepeat"
+          :class="{'p-invalid': submitted && !passwordRepeat}"
+          aria-describedby="passwordRepeatHotelForm-error"
+          class="w-full"
+          placeholder="Confirma la contraseña"
+          toggleMask
+          :feedback="false"
       />
-      <small id="passwordHotelForm-error" class="p-error" v-if="submitted && !password">La contraseña es obligatoria.</small>
+      <small id="passwordRepeatHotelForm-error" class="p-error" v-if="submitted && !passwordRepeat">La confirmación de contraseña es requerida.</small>
     </div>
 
-    <div class="field mt-4">
-      <label for="passwordRepeatHotelForm" class="block">Repetir Contraseña</label>
-      <pv-password 
-        id="passwordRepeatHotelForm" 
-        v-model="passwordRepeat"
-        :class="{'p-invalid': (submitted && !passwordRepeat) || (submitted && password !== passwordRepeat && passwordRepeat)}"
-        :feedback="false"
-        toggleMask
-        aria-describedby="passwordRepeatHotelForm-error"
-        class="w-full"
-        placeholder="Confirma la contraseña"
-      />
-      <small id="passwordRepeatHotelForm-error" class="p-error" v-if="submitted && !passwordRepeat">Por favor, repite la contraseña.</small>
-      <small id="passwordMismatchHotelForm-error" class="p-error" v-if="submitted && password !== passwordRepeat && passwordRepeat">Las contraseñas no coinciden.</small>
-    </div>
-    
     <pv-message severity="error" v-if="formErrorMessage" class="mt-3">{{ formErrorMessage }}</pv-message>
-    
-    <div class="flex justify-content-end align-items-center mt-4">
-      <pv-button 
-        type="submit" 
-        label="Enviar Solicitud de Registro"
-        icon="pi pi-check"
-        :loading="props.loading" 
-        :disabled="props.loading"
-        class="register-hotel-button" 
+
+    <div class="button-container mt-4">
+      <pv-button
+          type="submit"
+          label="Registrar Hotel"
+          class="w-full register-hotel-button"
+          :loading="loading"
+          :disabled="loading"
       />
     </div>
-    
-    <div class="text-center mt-4">
-      <p>¿Tu hotel ya está registrado? <router-link to="/iam/login">Accede aquí</router-link></p>
+
+    <div class="login-link-container mt-4">
+      <p class="text-center">
+        ¿Ya tienes una cuenta?
+        <router-link to="/iam/login" class="login-link">Iniciar sesión</router-link>
+      </p>
+    </div>
+
+    <div class="alternative-registration mt-3">
+      <p class="text-center">
+        ¿Eres un usuario común?
+        <router-link to="/iam/register" class="user-link">Regístrate como usuario</router-link>
+      </p>
     </div>
   </form>
 </template>
 
 <style scoped>
-/* Estilos específicos del formulario que estaban en registerHotelComponent.vue */
 .register-hotel-form {
-  padding: 0.5rem 0; /* Padding del formulario ajustado */
+  width: 100%;
 }
 
 .field {
-  margin-bottom: 1rem; /* Espacio estándar entre campos */
+  margin-bottom: 1rem;
 }
 
-.field label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-}
-
-.p-error {
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+.button-container {
+  margin-top: 1.5rem;
 }
 
 .register-hotel-button {
-  min-width: 220px; /* Botón más ancho para el texto largo */
-  padding: 0.8rem 1.5rem; /* Padding del botón */
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-/* Ajustes para el campo de contraseña pv-password */
-.register-hotel-form .field :deep(.p-password.w-full) {
-  display: flex; 
+.register-hotel-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
 }
 
-.register-hotel-form .field :deep(.p-password.w-full .p-password-input) {
-  flex-grow: 1; 
-}
-
-.mt-3 {
-  margin-top: 0.75rem; /* PrimeFlex like utility */
-}
-.mt-4 {
-  margin-top: 1rem; /* PrimeFlex like utility */
-}
-.w-full {
-  width: 100%;
-}
-.block {
-  display: block;
-}
-.flex {
-  display: flex;
-}
-.justify-content-end {
-  justify-content: flex-end;
-}
-.align-items-center {
-  align-items: center;
-}
-.text-center {
+.login-link-container,
+.alternative-registration {
   text-align: center;
+}
+
+.login-link,
+.user-link {
+  color: var(--p-primary-color);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-link:hover,
+.user-link:hover {
+  color: var(--p-primary-600);
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .register-hotel-form {
+    padding: 0 0.5rem;
+  }
 }
 </style>

@@ -5,6 +5,7 @@ import apiClient from '../../../shared/services/api-service.js';
 // Ajusta estas rutas según la ubicación real en tu proyecto
 import { getBookingsByUserId } from '../../../crm/services/booking.service.js'; // ⬅️ Confirmar ruta
 import { getUserById } from '../../../profiles/services/user.service.js'; // ⬅️ Confirmar ruta
+import { getHotelById } from '../../../crm/services/hotels.service.js';
 
 export default class GuestRoomDeviceFacade {
     constructor() {}
@@ -48,12 +49,12 @@ export default class GuestRoomDeviceFacade {
                 const roomResp = await apiClient.get(`/api/v1/rooms/${roomId}`);
                 const room = roomResp.data;
                 console.log(`[FACADE] Habitación ${roomId}:`, room);
-                let hotel = null;
+                let hotelName = null;
                 if (room.hotelId) {
                     try {
-                        const hotelResp = await apiClient.get(`/api/v1/hotel/${room.hotelId}`);
-                        hotel = hotelResp.data;
-                        console.log(`[FACADE] Hotel para habitación ${roomId}:`, hotel);
+                        const hotel = await getHotelById(room.hotelId);
+                        hotelName = hotel?.name || null;
+                        console.log(`[FACADE] Nombre del hotel para habitación ${roomId}:`, hotelName);
                     } catch (err) {
                         console.warn('No se pudo obtener el hotel para la habitación', roomId, 'hotelId:', room.hotelId, err);
                     }
@@ -108,7 +109,7 @@ export default class GuestRoomDeviceFacade {
                     return result;
                 }));
                 console.log(`[FACADE] devicesWithPrefs para habitación ${roomId}:`, devicesWithPrefs);
-                roomsWithDevices.push({ room, hotel, devices: devicesWithPrefs });
+                roomsWithDevices.push({ room, hotelName, devices: devicesWithPrefs });
             } catch (error) {
                 console.error(`Error al cargar habitación con ID ${roomId}:`, error);
             }
@@ -182,5 +183,44 @@ export default class GuestRoomDeviceFacade {
             }
         }
         return true;
+    }
+
+    /**
+     * Obtiene todos los dispositivos IoT
+     */
+    async fetchIoTDevices() {
+        try {
+            const resp = await apiClient.get('/api/v1/io-t-devices');
+            return resp.data;
+        } catch (e) {
+            console.error('[GuestRoomDeviceFacade] Error al obtener IoT devices:', e);
+            return [];
+        }
+    }
+
+    /**
+     * Obtiene la preferencia de un roomDevice por su ID
+     */
+    async getRoomDevicePreferenceByRoomDeviceId(roomDeviceId) {
+        try {
+            const resp = await apiClient.get(`/api/v1/room-device-preferences/room-device/${roomDeviceId}`);
+            return resp.data;
+        } catch (e) {
+            console.error('[GuestRoomDeviceFacade] Error al obtener preferencia de roomDevice:', e);
+            return null;
+        }
+    }
+
+    /**
+     * Actualiza la preferencia de un roomDevice existente (PUT)
+     */
+    async updateRoomDevicePreference(prefId, payload) {
+        try {
+            const resp = await apiClient.put(`/api/v1/room-device-preferences/${prefId}`, payload);
+            return resp.data;
+        } catch (e) {
+            console.error('[GuestRoomDeviceFacade] Error al actualizar preferencia de roomDevice:', e);
+            throw e;
+        }
     }
 }

@@ -11,7 +11,7 @@
 
     <!-- Información del hotel -->
     <div class="hotel-info mb-3">
-      <strong>Hotel:</strong> {{ hotel?.name || 'Desconocido' }}
+      <strong>Hotel:</strong> {{ hotelName || 'Desconocido' }}
     </div>
 
     <!-- Lista de dispositivos -->
@@ -76,23 +76,10 @@
 import { defineProps, computed, defineEmits } from 'vue';
 
 const props = defineProps({
-  room: {
-    type: Object,
-    required: true
-  },
-  devices: {
-    type: Array,
-    default: () => []
-  },
-  hotel: {
-    type: Object,
-    required: false,
-    default: () => ({})
-  },
-  userId: {
-    type: Number,
-    required: true
-  }
+  room: Object,
+  devices: Array,
+  hotelName: String,
+  userId: [String, Number]
 });
 const emit = defineEmits(['edit-room-config']);
 

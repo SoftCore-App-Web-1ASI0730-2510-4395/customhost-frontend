@@ -34,7 +34,12 @@ export default {
     const loadNotifications = async () => {
       loading.value = true;
       try {
-        const userId = 1; // TODO: Obtener desde sesión
+        // Obtener userId desde localStorage
+        const userData = localStorage.getItem('user');
+        const parsedData = userData ? JSON.parse(userData) : null;
+        console.log('[api-service] parsedData:', parsedData);
+        const userId = parsedData?.id;
+        if (!userId) throw new Error('No se encontró userId en localStorage');
         const data = await GuestFacade.getGuestNotifications(userId);
         notifications.value = data;
       } catch (error) {

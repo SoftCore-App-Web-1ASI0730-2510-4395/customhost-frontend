@@ -3,6 +3,7 @@ import './style.css'
 import App from './App.vue'
 // PrimeVue
 import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice'
 import Aura from '@primeuix/themes/aura' // Tema moderno de PrimeVue 3
 
 // Componentes PrimeVue (solo los que usas)
@@ -51,6 +52,7 @@ app.component('Chart', Chart)
 // Usar plugins
 app.use(i18n)
     .use(router)
+    .use(ToastService)
     .use(PrimeVue, {
         theme: {
             preset: Aura,

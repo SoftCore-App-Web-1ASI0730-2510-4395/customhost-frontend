@@ -1,12 +1,22 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+import { getSubscriptionPlans } from '../services/subscription-plan.service.js';
 
-// Simulación de suscripciones, puedes reemplazar por fetch real
-const subscriptions = ref([
-  { id: 1, name: 'Básica', price: 10, description: 'Ideal para hoteles pequeños.' },
-  { id: 2, name: 'Pro', price: 25, description: 'Para hoteles medianos con más necesidades.' },
-  { id: 3, name: 'Premium', price: 50, description: 'Para hoteles grandes y con demanda alta.' }
-]);
+const subscriptions = ref([]);
+const loading = ref(true);
+const error = ref(null);
+
+onMounted(async () => {
+  loading.value = true;
+  try {
+    subscriptions.value = await getSubscriptionPlans();
+  } catch (err) {
+    error.value = 'No se pudieron cargar los planes de suscripción.';
+    console.error(err);
+  } finally {
+    loading.value = false;
+  }
+});
 
 const emit = defineEmits(['select-subscription']);
 
@@ -21,8 +31,12 @@ function selectSubscription(subscription) {
     <div class="subscriptions-container">
       <div v-for="sub in subscriptions" :key="sub.id" class="subscription-card">
         <h3>{{ sub.name }}</h3>
-        <p>{{ sub.description }}</p>
-        <p class="price">${{ sub.price }}/mes</p>
+        <ul class="features-list">
+          <li><strong>Habitaciones:</strong> {{ sub.maxRooms }}</li>
+          <li><strong>Staff:</strong> {{ sub.maxStaffMembers }}</li>
+          <li><strong>Dispositivos IoT:</strong> {{ sub.maxDevices }}</li>
+        </ul>
+        <p class="price">${{ sub.price }} / mes</p>
         <pv-button label="Seleccionar" @click="selectSubscription(sub)" />
       </div>
     </div>
@@ -56,5 +70,14 @@ function selectSubscription(subscription) {
   font-weight: bold;
   margin: 1rem 0;
 }
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0.5rem 0;
+  text-align: left;
+}
+.features-list li {
+  margin-bottom: 0.3rem;
+  font-size: 0.98rem;
+}
 </style>
-

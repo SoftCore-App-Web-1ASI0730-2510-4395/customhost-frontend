@@ -12,7 +12,7 @@
         </div>
         <div class="field mb-3">
           <label>Type</label>
-          <InputText v-model="room.type" required />
+          <Dropdown v-model="room.type" :options="roomsOptions" placeholder="Select room type" />
         </div>
         <div class="field mb-3">
           <label>Status</label>
@@ -47,7 +47,8 @@ import Button from 'primevue/button'
 const props = defineProps({
   modelValue: Boolean,
   room: Object,
-  statusOptions: Array
+  statusOptions: Array,
+  roomsOptions: Array
 })
 
 const emit = defineEmits(['update:modelValue', 'save'])

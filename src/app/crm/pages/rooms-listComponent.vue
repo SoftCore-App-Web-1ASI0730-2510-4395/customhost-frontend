@@ -19,6 +19,7 @@
         v-model:visible="roomDialog"
         :room="roomForm"
         :status-options="statusOptions"
+        :rooms-options="roomsOptions"
         @save="saveRoom"
     />
   </div>
@@ -47,6 +48,7 @@ const roomForm = reactive({
 })
 
 const statusOptions = ['Available', 'Occupied', 'Cleaning', 'Maintenance']
+const roomsOptions = ['Standard', 'Deluxe', 'Suite', 'Presidential']
 
 const fetchRooms = async () => {
   rooms.value = await getRooms()

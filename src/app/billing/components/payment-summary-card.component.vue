@@ -8,7 +8,7 @@
       <div v-if="paymentData">
         <div class="mb-4">
           <h4>Huésped</h4>
-          <p>{{ paymentData.user.fullName }}</p>
+          <p>{{ paymentData.guestName || paymentData.user.fullName || paymentData.user.username || paymentData.user.name }}</p>
         </div>
 
         <div class="mb-4">

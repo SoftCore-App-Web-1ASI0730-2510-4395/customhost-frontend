@@ -1,42 +1,63 @@
-@ -1,149 +0,0 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 import { Card, Toast, Message } from "primevue";
 import RegisterHotelForm from '../components/registerHotelForm.component.vue';
+import EditHotelDetails from '../components/EditHotelDetails.vue';
 import { useAuth } from '../../shared/composables/useAuth.js';
+import AuthService from '../services/auth.service.js';
+import SubscriptionsList from '../../billing/components/subscriptions-list.component.vue';
+import HotelSubscriptionPayment from '../../billing/components/hotel-subscription-payment.component.vue';
 
 const errorMessage = ref('');
 const router = useRouter();
 const toast = useToast();
 const { registerHotel, isLoading } = useAuth();
+const showEditDetails = ref(false);
+const showSubscriptions = ref(false);
+const registeredHotel = ref(null);
+const selectedSubscription = ref(null);
 
 async function handleRegistration(formData) {
   errorMessage.value = '';
 
   try {
     // Registrar el hotel con rol ADMIN
-    await registerHotel({
+    const hotel = await registerHotel({
       username: formData.username,
       password: formData.password
     });
-    
+    // Login automático tras registro
+    await AuthService.signIn({
+      username: formData.username,
+      password: formData.password
+    });
     toast.add({
       severity: 'success',
       summary: 'Hotel Registrado',
-      detail: `Hotel "${formData.hotelName}" registrado exitosamente. Ahora puedes iniciar sesión como administrador.`,
-      life: 5000
+      detail: `Hotel "${formData.hotelName}" registrado exitosamente. Ahora completa los datos de tu hotel.`,
+      life: 3000
     });
-    
-    // Redirigir al login después del registro exitoso
-    setTimeout(() => {
-      router.push('/iam/login');
-    }, 2000);
-    
+    registeredHotel.value = { ...hotel, name: formData.hotelName };
+    showEditDetails.value = true;
+
   } catch (error) {
     errorMessage.value = error.message;
   }
+}
+
+function handleSaveHotelDetails() {
+  showSubscriptions.value = true;
+}
+
+function handleSelectSubscription(sub) {
+  selectedSubscription.value = sub;
+}
+
+function handlePaymentSuccess() {
+  toast.add({ severity: 'success', summary: '¡Suscripción completada!', detail: 'Tu hotel ya tiene una suscripción activa.', life: 4000 });
+  // Aquí puedes redirigir o mostrar un mensaje final
 }
 </script>
 
@@ -52,12 +73,26 @@ async function handleRegistration(formData) {
           <p class="register-hotel-subtitle">Completa el formulario para empezar a disfrutar de nuestros servicios y optimizar la gestión de tu establecimiento.</p>
         </template>
         <template #content>
-          <!-- Usar el nuevo componente de formulario -->
           <RegisterHotelForm
+              v-if="!showEditDetails && !showSubscriptions && !selectedSubscription"
               :loading="isLoading"
               @submit-registration="handleRegistration"
           />
-          <!-- Mensaje de error general para la página -->
+          <EditHotelDetails
+              v-else-if="showEditDetails && !showSubscriptions && !selectedSubscription"
+              :hotel="registeredHotel"
+              @save-details="handleSaveHotelDetails"
+          />
+          <SubscriptionsList
+              v-else-if="showSubscriptions && !selectedSubscription"
+              @select-subscription="handleSelectSubscription"
+          />
+          <HotelSubscriptionPayment
+              v-else-if="selectedSubscription"
+              :hotel-id="registeredHotel?.id"
+              :subscription-plan="selectedSubscription"
+              @payment-success="handlePaymentSuccess"
+          />
           <pv-message severity="error" v-if="errorMessage && !isLoading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
         </template>
       </pv-card>

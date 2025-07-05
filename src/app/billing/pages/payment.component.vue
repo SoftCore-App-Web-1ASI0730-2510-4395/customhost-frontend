@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import PaymentSummaryCard from '../component/payment-summary-card.component.vue'; // ✅ Corregido
+import PaymentSummaryCard from '../components/payment-summary-card.component.vue'; // ✅ Corregido
 import PaymentFacade from '../services/payment.facade.js';
 
 import { ref, onMounted } from 'vue';

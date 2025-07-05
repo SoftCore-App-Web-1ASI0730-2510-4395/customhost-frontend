@@ -27,7 +27,7 @@
 
 <script setup>
 import { ref, onMounted, nextTick } from 'vue';
-import PaymentSummaryCard from '../component/payment-summary-card.component.vue';
+import PaymentSummaryCard from '../components/payment-summary-card.component.vue';
 import PaymentFacade from '../services/payment.facade.js';
 import { useRouter } from 'vue-router';
 import { loadStripe } from '@stripe/stripe-js';

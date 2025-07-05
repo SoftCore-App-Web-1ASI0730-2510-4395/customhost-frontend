@@ -30,3 +30,23 @@ export const getHotelById = async (hotelId) => {
         throw error;
     }
 };
+
+/**
+ * Crea un nuevo hotel
+ * @param {Object} hotelData - { name, address, email, phone }
+ * @returns {Promise<Object>} Hotel creado
+ */
+export const createHotel = async (hotelData) => {
+    try {
+        console.log('[createHotel] Payload enviado:', hotelData);
+        const response = await apiClient.post(API_URL, hotelData);
+        console.log('[createHotel] Respuesta recibida:', response);
+        return response.data;
+    } catch (error) {
+        console.error('Error al crear hotel:', error);
+        if (error.response) {
+            console.error('Respuesta del backend:', error.response);
+        }
+        throw error;
+    }
+};

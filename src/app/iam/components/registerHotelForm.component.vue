@@ -22,6 +22,7 @@ function handleSubmit() {
   formErrorMessage.value = '';
 
   if (!hotelName.value || !username.value || !password.value || !passwordRepeat.value) {
+    formErrorMessage.value = 'Todos los campos son obligatorios.';
     return;
   }
 

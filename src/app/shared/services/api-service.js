@@ -14,11 +14,18 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const userData = localStorage.getItem('userData');
+    console.log('[api-service] userData en localStorage:', userData);
     if (userData) {
       const parsedData = JSON.parse(userData);
+      console.log('[api-service] parsedData:', parsedData);
       if (parsedData.token) {
         config.headers.Authorization = `Bearer ${parsedData.token}`;
+        console.log('[api-service] Token agregado al header:', parsedData.token);
+      } else {
+        console.warn('[api-service] No se encontró token en userData');
       }
+    } else {
+      console.warn('[api-service] No hay userData en localStorage');
     }
     return config;
   },

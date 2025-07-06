@@ -52,3 +52,8 @@ export const getProfilesByHotelId = async (hotelId) => {
 export const cancelSubscription = async (subscriptionId) => {
   return paymentFacade.cancelSubscription(subscriptionId);
 };
+
+export const getProfileByUserId = async (userId) => {
+  const response = await apiClient.get(`${API_URL}/userid/${userId}`);
+  return response.data ? new Profile(response.data) : null;
+};

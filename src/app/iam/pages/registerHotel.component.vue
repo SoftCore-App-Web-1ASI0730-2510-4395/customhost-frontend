@@ -31,6 +31,8 @@ async function handleRegistration(formData) {
       username: formData.username,
       password: formData.password
     });
+    // Guardar el userId del hotel creado
+    const userId = hotel?.id;
     hotelPassword.value = formData.password; // Guardar la contraseña
     // Login automático tras registro
     await AuthService.signIn({
@@ -43,7 +45,7 @@ async function handleRegistration(formData) {
       detail: `Hotel "${formData.hotelName}" registrado exitosamente. Ahora completa los datos de tu hotel.`,
       life: 3000
     });
-    registeredHotel.value = { ...hotel, name: formData.hotelName };
+    registeredHotel.value = { ...hotel, name: formData.hotelName, userId };
     showEditDetails.value = true;
 
   } catch (error) {

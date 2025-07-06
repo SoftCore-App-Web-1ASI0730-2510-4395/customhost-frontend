@@ -27,17 +27,48 @@ import { createProfile } from '../services/profile.service.js';
 import apiClient from '../../shared/services/api-service.js';
 
 const props = defineProps({
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  userId: { type: [String, Number], required: false }
 });
-
-const emit = defineEmits(['profile-created']);
 
 const form = ref({
   firstName: '',
   lastName: '',
   email: '',
-  phone: ''
+  phone: '',
+  userId: null
 });
+
+// Obtener userId del localStorage si existe
+const storedUser = localStorage.getItem('user');
+if (storedUser) {
+  try {
+    const parsedUser = JSON.parse(storedUser);
+    if (parsedUser.id) {
+      form.value.userId = parsedUser.id;
+    }
+  } catch (e) {
+    // Si hay error al parsear, no hacer nada
+  }
+}
+
+// Si no hay userId, obtener el último id de /api/v1/users
+if (!form.value.userId) {
+  apiClient.get('/api/v1/users').then(res => {
+    const users = res.data;
+    if (Array.isArray(users) && users.length > 0) {
+      const lastUser = users[users.length - 1];
+      if (lastUser && lastUser.id) {
+        form.value.userId = lastUser.id;
+      }
+    }
+  }).catch(() => {
+    // Si hay error, no hacer nada
+  });
+}
+
+const emit = defineEmits(['profile-created']);
+
 const error = ref('');
 
 const handleSubmit = async () => {
@@ -55,7 +86,8 @@ const handleSubmit = async () => {
       email: form.value.email,
       phone: form.value.phone,
       password: props.password, // Usar la constante
-      Role: 'ADMIN'
+      Role: 'ADMIN',
+      userId: props.userId || form.value.userId // Asegura que se envía el userId
     };
     console.log('profileData enviado:', profileData);
     await createProfile(profileData);

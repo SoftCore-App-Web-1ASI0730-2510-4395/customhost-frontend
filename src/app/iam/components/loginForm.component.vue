@@ -27,6 +27,11 @@ function handleSubmit() {
     password: password.value
   });
 }
+
+function goToRegister() {
+  // Redirige usando el router para evitar problemas de navegación
+  window.location.href = '/iam/register';
+}
 </script>
 
 <template>
@@ -75,8 +80,10 @@ function handleSubmit() {
         />
       </div>
 
-      <div class="text-center mt-4">
-        <p>¿No tienes una cuenta? <router-link to="/iam/register">Regístrate aquí</router-link></p>
+      <div class="mt-4 text-center">
+        <router-link to="/iam/register" class="register-link" @click.prevent="goToRegister">
+          ¿No tienes cuenta? Regístrate aquí
+        </router-link>
       </div>
     </form>
   </div>

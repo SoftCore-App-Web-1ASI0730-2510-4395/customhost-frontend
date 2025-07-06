@@ -19,6 +19,7 @@
       <label for="phone">Teléfono</label>
       <input v-model="form.phone" id="phone" required />
     </div>
+    <input type="hidden" v-model="form.userId" />
     <button type="submit" :disabled="loading" class="p-button p-component w-full mt-3">
       <span class="pi pi-check-circle mr-2" />Registrar Perfil
     </button>
@@ -42,7 +43,8 @@ const form = ref({
   firstName: '',
   lastName: '',
   email: '',
-  phone: ''
+  phone: '',
+  userId: null
 });
 const error = ref('');
 const loading = ref(false);
@@ -62,6 +64,18 @@ const handleSubmit = async () => {
       password: props.password
     });
     // 3. Crear perfil con token ya guardado
+    // Obtener userId del usuario autenticado
+    let userId = null;
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData);
+        userId = parsed.id;
+        form.value.userId = userId;
+      } catch (e) {
+        console.error('No se pudo parsear userData para userId:', e);
+      }
+    }
     const profileData = {
       firstName: form.value.firstName,
       lastName: form.value.lastName,
@@ -69,7 +83,8 @@ const handleSubmit = async () => {
       phone: form.value.phone,
       role: 'GUEST',
       hotelId: null,
-      password: props.password
+      password: props.password,
+      userId: form.value.userId // Asigna el userId del usuario autenticado
     };
     console.log('profileData enviado:', profileData);
     await apiClient.post('/api/v1/profiles', profileData);

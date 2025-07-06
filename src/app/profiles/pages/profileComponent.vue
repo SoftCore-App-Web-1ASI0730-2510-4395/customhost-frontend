@@ -121,6 +121,9 @@
             </ul>
           </template>
         </Card>
+        <template v-else-if="userRole === 'GUEST'">
+          <!-- Se elimina la visualización del perfil para GUEST -->
+        </template>
       </template>
       <template v-else>
         <div class="text-red-500 text-center py-4">
@@ -136,7 +139,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '../../shared/composables/useAuth.js'
 import Card from 'primevue/card'
 import { getHotels } from '../../crm/services/hotels.service.js'
-import { getProfilesByHotelId, cancelSubscription } from '../services/profile.service.js'
+import { getProfilesByHotelId, cancelSubscription, getProfileByUserId } from '../services/profile.service.js'
 import { getSubscription } from '../../billing/services/payment.service.js'
 
 const { user } = useAuth()
@@ -149,9 +152,23 @@ const loading = ref(false)
 const error = ref('')
 
 onMounted(async () => {
-  loading.value = true
+  loading.value = true;
   try {
-    console.log('Iniciando onMounted')
+    // Obtener userId desde localStorage
+    let userId = null;
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData);
+        userId = parsed.id;
+      } catch (e) {
+        console.error('No se pudo parsear userData para userId:', e);
+      }
+    }
+    // Cargar perfil usando el endpoint /api/v1/profiles/userid/{userId} para todos los roles
+    if (userId) {
+      profile.value = await getProfileByUserId(userId);
+    }
     // 1. Buscar el hotel por name usando el username del usuario autenticado
     const allHotels = await getHotels()
     console.log('Hoteles obtenidos:', allHotels)

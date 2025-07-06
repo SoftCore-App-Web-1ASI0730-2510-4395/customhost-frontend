@@ -157,6 +157,7 @@ export default {
             await new Promise(resolve => setTimeout(resolve, 200));
             // Cambiar el estado del cuarto a 'Available' después de eliminar la reserva usando PATCH
             if (booking && booking.roomId) {
+                // Usar apiClient en vez de fetch/localhost
                 const response = await apiClient.patch(`/api/v1/rooms/${booking.roomId}`, { status: 'Available' });
                 if (!response.status === 200) {
                     // Log detallado para depuración, pero NO lanzamos error fatal
@@ -190,6 +191,28 @@ export default {
             return rooms;
         } catch (error) {
             console.error('Error obteniendo habitaciones del usuario:', error);
+            return [];
+        }
+    },
+
+    /**
+     * Obtiene todas las solicitudes del huésped desde la API real
+     */
+    async getGuestServiceRequestsFromApi(userId, token) {
+        try {
+            const url = `http://localhost:5232/api/v1/crm/service-request/user/${userId}`;
+            const fetchOptions = {
+                headers: token ? { 'Authorization': `Bearer ${token}`, 'accept': 'application/json' } : { 'accept': 'application/json' }
+            };
+            const res = await fetch(url, fetchOptions);
+            if (!res.ok) {
+                const errorText = await res.text();
+                throw new Error(errorText || 'No se pudo cargar el historial');
+            }
+            const data = await res.json();
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error('[guest.facade] Error al obtener solicitudes desde API:', error);
             return [];
         }
     },

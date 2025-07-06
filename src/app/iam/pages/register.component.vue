@@ -43,27 +43,22 @@ async function handleRegistration(formData) {
         <language-switcher />
       </div>
     </div>
-    <div class="login-container">
-      <div class="login-image-container">
-        <img src="/src/assets/img/auth_img.jpg" alt="Register Background" class="login-image" />
-      </div>
-      <div class="login-form-container">
-        <div class="register-container">
-          <pv-card class="login-card">
-            <template #title>
-            </template>
-            <template #content>
-              <RegisterForm
-                  :loading="isLoading"
-                  @submit-registration="handleRegistration"
-              />
-              <!-- Mensaje de error general para la página -->
-              <pv-message severity="error" v-if="errorMessage && !isLoading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
-            </template>
-          </pv-card>
-          <pv-toast position="top-right" />
-        </div>
-      </div>
+    <div class="register-outer-center">
+      <pv-card class="register-card">
+        <template #title>
+          <h2 class="register-title">Registro</h2>
+        </template>
+        <template #content>
+          <div class="register-form-content">
+            <RegisterForm
+                :loading="isLoading"
+                @submit-registration="handleRegistration"
+            />
+            <pv-message severity="error" v-if="errorMessage && !isLoading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
+          </div>
+        </template>
+      </pv-card>
+      <pv-toast position="top-center" />
     </div>
   </div>
 </template>
@@ -86,67 +81,29 @@ span {
   font-family: "Anta", sans-serif;
   letter-spacing: max(1px, 0.1vw);
 }
-.no-image-header .login-image-container {
-  display: none !important;
-}
-/* Estilos copiados de login.component.vue para consistencia visual */
-.login-container {
-  display: flex;
+
+.register-outer-center {
   min-height: 100vh;
-  overflow: hidden;
-  position: relative;
-}
-
-.login-image-container {
-  flex: 1;
-  display: none;
-  overflow: hidden;
-  max-height: 100vh;
-}
-
-.login-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.login-form-container {
-  flex: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 1.5rem;
-  overflow-y: auto;
-  max-height: 100vh;
+  justify-content: center;
+  background: #f4f6f8;
+  flex-direction: column;
+  padding-top: 64px;
 }
 
-.login-card {
+.register-card {
   width: 100%;
-  max-width: 450px; /* Ajustado para más campos */
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.login-title {
-  font-size: 1.8rem;
-  /* color: var(--color-primary, #4f46e5); */ /* Comentado como en login */
-  margin-bottom: 0.5rem;
-}
-
-/* Estilos específicos del formulario se movieron a registerForm.component.vue */
-
-.register-container {
   max-width: 430px;
-  margin: 2.5rem auto 2.5rem auto;
-  background: #fff;
   border-radius: 18px;
   box-shadow: 0 6px 32px 0 rgba(34, 197, 94, 0.13);
+  background: #fff;
   padding: 2.5rem 2rem 2rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
 }
+
 .register-title {
   font-size: 2.1rem;
   font-weight: 800;
@@ -155,49 +112,20 @@ span {
   margin-bottom: 0.5rem;
   letter-spacing: 1px;
 }
-.register-subtitle {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #166534;
-  text-align: center;
-  margin-bottom: 0.2rem;
+
+.register-form-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-.register-description {
-  text-align: center;
-  color: #6b7280;
-  font-size: 1.05rem;
-  margin-bottom: 1.5rem;
-}
+
 .page-error-message {
   margin-top: 1rem;
   color: #ef4444;
   text-align: center;
   font-weight: 600;
-}
-
-/* Media query para pantallas más grandes */
-@media screen and (min-width: 768px) {
-  .login-container {
-    flex-direction: row;
-  }
-
-  .login-image-container {
-    display: block;
-    max-width: 50%; /* Ajustado para que la imagen no sea demasiado dominante */
-  }
-
-  .login-form-container {
-    max-width: 50%; /* Ajustado para el formulario */
-  }
-  .login-card {
-    max-width: 500px; /* Un poco más de espacio para los campos adicionales */
-  }
-}
-
-/* Para pantallas muy grandes, limitamos el tamaño del formulario */
-@media screen and (min-width: 1200px) {
-  .login-card {
-    max-width: 550px; /* Aún más espacio si es necesario */
-  }
+  width: 100%;
 }
 </style>

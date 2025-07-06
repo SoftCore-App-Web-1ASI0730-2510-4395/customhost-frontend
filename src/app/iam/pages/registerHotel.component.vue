@@ -78,10 +78,6 @@ function handlePaymentSuccess() {
 
 <template>
   <div class="register-hotel-container">
-    <!-- Header eliminado como solicitaste -->
-    <div class="register-hotel-image-container">
-      <img src="/src/assets/img/auth_hotel_img.jpg" alt="Registro de Hoteles - Fondo" class="register-hotel-image" />
-    </div>
     <div class="register-hotel-form-container">
       <pv-card class="register-hotel-card">
         <template #title>
@@ -123,105 +119,43 @@ function handlePaymentSuccess() {
 </template>
 
 <style scoped>
-/* Estilos adaptados para el registro de hoteles, manteniendo consistencia con login/register */
 .register-hotel-container {
   display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
-  overflow: hidden; /* Previene scroll general */
-  position: relative;
-  background-color: #f4f6f8; /* Un fondo ligeramente distinto y profesional */
-}
-
-.register-hotel-image-container {
-  flex: 1;
-  display: none; /* Oculto en móviles por defecto */
-  overflow: hidden;
-  max-height: 100vh; /* Asegura que no exceda la altura de la ventana */
-}
-
-.register-hotel-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  background-color: #f4f6f8;
 }
 
 .register-hotel-form-container {
-  flex: 1;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 1.5rem;
-  overflow-y: auto; /* Permite scroll vertical solo en el formulario si es necesario */
-  height: 100%; /* Ocupa toda la altura del contenedor padre */
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
 }
 
 .register-hotel-card {
   width: 100%;
   max-width: 500px;
-  border-radius: 18px;
-  box-shadow: 0 8px 24px rgba(34,197,94,0.13);
-  padding: 2.2rem 2rem 2rem 2rem;
+  margin: 0 auto;
+  padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(34,197,94,0.07);
   background: #fff;
-  border: 1.5px solid #bbf7d0;
 }
 
 .register-hotel-title {
-  font-size: 2.1rem;
-  color: #22c55e;
-  margin-bottom: 0.75rem;
   text-align: center;
-  font-weight: 800;
-  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
 }
 
 .register-hotel-subtitle {
-  font-size: 1.08rem;
-  color: #166534;
-  margin-bottom: 2rem;
   text-align: center;
-  line-height: 1.7;
-  font-weight: 600;
-  background: #e7fbe9;
-  border-radius: 8px;
-  padding: 0.7rem 1rem;
-  box-shadow: 0 2px 8px rgba(34,197,94,0.07);
-  letter-spacing: 0.2px;
-}
-
-/* Se eliminan los estilos del formulario de aquí, ya que se movieron a registerHotelForm.component.vue */
-/* .register-hotel-form { ... } */
-/* .register-hotel-button { ... } */
-
-/* Media query para pantallas más grandes */
-@media screen and (min-width: 768px) {
-  .register-hotel-container {
-    flex-direction: row;
-  }
-
-  .register-hotel-image-container {
-    display: block;
-    flex-basis: 50%; /* Imagen y formulario dividen el espacio */
-  }
-
-  .register-hotel-form-container {
-    flex-basis: 50%;
-  }
-  .register-hotel-card {
-    max-width: 550px;
-    padding: 2.5rem 2.5rem 2.5rem 2.5rem;
-  }
-}
-
-/* Para pantallas muy grandes, se puede refinar más si es necesario */
-@media screen and (min-width: 1200px) {
-  .register-hotel-card {
-    max-width: 600px;
-  }
-}
-
-.page-error-message {
-  margin-top: 1rem; /* Espacio para el mensaje de error de página */
+  color: #6b7280;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 </style>

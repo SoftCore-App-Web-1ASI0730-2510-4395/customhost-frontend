@@ -5,14 +5,14 @@
     <!-- 1. Hero + Búsqueda rápida -->
     <!-- 1. Hero + Búsqueda rápida -->
     <div class="text-4xl font-extrabold text-center mb-8 text-gray-800">
-      ¡Bienvenido, {{ usuarioNombre }}!
+      {{$t('guestHome.welcome', { name: usuarioNombre })}}
     </div>
 
-    <div class="flex justify-center mb-24"> <!-- Aumentamos el margen inferior a mb-24 -->
+    <div class="flex justify-center mb-24">
       <div class="relative w-full md:w-1/2">
         <input
             type="text"
-            placeholder="Buscar habitación..."
+            :placeholder="$t('guestHome.searchRoom')"
             v-model="searchQuery"
             @input="handleInput"
             @focus="showDropdown = true"

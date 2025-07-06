@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
     <div class="footer-content">
-      <p>&copy; {{ currentYear }} Hotel Sheraton Center. Todos los derechos reservados.</p>
+      <p>&copy; {{ currentYear }} {{$t('footer.rights')}}</p>
     </div>
   </footer>
 </template>

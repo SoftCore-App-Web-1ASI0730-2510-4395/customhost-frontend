@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  <h1>Oops! Page not found</h1>
+  <h1>{{$t('notFound.title')}}</h1>
 </template>
 
 <style scoped>

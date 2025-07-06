@@ -2,7 +2,7 @@
 <template>
   <div class="surface-section px-4 py-8">
     <!-- Título principal -->
-    <h2 class="text-3xl font-bold text-center mb-6">Configura tus Dispositivos IoT</h2>
+    <h2 class="text-3xl font-bold text-center mb-6">{{$t('guestRoomPreference.title')}}</h2>
 
     <!-- Mensaje visual -->
     <div v-if="message" class="notification-box" :class="message.type">
@@ -17,7 +17,7 @@
     <!-- Mensaje de inicio de sesión -->
     <div v-if="!userId" class="flex flex-column align-items-center justify-content-center mt-6">
       <i class="pi pi-user text-6xl text-orange-500 mb-3"></i>
-      <span class="text-xl text-center text-gray-600">Inicia sesión, por favor.</span>
+      <span class="text-xl text-center text-gray-600">{{$t('guestRoomPreference.loginMessage')}}</span>
     </div>
 
     <!-- Habitaciones con dispositivos -->
@@ -36,7 +36,7 @@
     <!-- Sin dispositivos -->
     <div v-else class="flex flex-column align-items-center justify-content-center mt-6">
       <i class="pi pi-info-circle text-6xl text-blue-500 mb-3"></i>
-      <span class="text-xl text-center text-gray-600">No tienes habitaciones con dispositivos IoT disponibles.</span>
+      <span class="text-xl text-center text-gray-600">{{$t('guestRoomPreference.noRoomsWithDevices')}}</span>
     </div>
 
     <!-- Modal visual para editar configuración -->
@@ -44,7 +44,7 @@
       <div class="modal-content">
         <h3 class="modal-title">
           Configura tu habitación
-          <span v-if="editRoomData.roomNumber" class="room-name"> - Habitación {{ editRoomData.roomNumber }}</span>
+          <span v-if="editRoomData.roomNumber" class="room-name"> - {{$t('guestRoomPreference.room')}} {{ editRoomData.roomNumber }}</span>
         </h3>
         <div class="modal-section">
           <label class="modal-label">Dispositivos IoT:</label>
@@ -118,13 +118,13 @@
               </div>
             </li>
             <li v-if="!(editRoomData.devices && editRoomData.devices.length)" class="device-item-empty">
-              <span>No hay dispositivos IoT en esta habitación.</span>
+              <span>{{$t('guestRoomPreference.noDevicesInRoom')}}</span>
             </li>
           </ul>
         </div>
         <div class="flex justify-content-end mt-3">
-          <button class="modal-btn mr-2" @click="saveRoomConfig">Guardar</button>
-          <button class="modal-btn cancel" @click="closeEditModal">Cancelar</button>
+          <button class="modal-btn mr-2" @click="saveRoomConfig">{{$t('guestRoomPreference.save')}}</button>
+          <button class="modal-btn cancel" @click="closeEditModal">{{$t('guestRoomPreference.cancel')}}</button>
         </div>
       </div>
     </div>
@@ -300,12 +300,12 @@ const saveRoomConfig = async () => {
         console.log('[saveRoomConfig] Preferencia encontrada:', existingPref);
       } catch (e) {
         console.error('[saveRoomConfig] No existe preferencia previa para este roomDeviceId, solo se permite PUT. Error:', e);
-        showMessage('No existe preferencia previa para este dispositivo, no se puede guardar.', 'error');
+        showMessage($t('guestRoomPreference.noPreferenceError'), 'error');
         return;
       }
       if (!existingPref || !existingPref.id) {
         console.warn('[saveRoomConfig] No existe preferencia previa para este dispositivo, no se puede guardar.', { roomDeviceId, existingPref });
-        showMessage('No existe preferencia previa para este dispositivo, no se puede guardar.', 'error');
+        showMessage($t('guestRoomPreference.noPreferenceError'), 'error');
         return;
       }
       const payload = {
@@ -321,11 +321,11 @@ const saveRoomConfig = async () => {
       }
     });
     await Promise.all(updatePromises);
-    showMessage('Configuración guardada correctamente.', 'success');
+    showMessage($t('guestRoomPreference.saveSuccess'), 'success');
     showEditModal.value = false;
     await loadUserRoomsAndDevices();
   } catch (error) {
-    showMessage('Error al guardar la configuración.', 'error');
+    showMessage($t('guestRoomPreference.saveError'), 'error');
     console.error('[saveRoomConfig] Error al guardar preferencias:', error);
   }
 };

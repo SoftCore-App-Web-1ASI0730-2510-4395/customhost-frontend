@@ -97,7 +97,7 @@ const saveRoom = async () => {
     roomDialog.value = false
   } catch (error) {
     console.error('Error saving room:', error.message)
-    alert('Error al guardar la habitación: ' + error.message)
+    alert($t('roomsList.saveError') + ': ' + error.message)
   }
 }
 

@@ -98,5 +98,121 @@
     "profile": "Profile",
     "guest": "Guest",
     "staff": "Staff"
+  },
+  "staffHome": {
+    "welcome": "Welcome, {name}!",
+    "paymentsChart": "Payments chart",
+    "year": "Year",
+    "availableRooms": "Available rooms",
+    "room": "Room",
+    "floor": "Floor",
+    "noRooms": "No available rooms."
+  },
+  "guestHome": {
+    "welcome": "Welcome, {name}!",
+    "searchRoom": "Search room..."
+  },
+  "notFound": {
+    "title": "Oops! Page not found"
+  },
+  "profile": {
+    "loading": "Loading...",
+    "hotel": "Hotel",
+    "adminProfile": "Admin Profile",
+    "personalData": "Personal Data",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "status": "Status",
+    "totalRooms": "Total Rooms",
+    "occupiedRooms": "Occupied",
+    "cleaningRooms": "Cleaning",
+    "maintenanceRooms": "Maintenance",
+    "subscription": "Subscription",
+    "activeUntil": "Active until",
+    "cancelSubscription": "Cancel subscription",
+    "noActiveSubscription": "No active subscription.",
+    "profileOf": "Profile of",
+    "staff": "Staff",
+    "guest": "Guest",
+    "associatedHotels": "Associated Hotels",
+    "noAssociatedHotels": "You have no associated hotels.",
+    "unrecognizedRole": "Unrecognized user role."
+  },
+  "guestProfileRegister": {
+    "title": "Guest profile registration",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "submit": "Create profile"
+  },
+  "userProfileForm": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "submit": "Save profile"
+  },
+  "roomsList": {
+    "saveError": "Error saving room"
+  },
+  "requestStaff": {
+    "departments": {
+      "housekeeping": "Housekeeping",
+      "technicalSupport": "Technical Support",
+      "reception": "Reception",
+      "management": "Management",
+      "roomService": "Room Service"
+    }
+  },
+  "myBooking": {
+    "title": "My Bookings",
+    "success": "Booking deleted successfully.",
+    "error": "Could not delete the booking.",
+    "noActiveBookings": "You have no active bookings.",
+    "goToReserve": "Go to Reserve",
+    "confirmDelete": "Are you sure you want to delete this booking?"
+  },
+  "guestRoomPreference": {
+    "title": "Room Preferences",
+    "loginMessage": "Please log in.",
+    "noRoomsWithDevices": "You have no rooms with available IoT devices.",
+    "noDevicesInRoom": "There are no IoT devices in this room.",
+    "save": "Save",
+    "cancel": "Cancel",
+    "saveSuccess": "Configuration saved successfully.",
+    "saveError": "Error saving configuration.",
+    "noPreferenceError": "No previous preference exists for this device, cannot save.",
+    "room": "Room"
+  },
+  "footer": {
+    "rights": "Hotel Sheraton Center. All rights reserved."
+  },
+  "customerRequests": {
+    "title": "Hotel Sheraton - Guest Requests",
+    "newRequest": "New Request",
+    "room": "Room",
+    "types": {
+      "towels": "Towels/Linen",
+      "cleaning": "Cleaning",
+      "repair": "Repair",
+      "roomService": "Room Service",
+      "other": "Other"
+    },
+    "priority": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "urgent": "Urgent"
+    }
+  },
+  "createServiceRequest": {
+    "sendRequest": "Send Request",
+    "historyTitle": "Request History",
+    "noRequests": "You have no previous requests.",
+    "description": "Description",
+    "type": "Type",
+    "status": "Status"
   }
 }

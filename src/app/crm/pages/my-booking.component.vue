@@ -5,7 +5,7 @@
       {{ message.text }}
     </div>
 
-    <div class="text-3xl font-bold text-center mb-6">Mis Reservas</div>
+    <div class="text-3xl font-bold text-center mb-6">{{$t('myBooking.title')}}</div>
 
     <div v-if="loading" class="flex justify-content-center mt-6">
       <pv-progress-spinner />
@@ -19,9 +19,9 @@
 
     <div v-else class="flex flex-column align-items-center justify-content-center mt-6">
       <i class="pi pi-info-circle text-6xl text-blue-500 mb-3"></i>
-      <span class="text-xl text-center text-gray-600">No tienes ninguna reserva activa.</span>
+      <span class="text-xl text-center text-gray-600">{{$t('myBooking.noActiveBookings')}}</span>
       <pv-button
-          label="Ir a Reservar Habitación"
+          :label="$t('myBooking.goToReserve')"
           icon="pi pi-home"
           class="mt-4"
           @click="goToReserve"
@@ -45,7 +45,7 @@ export default {
     const message = ref(null);
 
     const showMessage = (text, type = 'success') => {
-      message.value = { text, type };
+      message.value = { text: t(`myBooking.${type}`) || text, type };
       setTimeout(() => {
         message.value = null;
       }, 3000);
@@ -81,7 +81,8 @@ export default {
     };
 
     const deleteBooking = async (bookingId) => {
-      if (!confirm('¿Estás seguro de eliminar esta reserva?')) return;
+      if (!confirm($t('myBooking.confirmDelete')))
+        return;
       loading.value = true;
       try {
         await GuestFacade.deleteGuestBooking(bookingId);

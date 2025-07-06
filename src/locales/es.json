@@ -99,5 +99,121 @@
     "profile": "Perfil",
     "guest": "Huésped",
     "staff": "Personal"
+  },
+  "staffHome": {
+    "welcome": "¡Bienvenido, {name}!",
+    "paymentsChart": "Gráfico de pagos",
+    "year": "Año",
+    "availableRooms": "Habitaciones disponibles",
+    "room": "Habitación",
+    "floor": "Piso",
+    "noRooms": "No hay habitaciones disponibles."
+  },
+  "guestHome": {
+    "welcome": "¡Bienvenido, {name}!",
+    "searchRoom": "Buscar habitación..."
+  },
+  "notFound": {
+    "title": "¡Ups! Página no encontrada"
+  },
+  "profile": {
+    "loading": "Cargando...",
+    "hotel": "Hotel",
+    "adminProfile": "Perfil de Administrador",
+    "personalData": "Datos Personales",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "status": "Estado",
+    "totalRooms": "Totales",
+    "occupiedRooms": "Ocupadas",
+    "cleaningRooms": "Limpieza",
+    "maintenanceRooms": "Mantenimiento",
+    "subscription": "Suscripción",
+    "activeUntil": "Activo hasta",
+    "cancelSubscription": "Cancelar suscripción",
+    "noActiveSubscription": "Sin suscripción activa.",
+    "profileOf": "Perfil de",
+    "staff": "Staff",
+    "guest": "Huésped",
+    "associatedHotels": "Hoteles Asociados",
+    "noAssociatedHotels": "No tienes hoteles asociados.",
+    "unrecognizedRole": "Rol de usuario no reconocido."
+  },
+  "guestProfileRegister": {
+    "title": "Registro de perfil de huésped",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "submit": "Crear perfil"
+  },
+  "userProfileForm": {
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "submit": "Guardar perfil"
+  },
+  "roomsList": {
+    "saveError": "Error al guardar la habitación"
+  },
+  "requestStaff": {
+    "departments": {
+      "housekeeping": "Limpieza",
+      "technicalSupport": "Soporte técnico",
+      "reception": "Recepción",
+      "management": "Gerencia",
+      "roomService": "Servicio a la habitación"
+    }
+  },
+  "myBooking": {
+    "success": "La reserva se ha eliminado correctamente.",
+    "error": "No se pudo eliminar la reserva.",
+    "noActiveBookings": "No tienes reservas activas.",
+    "goToReserve": "Ir a Reservar",
+    "confirmDelete": "¿Estás seguro de eliminar esta reserva?",
+    "title": "Mis Reservas"
+  },
+  "guestRoomPreference": {
+    "title": "Preferencias de Habitación",
+    "loginMessage": "Inicia sesión, por favor.",
+    "noRoomsWithDevices": "No tienes habitaciones con dispositivos IoT disponibles.",
+    "noDevicesInRoom": "No hay dispositivos IoT en esta habitación.",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "saveSuccess": "Configuración guardada correctamente.",
+    "saveError": "Error al guardar la configuración.",
+    "noPreferenceError": "No existe preferencia previa para este dispositivo, no se puede guardar.",
+    "room": "Habitación"
+  },
+  "footer": {
+    "rights": "Hotel Sheraton Center. Todos los derechos reservados."
+  },
+  "customerRequests": {
+    "title": "Hotel Cheraton - Peticiones del Huésped",
+    "newRequest": "Nueva Petición",
+    "room": "Habitación",
+    "types": {
+      "towels": "Toallas/Ropa",
+      "cleaning": "Limpieza",
+      "repair": "Reparación",
+      "roomService": "Room Service",
+      "other": "Otros"
+    },
+    "priority": {
+      "low": "Baja",
+      "medium": "Media",
+      "high": "Alta",
+      "urgent": "Urgente"
+    }
+  },
+  "createServiceRequest": {
+    "sendRequest": "Enviar Solicitud",
+    "historyTitle": "Historial de Solicitudes",
+    "noRequests": "No tienes solicitudes previas.",
+    "description": "Descripción",
+    "type": "Tipo",
+    "status": "Estado"
   }
 }

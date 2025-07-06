@@ -2,13 +2,13 @@
   <div class="mb-30px"></div>
   <!-- Saludo elegante -->
   <div class="text-4xl font-extrabold text-center mb-8 text-gray-800">
-    ¡Bienvenido, {{ usuarioNombre }}!
+    {{$t('staffHome.welcome', { name: usuarioNombre })}}
   </div>
   <div style="max-width: 900px; margin: 0 auto;">
     <div class="flex justify-between items-center mb-2" style="gap: 1rem;">
-      <h3 class="text-center" style="font-weight:600;">Gráfico de pagos {{ selectedYear }}</h3>
+      <h3 class="text-center" style="font-weight:600;">{{$t('staffHome.paymentsChart')}} {{ selectedYear }}</h3>
       <div>
-        <label for="year-select" style="margin-right: 8px;">Año:</label>
+        <label for="year-select" style="margin-right: 8px;">{{$t('staffHome.year')}}:</label>
         <select id="year-select" v-model="selectedYear" @change="updateChart" style="padding: 4px 8px; border-radius: 6px;">
           <option v-for="year in availableYears" :key="year" :value="year">{{ year }}</option>
         </select>
@@ -17,7 +17,7 @@
     <canvas id="paymentsBarChart" width="900" height="500"></canvas>
   </div>
   <div style="max-width: 900px; margin: 32px auto 0 auto;">
-    <h3 class="text-center mb-2" style="font-weight:600;">Habitaciones disponibles</h3>
+    <h3 class="text-center mb-2" style="font-weight:600;">{{$t('staffHome.availableRooms')}}</h3>
     <div v-if="availableRooms.length > 0" class="rooms-grid">
       <div
         v-for="room in availableRooms"
@@ -25,15 +25,15 @@
         class="room-card"
       >
         <div class="room-card-header">
-          <span class="room-number">Habitación {{ room.roomNumber }}</span>
+          <span class="room-number">{{$t('staffHome.room')}} {{ room.roomNumber }}</span>
         </div>
         <div class="room-card-body">
           <div class="room-type">{{ room.type }}</div>
-          <div class="room-floor">Piso {{ room.floor }}</div>
+          <div class="room-floor">{{$t('staffHome.floor')}} {{ room.floor }}</div>
         </div>
       </div>
     </div>
-    <div v-else class="text-center text-gray-500">No hay habitaciones disponibles.</div>
+    <div v-else class="text-center text-gray-500">{{$t('staffHome.noRooms')}}</div>
   </div>
 
   <!-- NUEVA SECCIÓN: Dispositivos IoT en mantenimiento o inactivos -->

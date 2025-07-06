@@ -17,7 +17,7 @@ const emit = defineEmits(['edit', 'delete-click'])
 
 
 const getActiveRequestsCount = (staffId) => {
-  return props.activeRequests.filter(req => req.assignedTo === staffId && req.status !== 'Completed').length
+  return props.activeRequests.filter(req => req.assignedTo === staffId).length
 }
 
 const departments = computed(() => {

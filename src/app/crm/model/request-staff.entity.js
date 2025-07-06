@@ -10,7 +10,7 @@ export class StaffMember {
         this.status = data.status
         this.department = data.department
         this.createdAt = new Date(data.createdAt)
-        this.status = 'Active'
+        this.status = 'active'
     }
 
     get formattedCreatedAt() {

@@ -1,8 +1,6 @@
 import apiClient from '../../shared/services/api-service.js';
 import { StaffMember } from '../model/request-staff.entity.js'
 
-
-
 const API_URL = '/api/v1'
 
 export const staffService = {

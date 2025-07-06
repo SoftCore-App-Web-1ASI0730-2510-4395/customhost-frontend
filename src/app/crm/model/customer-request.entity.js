@@ -11,14 +11,14 @@ export default class CustomerRequest {
                     status,
                     priority,
                     createdAt,
-                    assignedTo = null,
+                    assignedTo = '' || null,
                     completedAt = null,
                     history = [],
                 }) {
         this.id = id;
-        this.userId = userId !== undefined ? userId : null;
-        this.hotelId = hotelId !== undefined ? hotelId : null;
-        this.roomId = roomId !== undefined ? roomId : null;
+        this.userId = userId;
+        this.hotelId = hotelId;
+        this.roomId = roomId;
         this.type = type;
         this.category = category;
         this.description = description;
@@ -76,7 +76,7 @@ export default class CustomerRequest {
             createdAt: this.createdAt,
             assignedTo: this.assignedTo,
             completedAt: this.completedAt,
-            history: this.history
+            history: this.history,
         };
     }
 }

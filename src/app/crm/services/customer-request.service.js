@@ -73,24 +73,15 @@ export const deleteCustomerRequest = async (id) => {
     await apiClient.delete(`${API_URL}/${id}`)
 }
 
-export const assignStaffToRequest = async (requestId, staffId) => {
+export const assignStaffToRequest = async (id, staffId) => {
     try {
-        // Obtener la petición original
-        const response = await apiClient.get(`${API_URL}/${requestId}`);
-        const request = new CustomerRequest(response.data);
-        // Usar el método de la entidad para asignar staff y cambiar status
-        request.assignStaff(staffId);
-        // Solo enviar los campos modificados para PATCH
-        const patchPayload = {
-            assignedTo: request.assignedTo,
-            status: request.status,
-            history: request.history
-        };
-        const updated = await apiClient.patch(`${API_URL}/${requestId}`, patchPayload);
-        return new CustomerRequest(updated.data);
+        const response = await apiClient.patch(`/api/v1/crm/service-request/${id}/assign`, {
+            staff_id: String(staffId)
+        });
+        return response.data;
     } catch (error) {
-        console.error('Error asignando staff a la petición:', error);
-        throw new Error('No se pudo asignar el staff a la petición');
+        console.error('Error al asignar staff:', error?.response?.data || error);
+        throw error;
     }
 }
 

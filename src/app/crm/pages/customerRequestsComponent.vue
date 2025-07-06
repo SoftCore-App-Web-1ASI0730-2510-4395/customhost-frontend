@@ -8,7 +8,6 @@ import {
   assignStaffToRequest,
   resolveCustomerRequest
 } from '../services/customer-request.service'
-import { getRooms } from '../services/rooms.service.js'
 
 import CustomerRequestFormDialog from '../components/customer-request-form-dialog.component.vue'
 import CustomerRequestRoomsTable from '../components/customer-request-rooms-table.component.vue'
@@ -120,17 +119,32 @@ const fetchStaffForAssignment = async () => {
 }
 
 const fetchData = async () => {
-  loading.value = true
   try {
-    // Obtener habitaciones usando el service
-    rooms.value = await getRooms()
-    // Aquí puedes seguir obteniendo las requests si es necesario
-    allRequests.value = await getCustomerRequests()
-    pendingRequests.value = allRequests.value.filter(req => req.status !== 'Completed')
+    const [roomsRes, requestsRes] = await Promise.all([
+      axios.get(`${API_URL}/api/v1/rooms`),
+      getCustomerRequests(),
+    ]);
+
+    rooms.value = roomsRes.data?.map(room => ({
+      id: room.id,
+      roomNumber: room.roomNumber,
+      type: room.type,
+      status: room.status,
+      pendingRequests: requestsRes.filter(req =>
+          req.roomId === room.id && req.status !== 'Resolved'
+      ).length
+    })) || [];
+
+    allRequests.value = requestsRes;
+    pendingRequests.value = requestsRes.filter(req =>
+        req.status && !req.status.includes('Resolved')
+    );
+
   } catch (error) {
-    console.error('Error cargando datos:', error)
-    rooms.value = []
-    allRequests.value = []
+    console.error('Error fetching data:', error);
+    rooms.value = [];
+    allRequests.value = [];
+    pendingRequests.value = [];
   } finally {
     loading.value = false;
   }

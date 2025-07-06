@@ -15,6 +15,7 @@ const editDialogVisible = ref(false);
 const currentStaffMember = ref(null);
 const deleteDialogVisible = ref(false);
 const staffToDelete = ref(null);
+const errorMessage = ref('');
 
 const departments = ref([
   { label: 'Housekeeping', value: 'Housekeeping' },
@@ -26,13 +27,37 @@ const departments = ref([
 
 const fetchData = async () => {
   try {
-    const [staffRes, requestsRes] = await Promise.all([
-      axios.get(`${API_URL}/api/v1/staff-members`),
-      axios.get(`${API_URL}/api/v1/crm/service-request?status_ne=Completed`)
-    ])
-    staffMembers.value = staffRes.data
-    activeRequests.value = requestsRes.data
+    staffMembers.value = await staffService.getAllStaffMembers();
+    // Intentar obtener peticiones activas del backend
+    let requestsRes;
+    try {
+      requestsRes = await axios.get(`${API_URL}/api/v1/crm/service-request`);
+      // Filtrar en frontend las peticiones activas
+      activeRequests.value = Array.isArray(requestsRes.data)
+        ? requestsRes.data.filter(req => req.status === 'Open' || req.status === 'InProgress')
+        : [];
+      errorMessage.value = '';
+    } catch (err) {
+      // Si falla, usar datos mock para desarrollo
+      errorMessage.value = 'No se pudieron cargar las peticiones activas. Mostrando datos de ejemplo.';
+      activeRequests.value = [
+        { id: 1, assignedTo: staffMembers.value[0]?.id, status: 'Open', description: 'Mock request 1' },
+        { id: 2, assignedTo: staffMembers.value[1]?.id, status: 'InProgress', description: 'Mock request 2' }
+      ];
+    }
+    // Logs de depuración para verificar estructura y relación
+    console.log('Staff members cargados:', staffMembers.value);
+    console.log('Active requests cargadas:', activeRequests.value);
+    if (activeRequests.value.length > 0) {
+      console.log('Ejemplo de petición activa:', activeRequests.value[0]);
+    }
+    // Verificar relación assignedTo
+    staffMembers.value.forEach(staff => {
+      const count = activeRequests.value.filter(req => req.assignedTo === staff.id).length;
+      console.log(`Staff ${staff.firstName} ${staff.lastName} (ID: ${staff.id}) tiene ${count} peticiones activas.`);
+    });
   } catch (error) {
+    errorMessage.value = 'Error cargando datos de personal.';
     console.error('Error fetching data:', error)
   } finally {
     loading.value = false
@@ -115,6 +140,7 @@ onMounted(() => {
 
 <template>
   <div class="staff-members-view">
+    <div v-if="errorMessage" class="p-error mb-3">{{ errorMessage }}</div>
     <div class="flex justify-content-between align-items-center mb-3">
       <h1>Hotel Cheraton - Staff Member</h1>
       <pv-button label="Agregar Personal"

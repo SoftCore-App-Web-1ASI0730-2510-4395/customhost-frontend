@@ -1,36 +1,36 @@
 <template>
   <div class="p-4">
     <div v-if="loading" class="text-center py-8">
-      <span>Cargando perfil...</span>
+      <span>{{$t('profile.loading')}}</span>
     </div>
     <template v-else>
       <!-- ADMIN -->
       <template v-if="userRole === 'ADMIN'">
         <div class="hotel-title text-xl font-bold mb-4">
-          {{ hotel?.name || 'Hotel' }} - Perfil del Administrador
+          {{ hotel?.name || $t('profile.hotel') }} - {{$t('profile.adminProfile')}}
         </div>
         <Card class="mb-5">
-          <template #title>Datos Personales</template>
+          <template #title>{{$t('profile.personalData')}}</template>
           <template #content>
             <ul class="list-none p-0 m-0">
               <li class="flex align-items-center mb-3">
                 <i class="pi pi-user text-xl mr-3 text-primary"></i>
-                <span><strong>Nombre:</strong> {{ fullName }}</span>
+                <span><strong>{{$t('profile.name')}}:</strong> {{ fullName }}</span>
               </li>
               <li class="flex align-items-center mb-3">
                 <i class="pi pi-envelope text-xl mr-3 text-primary"></i>
-                <span><strong>Email:</strong> {{ profile?.email }}</span>
+                <span><strong>{{$t('profile.email')}}:</strong> {{ profile?.email }}</span>
               </li>
               <li class="flex align-items-center mb-3">
                 <i class="pi pi-phone text-xl mr-3 text-primary"></i>
-                <span><strong>Teléfono:</strong> {{ profile?.phone }}</span>
+                <span><strong>{{$t('profile.phone')}}:</strong> {{ profile?.phone }}</span>
               </li>
             </ul>
           </template>
         </Card>
         <Card>
           <template #title>
-            <span class="hotel-name-title">{{ hotel?.name || 'Hotel' }}</span>
+            <span class="hotel-name-title">{{ hotel?.name || $t('profile.hotel') }}</span>
           </template>
           <template #subtitle>
             <i class="pi pi-map-marker text-primary mr-2"></i>
@@ -42,41 +42,41 @@
                 <span class="icon-wrapper" :style="{ background: getHotelStatusColor(hotel?.status) + '22' }">
                   <i :class="['pi', getHotelStatusIcon(hotel?.status), 'text-xl']" :style="{ color: getHotelStatusColor(hotel?.status) }"></i>
                 </span>
-                <span><strong>Estado:</strong> <span class="hotel-status">{{ formatHotelStatus(hotel?.status) }}</span></span>
+                <span><strong>{{$t('profile.status')}}:</strong> <span class="hotel-status">{{ formatHotelStatus(hotel?.status) }}</span></span>
               </li>
               <li class="hotel-info-item">
                 <i class="pi pi-home text-xl mr-2 text-info"></i>
-                <span><strong>Totales:</strong> <span class="hotel-data">{{ hotel?.totalRooms ?? 0 }}</span></span>
+                <span><strong>{{$t('profile.totalRooms')}}:</strong> <span class="hotel-data">{{ hotel?.totalRooms ?? 0 }}</span></span>
               </li>
               <li class="hotel-info-item">
                 <i class="pi pi-lock-open text-xl mr-2 text-danger"></i>
-                <span><strong>Ocupadas:</strong> <span class="hotel-data">{{ hotel?.occupiedRooms ?? 0 }}</span></span>
+                <span><strong>{{$t('profile.occupiedRooms')}}:</strong> <span class="hotel-data">{{ hotel?.occupiedRooms ?? 0 }}</span></span>
               </li>
               <li class="hotel-info-item">
                 <i class="pi pi-refresh text-xl mr-2 text-warning"></i>
-                <span><strong>Limpieza:</strong> <span class="hotel-data">{{ hotel?.cleaningRooms ?? 0 }}</span></span>
+                <span><strong>{{$t('profile.cleaningRooms')}}:</strong> <span class="hotel-data">{{ hotel?.cleaningRooms ?? 0 }}</span></span>
               </li>
               <li class="hotel-info-item">
                 <i class="pi pi-wrench text-xl mr-2 text-secondary"></i>
-                <span><strong>Mantenimiento:</strong> <span class="hotel-data">{{ hotel?.maintenanceRooms ?? 0 }}</span></span>
+                <span><strong>{{$t('profile.maintenanceRooms')}}:</strong> <span class="hotel-data">{{ hotel?.maintenanceRooms ?? 0 }}</span></span>
               </li>
             </ul>
           </template>
         </Card>
         <Card class="mt-5">
-          <template #title>Suscripción</template>
+          <template #title>{{$t('profile.subscription')}}</template>
           <template #content>
             <div v-if="subscription" class="flex align-items-center">
               <i class="pi pi-check-circle text-success text-2xl mr-3"></i>
               <div>
-                <div class="font-bold">Activo hasta: {{ new Date(subscription.endDate).toLocaleDateString() }}</div>
+                <div class="font-bold">{{$t('profile.activeUntil')}}: {{ new Date(subscription.endDate).toLocaleDateString() }}</div>
               </div>
               <Button v-if="userRole === 'ADMIN'" icon="pi pi-times" class="p-button-danger ml-auto cancelar-btn fancy-cancel-btn" @click="eliminarSuscripcion">
-                <span class="btn-label">Cancelar suscripción</span>
+                <span class="btn-label">{{$t('profile.cancelSubscription')}}</span>
               </Button>
             </div>
             <div v-else class="text-center text-gray-500 py-4">
-              Sin suscripción activa.
+              {{$t('profile.noActiveSubscription')}}
             </div>
           </template>
         </Card>
@@ -84,30 +84,29 @@
       <!-- STAFF o GUEST -->
       <template v-else-if="userRole === 'STAFF' || userRole === 'GUEST'">
         <div class="hotel-title text-xl font-bold mb-4">
-          Perfil de {{ userRole === 'STAFF' ? 'Staff' : 'Huésped' }}
+          {{$t('profile.profileOf')}} {{ userRole === 'STAFF' ? $t('profile.staff') : $t('profile.guest') }}
         </div>
         <Card class="mb-5">
-          <template #title>Datos Personales</template>
+          <template #title>{{$t('profile.personalData')}}</template>
           <template #content>
             <ul class="list-none p-0 m-0">
               <li class="flex align-items-center mb-3">
                 <i class="pi pi-user text-xl mr-3 text-primary"></i>
-                <span><strong>Nombre:</strong> {{ profile?.firstName }} {{ profile?.lastName }}</span>
+                <span><strong>{{$t('profile.name')}}:</strong> {{ profile?.firstName }} {{ profile?.lastName }}</span>
               </li>
               <li class="flex align-items-center mb-3">
                 <i class="pi pi-envelope text-xl mr-3 text-primary"></i>
-                <span><strong>Email:</strong> {{ profile?.email }}</span>
+                <span><strong>{{$t('profile.email')}}:</strong> {{ profile?.email }}</span>
               </li>
               <li class="flex align-items-center mb-3">
                 <i class="pi pi-phone text-xl mr-3 text-primary"></i>
-                <span><strong>Teléfono:</strong> {{ profile?.phone }}</span>
+                <span><strong>{{$t('profile.phone')}}:</strong> {{ profile?.phone }}</span>
               </li>
             </ul>
           </template>
         </Card>
-        <!-- Si quieres mostrar más info para STAFF, puedes dejar el resto igual -->
         <Card v-if="userRole === 'STAFF'">
-          <template #title>Hoteles Asociados</template>
+          <template #title>{{$t('profile.associatedHotels')}}</template>
           <template #content>
             <ul class="list-none p-0 m-0">
               <li v-for="hotel in associatedHotels" :key="hotel.id" class="mb-4">
@@ -117,7 +116,7 @@
                 <div><i class="pi pi-phone mr-2"></i>{{ hotel?.phone }}</div>
                 <div><i :class="getHotelStatusIcon(hotel?.status)" class="mr-2" :style="{ color: getHotelStatusColor(hotel?.status) }"></i>{{ formatHotelStatus(hotel?.status) }}</div>
               </li>
-              <li v-if="associatedHotels.length === 0">No tienes hoteles asociados.</li>
+              <li v-if="associatedHotels.length === 0">{{$t('profile.noAssociatedHotels')}}</li>
             </ul>
           </template>
         </Card>
@@ -127,7 +126,7 @@
       </template>
       <template v-else>
         <div class="text-red-500 text-center py-4">
-          Rol de usuario no reconocido.
+          {{$t('profile.unrecognizedRole')}}
         </div>
       </template>
     </template>

@@ -27,15 +27,15 @@ function handleSubmit() {
   formErrorMessage.value = '';
 
   if (!username.value || !password.value || !passwordRepeat.value) {
-    formErrorMessage.value = 'Todos los campos son obligatorios.';
+    formErrorMessage.value = $t('register.allFieldsRequired');
     return;
   }
   if (password.value !== passwordRepeat.value) {
-    formErrorMessage.value = 'Las contraseñas no coinciden.';
+    formErrorMessage.value = $t('register.passwordsDontMatch');
     return;
   }
   if (password.value.length < 6) {
-    formErrorMessage.value = 'La contraseña debe tener al menos 6 caracteres.';
+    formErrorMessage.value = $t('register.passwordMinLength');
     return;
   }
   // Aquí podrías hacer el registro real del usuario (API call)
@@ -49,73 +49,73 @@ function handleSubmit() {
     <div class="register-lang-switcher">
       <language-switcher />
     </div>
-    <h1 class="main-title">Crear cuenta</h1>
-    <h2 class="subtitle">¡Bienvenido a CustomHost!</h2>
-    <p class="description">Crea tu cuenta para acceder a todos los beneficios de nuestra plataforma.</p>
+    <h1 class="main-title">{{$t('register.createAccount')}}</h1>
+    <h2 class="subtitle">{{$t('register.welcome')}}</h2>
+    <p class="description">{{$t('register.createAccountDescription')}}</p>
     <form v-if="!showProfileForm" @submit.prevent="handleSubmit" class="register-form">
       <div class="field mt-4">
-        <label for="usernameRegister" class="block">Nombre de usuario</label>
+        <label for="usernameRegister" class="block">{{$t('register.usernameLabel')}}</label>
         <pv-input-text
             id="usernameRegister"
             v-model="username"
             :class="{'p-invalid': submitted && !username}"
             aria-describedby="usernameRegister-error"
             class="w-full"
-            placeholder="Ingresa tu nombre de usuario"
+            :placeholder="$t('register.usernamePlaceholder')"
         />
-        <small id="usernameRegister-error" class="p-error" v-if="submitted && !username">El nombre de usuario es requerido.</small>
+        <small id="usernameRegister-error" class="p-error" v-if="submitted && !username">{{$t('register.usernameRequired')}}</small>
       </div>
       <div class="field mt-4">
-        <label for="passwordRegister" class="block label-large">Ingresa tu contraseña</label>
+        <label for="passwordRegister" class="block label-large">{{$t('register.passwordLabel')}}</label>
         <pv-password
             id="passwordRegister"
             v-model="password"
             :class="['input-large', {'p-invalid': submitted && !password}]"
             aria-describedby="passwordRegister-error password-security-info"
             class="w-full"
-            placeholder="Ingresa tu contraseña"
+            :placeholder="$t('register.passwordPlaceholder')"
             toggleMask
             :feedback="true"
         />
-        <small id="passwordRegister-error" class="p-error" v-if="submitted && !password">La contraseña es requerida.</small>
+        <small id="passwordRegister-error" class="p-error" v-if="submitted && !password">{{$t('register.passwordRequired')}}</small>
       </div>
       <div class="field mt-4">
-        <label for="passwordRepeatRegister" class="block label-large">Confirma tu contraseña</label>
+        <label for="passwordRepeatRegister" class="block label-large">{{$t('register.passwordRepeatLabel')}}</label>
         <pv-password
             id="passwordRepeatRegister"
             v-model="passwordRepeat"
             :class="['input-large', {'p-invalid': submitted && !passwordRepeat}]"
             aria-describedby="passwordRepeatRegister-error"
             class="w-full"
-            placeholder="Confirma tu contraseña"
+            :placeholder="$t('register.passwordRepeatPlaceholder')"
             toggleMask
             :feedback="false"
         />
-        <small id="passwordRepeatRegister-error" class="p-error" v-if="submitted && !passwordRepeat">La confirmación de contraseña es requerida.</small>
+        <small id="passwordRepeatRegister-error" class="p-error" v-if="submitted && !passwordRepeat">{{$t('register.passwordRepeatRequired')}}</small>
       </div>
       <pv-message severity="error" v-if="formErrorMessage" class="mt-3">{{ formErrorMessage }}</pv-message>
       <div class="button-container mt-4">
         <pv-button
             type="submit"
-            label="Registrarse como Usuario"
+            :label="$t('register.buttonUser')"
             class="w-full register-button"
             :loading="loading"
             :disabled="loading"
         />
       </div>
       <div class="mt-3 text-xs text-center text-gray-500">
-        Al registrarte, aceptas nuestros <a href="#" class="text-primary">Términos de uso</a> y <a href="#" class="text-primary">Política de privacidad</a>.
+        {{$t('register.terms1')}} <a href="#" class="text-primary">{{$t('register.termsOfUse')}}</a> {{$t('register.and')}} <a href="#" class="text-primary">{{$t('register.privacyPolicy')}}</a>.
       </div>
       <div class="login-link-container mt-4">
         <p class="text-center">
-          ¿Ya tienes una cuenta?
-          <router-link to="/iam/login" class="login-link">Iniciar sesión</router-link>
+          {{$t('register.alreadyHaveAccount')}}
+          <router-link to="/iam/login" class="login-link">{{$t('register.loginLink')}}</router-link>
         </p>
       </div>
       <div class="alternative-registration mt-3">
         <p class="text-center">
-          ¿Eres un hotel?
-          <router-link to="/iam/register-hotel" class="hotel-link">Regístrate como hotel</router-link>
+          {{$t('register.isHotel')}}
+          <router-link to="/iam/register-hotel" class="hotel-link">{{$t('register.hotelLink')}}</router-link>
         </p>
       </div>
     </form>

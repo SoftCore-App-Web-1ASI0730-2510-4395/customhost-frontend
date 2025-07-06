@@ -1,22 +1,22 @@
 <template>
   <form @submit.prevent="handleSubmit" class="user-profile-form-wrapper">
     <div>
-      <label class="user-profile-label">Nombre:</label>
+      <label class="user-profile-label">{{$t('userProfileForm.firstName')}}</label>
       <input v-model="form.firstName" required class="user-profile-input" />
     </div>
     <div>
-      <label class="user-profile-label">Apellido:</label>
+      <label class="user-profile-label">{{$t('userProfileForm.lastName')}}</label>
       <input v-model="form.lastName" required class="user-profile-input" />
     </div>
     <div>
-      <label class="user-profile-label">Email:</label>
+      <label class="user-profile-label">{{$t('userProfileForm.email')}}</label>
       <input v-model="form.email" type="email" required class="user-profile-input" />
     </div>
     <div>
-      <label class="user-profile-label">Teléfono:</label>
+      <label class="user-profile-label">{{$t('userProfileForm.phone')}}</label>
       <input v-model="form.phone" required class="user-profile-input" />
     </div>
-    <button type="submit" class="user-profile-btn">Crear Perfil</button>
+    <button type="submit" class="user-profile-btn">{{$t('userProfileForm.submit')}}</button>
     <div v-if="error" style="color:red">{{ error }}</div>
   </form>
 </template>

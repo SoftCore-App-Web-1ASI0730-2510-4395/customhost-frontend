@@ -30,7 +30,7 @@ async function handleSave() {
   errorMessage.value = '';
   successMessage.value = '';
   if (!props.hotel.name || !address.value || !phone.value || !email.value) {
-    errorMessage.value = 'Todos los campos son obligatorios.';
+    errorMessage.value = $t('editHotelDetails.allFieldsRequired');
     return;
   }
   loading.value = true;
@@ -57,21 +57,21 @@ async function handleSave() {
     <div class="edit-hotel-lang-switcher">
       <language-switcher />
     </div>
-    <h2 class="edit-hotel-title">Completa los datos de tu hotel</h2>
+    <h2 class="edit-hotel-title">{{$t('editHotelDetails.title')}}</h2>
     <div class="field">
-      <label class="edit-hotel-label">Dirección</label>
-      <pv-input-text v-model="address" placeholder="Dirección del hotel" class="edit-hotel-input" />
+      <label class="edit-hotel-label">{{$t('editHotelDetails.addressLabel')}}</label>
+      <pv-input-text v-model="address" :placeholder="$t('editHotelDetails.addressPlaceholder')" class="edit-hotel-input" />
     </div>
     <div class="field">
-      <label class="edit-hotel-label">Teléfono</label>
-      <pv-input-text v-model="phone" placeholder="Teléfono del hotel" class="edit-hotel-input" />
+      <label class="edit-hotel-label">{{$t('editHotelDetails.phoneLabel')}}</label>
+      <pv-input-text v-model="phone" :placeholder="$t('editHotelDetails.phonePlaceholder')" class="edit-hotel-input" />
     </div>
     <div class="field">
-      <label class="edit-hotel-label">Email</label>
-      <pv-input-text v-model="email" placeholder="Email del hotel" class="edit-hotel-input" />
+      <label class="edit-hotel-label">{{$t('editHotelDetails.emailLabel')}}</label>
+      <pv-input-text v-model="email" :placeholder="$t('editHotelDetails.emailPlaceholder')" class="edit-hotel-input" />
     </div>
     <div class="edit-hotel-actions">
-      <pv-button :loading="loading" label="Guardar" class="edit-hotel-btn" @click="handleSave" />
+      <pv-button :loading="loading" :label="$t('editHotelDetails.saveButton')" class="edit-hotel-btn" @click="handleSave" />
     </div>
     <p v-if="successMessage" class="edit-hotel-success">{{ successMessage }}</p>
     <p v-if="errorMessage" class="edit-hotel-error">{{ errorMessage }}</p>

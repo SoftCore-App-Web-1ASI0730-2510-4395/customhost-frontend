@@ -23,17 +23,17 @@ function handleSubmit() {
   formErrorMessage.value = '';
 
   if (!hotelName.value || !username.value || !password.value || !passwordRepeat.value) {
-    formErrorMessage.value = 'Todos los campos son obligatorios.';
+    formErrorMessage.value = $t('registerHotel.allFieldsRequired');
     return;
   }
 
   if (password.value !== passwordRepeat.value) {
-    formErrorMessage.value = 'Las contraseñas no coinciden.';
+    formErrorMessage.value = $t('registerHotel.passwordsDontMatch');
     return;
   }
 
   if (password.value.length < 6) {
-    formErrorMessage.value = 'La contraseña debe tener al menos 6 caracteres.';
+    formErrorMessage.value = $t('registerHotel.passwordMinLength');
     return;
   }
 
@@ -52,59 +52,59 @@ function handleSubmit() {
     </div>
     <form @submit.prevent="handleSubmit" class="register-hotel-form">
       <div class="field">
-        <label for="hotelNameForm" class="block">Nombre del Hotel</label>
+        <label for="hotelNameForm" class="block">{{$t('registerHotel.hotelNameLabel')}}</label>
         <pv-input-text
             id="hotelNameForm"
             v-model="hotelName"
             :class="{'p-invalid': submitted && !hotelName}"
             aria-describedby="hotelNameForm-error"
             class="w-full"
-            placeholder="Ingresa el nombre del hotel"
+            :placeholder="$t('registerHotel.hotelNamePlaceholder')"
         />
-        <small id="hotelNameForm-error" class="p-error" v-if="submitted && !hotelName">El nombre del hotel es requerido.</small>
+        <small id="hotelNameForm-error" class="p-error" v-if="submitted && !hotelName">{{$t('registerHotel.hotelNameRequired')}}</small>
       </div>
 
       <div class="field mt-4">
-        <label for="usernameHotelForm" class="block">Nombre de usuario</label>
+        <label for="usernameHotelForm" class="block">{{$t('registerHotel.usernameLabel')}}</label>
         <pv-input-text
             id="usernameHotelForm"
             v-model="username"
             :class="{'p-invalid': submitted && !username}"
             aria-describedby="usernameHotelForm-error"
             class="w-full"
-            placeholder="Ingresa el nombre de usuario del administrador"
+            :placeholder="$t('registerHotel.usernamePlaceholder')"
         />
-        <small id="usernameHotelForm-error" class="p-error" v-if="submitted && !username">El nombre de usuario es requerido.</small>
+        <small id="usernameHotelForm-error" class="p-error" v-if="submitted && !username">{{$t('registerHotel.usernameRequired')}}</small>
       </div>
 
       <div class="field mt-4">
-        <label for="passwordHotelForm" class="block">Contraseña</label>
+        <label for="passwordHotelForm" class="block">{{$t('registerHotel.passwordLabel')}}</label>
         <pv-password
             id="passwordHotelForm"
             v-model="password"
             :class="{'p-invalid': submitted && !password}"
             aria-describedby="passwordHotelForm-error"
             class="w-full"
-            placeholder="Ingresa la contraseña"
+            :placeholder="$t('registerHotel.passwordPlaceholder')"
             toggleMask
             :feedback="false"
         />
-        <small id="passwordHotelForm-error" class="p-error" v-if="submitted && !password">La contraseña es requerida.</small>
+        <small id="passwordHotelForm-error" class="p-error" v-if="submitted && !password">{{$t('registerHotel.passwordRequired')}}</small>
       </div>
 
       <div class="field mt-4">
-        <label for="passwordRepeatHotelForm" class="block">Confirmar contraseña</label>
+        <label for="passwordRepeatHotelForm" class="block">{{$t('registerHotel.passwordRepeatLabel')}}</label>
         <pv-password
             id="passwordRepeatHotelForm"
             v-model="passwordRepeat"
             :class="{'p-invalid': submitted && !passwordRepeat}"
             aria-describedby="passwordRepeatHotelForm-error"
             class="w-full"
-            placeholder="Confirma la contraseña"
+            :placeholder="$t('registerHotel.passwordRepeatPlaceholder')"
             toggleMask
             :feedback="false"
         />
-        <small id="passwordRepeatHotelForm-error" class="p-error" v-if="submitted && !passwordRepeat">La confirmación de contraseña es requerida.</small>
+        <small id="passwordRepeatHotelForm-error" class="p-error" v-if="submitted && !passwordRepeat">{{$t('registerHotel.passwordRepeatRequired')}}</small>
       </div>
 
       <pv-message severity="error" v-if="formErrorMessage" class="mt-3">{{ formErrorMessage }}</pv-message>
@@ -112,7 +112,7 @@ function handleSubmit() {
       <div class="button-container mt-4">
         <pv-button
             type="submit"
-            label="Registrar Hotel"
+            :label="$t('registerHotel.button')"
             class="w-full register-hotel-button"
             :loading="loading"
             :disabled="loading"
@@ -121,15 +121,14 @@ function handleSubmit() {
 
       <div class="login-link-container mt-4">
         <p class="text-center">
-          ¿Ya tienes una cuenta?
-          <router-link to="/iam/login" class="login-link">Iniciar sesión</router-link>
+          {{$t('registerHotel.alreadyHaveAccount')}}
+          <router-link to="/iam/login" class="login-link">{{$t('registerHotel.loginLink')}}</router-link>
         </p>
       </div>
-
       <div class="alternative-registration mt-3">
         <p class="text-center">
-          ¿Eres un usuario común?
-          <router-link to="/iam/register" class="user-link">Regístrate como usuario</router-link>
+          {{$t('registerHotel.isUser')}}
+          <router-link to="/iam/register" class="user-link">{{$t('registerHotel.userLink')}}</router-link>
         </p>
       </div>
     </form>

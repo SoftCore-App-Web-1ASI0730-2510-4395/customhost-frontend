@@ -99,5 +99,196 @@
     "profile": "Perfil",
     "guest": "Huésped",
     "staff": "Personal"
+  },
+  "staffHome": {
+    "welcome": "¡Bienvenido, {name}!",
+    "paymentsChart": "Gráfico de pagos",
+    "year": "Año",
+    "availableRooms": "Habitaciones disponibles",
+    "room": "Habitación",
+    "floor": "Piso",
+    "noRooms": "No hay habitaciones disponibles."
+  },
+  "guestHome": {
+    "welcome": "¡Bienvenido, {name}!",
+    "searchRoom": "Buscar habitación..."
+  },
+  "notFound": {
+    "title": "¡Ups! Página no encontrada"
+  },
+  "profile": {
+    "loading": "Cargando...",
+    "hotel": "Hotel",
+    "adminProfile": "Perfil de Administrador",
+    "personalData": "Datos Personales",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "status": "Estado",
+    "totalRooms": "Totales",
+    "occupiedRooms": "Ocupadas",
+    "cleaningRooms": "Limpieza",
+    "maintenanceRooms": "Mantenimiento",
+    "subscription": "Suscripción",
+    "activeUntil": "Activo hasta",
+    "cancelSubscription": "Cancelar suscripción",
+    "noActiveSubscription": "Sin suscripción activa.",
+    "profileOf": "Perfil de",
+    "staff": "Staff",
+    "guest": "Huésped",
+    "associatedHotels": "Hoteles Asociados",
+    "noAssociatedHotels": "No tienes hoteles asociados.",
+    "unrecognizedRole": "Rol de usuario no reconocido."
+  },
+  "guestProfileRegister": {
+    "title": "Registro de perfil de huésped",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "submit": "Crear perfil"
+  },
+  "userProfileForm": {
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "submit": "Guardar perfil"
+  },
+  "roomsList": {
+    "saveError": "Error al guardar la habitación"
+  },
+  "requestStaff": {
+    "departments": {
+      "housekeeping": "Limpieza",
+      "technicalSupport": "Soporte técnico",
+      "reception": "Recepción",
+      "management": "Gerencia",
+      "roomService": "Servicio a la habitación"
+    }
+  },
+  "myBooking": {
+    "success": "La reserva se ha eliminado correctamente.",
+    "error": "No se pudo eliminar la reserva.",
+    "noActiveBookings": "No tienes reservas activas.",
+    "goToReserve": "Ir a Reservar",
+    "confirmDelete": "¿Estás seguro de eliminar esta reserva?",
+    "title": "Mis Reservas"
+  },
+  "guestRoomPreference": {
+    "title": "Preferencias de Habitación",
+    "loginMessage": "Inicia sesión, por favor.",
+    "noRoomsWithDevices": "No tienes habitaciones con dispositivos IoT disponibles.",
+    "noDevicesInRoom": "No hay dispositivos IoT en esta habitación.",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "saveSuccess": "Configuración guardada correctamente.",
+    "saveError": "Error al guardar la configuración.",
+    "noPreferenceError": "No existe preferencia previa para este dispositivo, no se puede guardar.",
+    "room": "Habitación"
+  },
+  "footer": {
+    "rights": "Hotel Sheraton Center. Todos los derechos reservados."
+  },
+  "customerRequests": {
+    "title": "Hotel Cheraton - Peticiones del Huésped",
+    "newRequest": "Nueva Petición",
+    "room": "Habitación",
+    "types": {
+      "towels": "Toallas/Ropa",
+      "cleaning": "Limpieza",
+      "repair": "Reparación",
+      "roomService": "Room Service",
+      "other": "Otros"
+    },
+    "priority": {
+      "low": "Baja",
+      "medium": "Media",
+      "high": "Alta",
+      "urgent": "Urgente"
+    }
+  },
+  "createServiceRequest": {
+    "sendRequest": "Enviar Solicitud",
+    "historyTitle": "Historial de Solicitudes",
+    "noRequests": "No tienes solicitudes previas.",
+    "description": "Descripción",
+    "type": "Tipo",
+    "status": "Estado"
+  },
+  "register": {
+    "title": "Registro",
+    "createAccount": "Crear cuenta",
+    "welcome": "¡Bienvenido a CustomHost!",
+    "createAccountDescription": "Crea tu cuenta para acceder a todos los beneficios de nuestra plataforma.",
+    "usernameLabel": "Nombre de usuario",
+    "usernamePlaceholder": "Ingresa tu nombre de usuario",
+    "usernameRequired": "El nombre de usuario es requerido.",
+    "passwordLabel": "Ingresa tu contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "passwordRequired": "La contraseña es requerida.",
+    "passwordRepeatLabel": "Confirma tu contraseña",
+    "passwordRepeatPlaceholder": "Confirma tu contraseña",
+    "passwordRepeatRequired": "La confirmación de contraseña es requerida.",
+    "buttonUser": "Registrarse como Usuario",
+    "terms1": "Al registrarte, aceptas nuestros",
+    "termsOfUse": "Términos de uso",
+    "and": "y",
+    "privacyPolicy": "Política de privacidad",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "loginLink": "Iniciar sesión",
+    "isHotel": "¿Eres un hotel?",
+    "hotelLink": "Regístrate como hotel",
+    "allFieldsRequired": "Todos los campos son obligatorios.",
+    "passwordsDontMatch": "Las contraseñas no coinciden.",
+    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres."
+  },
+  "login": {
+    "title": "Iniciar sesión",
+    "usernameLabel": "Usuario",
+    "usernamePlaceholder": "Usuario",
+    "usernameRequired": "El usuario es requerido.",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Contraseña",
+    "passwordRequired": "La contraseña es requerida.",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes cuenta? Regístrate aquí"
+  },
+  "registerHotel": {
+    "allFieldsRequired": "Todos los campos son obligatorios.",
+    "passwordsDontMatch": "Las contraseñas no coinciden.",
+    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres.",
+    "hotelNameLabel": "Nombre del Hotel",
+    "hotelNamePlaceholder": "Ingresa el nombre del hotel",
+    "hotelNameRequired": "El nombre del hotel es requerido.",
+    "usernameLabel": "Nombre de usuario",
+    "usernamePlaceholder": "Ingresa el nombre de usuario del administrador",
+    "usernameRequired": "El nombre de usuario es requerido.",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Ingresa la contraseña",
+    "passwordRequired": "La contraseña es requerida.",
+    "passwordRepeatLabel": "Confirmar contraseña",
+    "passwordRepeatPlaceholder": "Confirma la contraseña",
+    "passwordRepeatRequired": "La confirmación de contraseña es requerida.",
+    "button": "Registrar Hotel",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "loginLink": "Iniciar sesión",
+    "isUser": "¿Eres un usuario común?",
+    "userLink": "Regístrate como usuario",
+    "title": "Registra tu Hotel en la Plataforma",
+    "subtitle": "Completa el formulario para empezar a disfrutar de nuestros servicios y optimizar la gestión de tu establecimiento.",
+    "successDetail": "Hotel \"{hotelName}\" registrado exitosamente. Ahora completa los datos de tu hotel.",
+    "subscriptionSuccess": "Tu hotel ya tiene una suscripción activa."
+  },
+  "editHotelDetails": {
+    "allFieldsRequired": "Todos los campos son obligatorios.",
+    "title": "Completa los datos de tu hotel",
+    "addressLabel": "Dirección",
+    "addressPlaceholder": "Dirección del hotel",
+    "phoneLabel": "Teléfono",
+    "phonePlaceholder": "Teléfono del hotel",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Email del hotel",
+    "saveButton": "Guardar"
   }
 }

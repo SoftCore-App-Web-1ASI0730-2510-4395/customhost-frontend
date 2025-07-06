@@ -37,7 +37,7 @@
 
             <pv-button
               type="submit"
-              label="Enviar Solicitud"
+              :label="$t('createServiceRequest.sendRequest')"
               icon="pi pi-send"
               class="mt-3 w-full"
               :loading="sending"
@@ -54,7 +54,7 @@
         <div class="card p-0 shadow-1 border-round-lg">
           <div class="flex align-items-center gap-2 mb-3 p-4 border-bottom-1 surface-border">
             <i class="pi pi-history text-2xl text-primary" />
-            <span class="text-xl font-bold">Historial de Solicitudes</span>
+            <span class="text-xl font-bold">{{$t('createServiceRequest.historyTitle')}}</span>
           </div>
           <div v-if="loadingHistory" class="flex justify-content-center align-items-center py-5">
             <pv-progress-spinner style="width:2rem;height:2rem" />
@@ -62,7 +62,7 @@
           <div v-else>
             <div v-if="serviceRequests.length === 0" class="text-center text-gray-500 py-4">
               <i class="pi pi-info-circle text-2xl mb-2" />
-              <div>No tienes solicitudes previas.</div>
+              {{$t('createServiceRequest.noRequests')}}
             </div>
             <div v-else class="flex flex-column gap-3 p-3">
               <template v-for="(hotelRequests, hotelId) in groupedByHotelAndRoom" :key="hotelId">
@@ -79,9 +79,9 @@
                             <span class="font-bold">{{ req.title }}</span>
                             <span class="ml-auto text-xs text-gray-500" v-if="req.createdAt">{{ new Date(req.createdAt).toLocaleString() }}</span>
                           </div>
-                          <div class="mb-1"><b>Descripción:</b> {{ req.description }}</div>
-                          <div class="mb-1"><b>Tipo:</b> {{ req.type }}</div>
-                          <div class="mb-1"><b>Estado:</b> {{ req.status }}</div>
+                          <div class="mb-1"><b>{{$t('createServiceRequest.description')}}:</b> {{ req.description }}</div>
+                          <div class="mb-1"><b>{{$t('createServiceRequest.type')}}:</b> {{ req.type }}</div>
+                          <div class="mb-1"><b>{{$t('createServiceRequest.status')}}:</b> {{ req.status }}</div>
                         </div>
                       </div>
                     </div>

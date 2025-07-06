@@ -1,27 +1,27 @@
 <template>
   <form @submit.prevent="handleSubmit" class="profile-register-container">
     <h2 class="font-bold text-2xl mb-3 flex align-items-center gap-2">
-      <i class="pi pi-user-plus text-primary-600" /> Registro de Perfil de Huésped
+      <i class="pi pi-user-plus text-primary-600" /> {{$t('guestProfileRegister.title')}}
     </h2>
     <div class="form-group">
-      <label for="firstName">Nombre</label>
+      <label for="firstName">{{$t('guestProfileRegister.firstName')}}</label>
       <input v-model="form.firstName" id="firstName" required />
     </div>
     <div class="form-group">
-      <label for="lastName">Apellido</label>
+      <label for="lastName">{{$t('guestProfileRegister.lastName')}}</label>
       <input v-model="form.lastName" id="lastName" required />
     </div>
     <div class="form-group">
-      <label for="email">Email</label>
+      <label for="email">{{$t('guestProfileRegister.email')}}</label>
       <input v-model="form.email" id="email" type="email" required />
     </div>
     <div class="form-group">
-      <label for="phone">Teléfono</label>
+      <label for="phone">{{$t('guestProfileRegister.phone')}}</label>
       <input v-model="form.phone" id="phone" required />
     </div>
     <input type="hidden" v-model="form.userId" />
     <button type="submit" :disabled="loading" class="p-button p-component w-full mt-3">
-      <span class="pi pi-check-circle mr-2" />Registrar Perfil
+      <span class="pi pi-check-circle mr-2" />{{$t('guestProfileRegister.submit')}}
     </button>
     <div v-if="error" class="error-msg mt-2">{{ error }}</div>
   </form>

@@ -98,5 +98,196 @@
     "profile": "Profile",
     "guest": "Guest",
     "staff": "Staff"
+  },
+  "staffHome": {
+    "welcome": "Welcome, {name}!",
+    "paymentsChart": "Payments chart",
+    "year": "Year",
+    "availableRooms": "Available rooms",
+    "room": "Room",
+    "floor": "Floor",
+    "noRooms": "No available rooms."
+  },
+  "guestHome": {
+    "welcome": "Welcome, {name}!",
+    "searchRoom": "Search room..."
+  },
+  "notFound": {
+    "title": "Oops! Page not found"
+  },
+  "profile": {
+    "loading": "Loading...",
+    "hotel": "Hotel",
+    "adminProfile": "Admin Profile",
+    "personalData": "Personal Data",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "status": "Status",
+    "totalRooms": "Total Rooms",
+    "occupiedRooms": "Occupied",
+    "cleaningRooms": "Cleaning",
+    "maintenanceRooms": "Maintenance",
+    "subscription": "Subscription",
+    "activeUntil": "Active until",
+    "cancelSubscription": "Cancel subscription",
+    "noActiveSubscription": "No active subscription.",
+    "profileOf": "Profile of",
+    "staff": "Staff",
+    "guest": "Guest",
+    "associatedHotels": "Associated Hotels",
+    "noAssociatedHotels": "You have no associated hotels.",
+    "unrecognizedRole": "Unrecognized user role."
+  },
+  "guestProfileRegister": {
+    "title": "Guest profile registration",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "submit": "Create profile"
+  },
+  "userProfileForm": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "submit": "Save profile"
+  },
+  "roomsList": {
+    "saveError": "Error saving room"
+  },
+  "requestStaff": {
+    "departments": {
+      "housekeeping": "Housekeeping",
+      "technicalSupport": "Technical Support",
+      "reception": "Reception",
+      "management": "Management",
+      "roomService": "Room Service"
+    }
+  },
+  "myBooking": {
+    "title": "My Bookings",
+    "success": "Booking deleted successfully.",
+    "error": "Could not delete the booking.",
+    "noActiveBookings": "You have no active bookings.",
+    "goToReserve": "Go to Reserve",
+    "confirmDelete": "Are you sure you want to delete this booking?"
+  },
+  "guestRoomPreference": {
+    "title": "Room Preferences",
+    "loginMessage": "Please log in.",
+    "noRoomsWithDevices": "You have no rooms with available IoT devices.",
+    "noDevicesInRoom": "There are no IoT devices in this room.",
+    "save": "Save",
+    "cancel": "Cancel",
+    "saveSuccess": "Configuration saved successfully.",
+    "saveError": "Error saving configuration.",
+    "noPreferenceError": "No previous preference exists for this device, cannot save.",
+    "room": "Room"
+  },
+  "footer": {
+    "rights": "Hotel Sheraton Center. All rights reserved."
+  },
+  "customerRequests": {
+    "title": "Hotel Sheraton - Guest Requests",
+    "newRequest": "New Request",
+    "room": "Room",
+    "types": {
+      "towels": "Towels/Linen",
+      "cleaning": "Cleaning",
+      "repair": "Repair",
+      "roomService": "Room Service",
+      "other": "Other"
+    },
+    "priority": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "urgent": "Urgent"
+    }
+  },
+  "createServiceRequest": {
+    "sendRequest": "Send Request",
+    "historyTitle": "Request History",
+    "noRequests": "You have no previous requests.",
+    "description": "Description",
+    "type": "Type",
+    "status": "Status"
+  },
+  "register": {
+    "title": "Register",
+    "createAccount": "Create account",
+    "welcome": "Welcome to CustomHost!",
+    "createAccountDescription": "Create your account to access all the benefits of our platform.",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "usernameRequired": "Username is required.",
+    "passwordLabel": "Enter your password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordRequired": "Password is required.",
+    "passwordRepeatLabel": "Confirm your password",
+    "passwordRepeatPlaceholder": "Confirm your password",
+    "passwordRepeatRequired": "Password confirmation is required.",
+    "buttonUser": "Register as User",
+    "terms1": "By registering, you accept our",
+    "termsOfUse": "Terms of use",
+    "and": "and",
+    "privacyPolicy": "Privacy policy",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginLink": "Login",
+    "isHotel": "Are you a hotel?",
+    "hotelLink": "Register as hotel",
+    "allFieldsRequired": "All fields are required.",
+    "passwordsDontMatch": "Passwords do not match.",
+    "passwordMinLength": "Password must be at least 6 characters."
+  },
+  "login": {
+    "title": "Login",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "Username",
+    "usernameRequired": "Username is required.",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Password",
+    "passwordRequired": "Password is required.",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don't have an account? Register here"
+  },
+  "registerHotel": {
+    "allFieldsRequired": "All fields are required.",
+    "passwordsDontMatch": "Passwords do not match.",
+    "passwordMinLength": "Password must be at least 6 characters.",
+    "hotelNameLabel": "Hotel Name",
+    "hotelNamePlaceholder": "Enter the hotel name",
+    "hotelNameRequired": "Hotel name is required.",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "Enter the admin username",
+    "usernameRequired": "Username is required.",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter the password",
+    "passwordRequired": "Password is required.",
+    "passwordRepeatLabel": "Confirm password",
+    "passwordRepeatPlaceholder": "Confirm the password",
+    "passwordRepeatRequired": "Password confirmation is required.",
+    "button": "Register Hotel",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginLink": "Login",
+    "isUser": "Are you a regular user?",
+    "userLink": "Register as user",
+    "title": "Register Your Hotel on the Platform",
+    "subtitle": "Complete the form to start enjoying our services and optimize your establishment's management.",
+    "successDetail": "Hotel \"{hotelName}\" registered successfully. Now complete your hotel details.",
+    "subscriptionSuccess": "Your hotel now has an active subscription."
+  },
+  "editHotelDetails": {
+    "allFieldsRequired": "All fields are required.",
+    "title": "Complete your hotel details",
+    "addressLabel": "Address",
+    "addressPlaceholder": "Hotel address",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "Hotel phone",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Hotel email",
+    "saveButton": "Save"
   }
 }

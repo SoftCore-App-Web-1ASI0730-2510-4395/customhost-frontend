@@ -57,6 +57,16 @@ export const roomDevicePreferenceService = {
 
         // Elimina el dispositivo
         await roomDeviceService.deleteRoomDevice(roomDeviceId);
+    },
+
+    async getPreferencesByRoomDeviceId(roomDeviceId) {
+        try {
+            const res = await apiClient.get(`${API_URL}/room-device-preferences/room-device/${roomDeviceId}`);
+            return res.data;
+        } catch (e) {
+            console.error('[roomDevicePreferenceService] Error al obtener preferencias:', e);
+            return null;
+        }
     }
 
 

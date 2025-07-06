@@ -9,6 +9,7 @@ import { useAuth } from '../../shared/composables/useAuth.js';
 import AuthService from '../services/auth.service.js';
 import SubscriptionsList from '../../billing/components/subscriptions-list.component.vue';
 import HotelSubscriptionPayment from '../../billing/components/hotel-subscription-payment.component.vue';
+import UserProfileForm from '../../profiles/components/user-profile-form.component.vue';
 
 const errorMessage = ref('');
 const router = useRouter();
@@ -16,8 +17,10 @@ const toast = useToast();
 const { registerHotel, isLoading } = useAuth();
 const showEditDetails = ref(false);
 const showSubscriptions = ref(false);
+const showUserProfileForm = ref(false);
 const registeredHotel = ref(null);
 const selectedSubscription = ref(null);
+const hotelPassword = ref('');
 
 async function handleRegistration(formData) {
   errorMessage.value = '';
@@ -28,6 +31,7 @@ async function handleRegistration(formData) {
       username: formData.username,
       password: formData.password
     });
+    hotelPassword.value = formData.password; // Guardar la contraseña
     // Login automático tras registro
     await AuthService.signIn({
       username: formData.username,
@@ -48,11 +52,20 @@ async function handleRegistration(formData) {
 }
 
 function handleSaveHotelDetails() {
+  showEditDetails.value = false;
+  showUserProfileForm.value = true;
+}
+
+function handleProfileCreated() {
+  console.log('Evento profile-created recibido, mostrando lista de suscripciones');
+  showUserProfileForm.value = false;
   showSubscriptions.value = true;
+  selectedSubscription.value = null; // Reinicia selección para mostrar la lista
 }
 
 function handleSelectSubscription(sub) {
   selectedSubscription.value = sub;
+  showSubscriptions.value = false; // Oculta la lista y muestra el pago
 }
 
 function handlePaymentSuccess() {
@@ -74,14 +87,19 @@ function handlePaymentSuccess() {
         </template>
         <template #content>
           <RegisterHotelForm
-              v-if="!showEditDetails && !showSubscriptions && !selectedSubscription"
+              v-if="!showEditDetails && !showUserProfileForm && !showSubscriptions && !selectedSubscription"
               :loading="isLoading"
               @submit-registration="handleRegistration"
           />
           <EditHotelDetails
-              v-else-if="showEditDetails && !showSubscriptions && !selectedSubscription"
+              v-else-if="showEditDetails && !showUserProfileForm && !showSubscriptions && !selectedSubscription"
               :hotel="registeredHotel"
               @save-details="handleSaveHotelDetails"
+          />
+          <UserProfileForm
+              v-else-if="showUserProfileForm && !showSubscriptions && !selectedSubscription"
+              :password="hotelPassword"
+              @profile-created="handleProfileCreated"
           />
           <SubscriptionsList
               v-else-if="showSubscriptions && !selectedSubscription"

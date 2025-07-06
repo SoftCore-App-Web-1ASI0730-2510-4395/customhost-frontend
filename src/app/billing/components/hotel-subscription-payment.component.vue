@@ -25,6 +25,9 @@ let cardElement = null;
 
 const stripePromise = loadStripe('pk_test_51Rgj1MD30eatJd6RTi9Ex1irZpVOITB3yjdQQyHafsscXM2avy46uKS44F72df2dOwPfaqttZzLuXObwRRwBZzmG00x38AYTMC');
 
+// Obtener hotelId desde localStorage (si existe)
+const hotelId = Number(localStorage.getItem('currentHotelId'));
+
 function getStartAndEndDate() {
   const startDate = new Date();
   const endDate = new Date();
@@ -67,9 +70,19 @@ async function handleStripePayment() {
     return;
   }
   try {
+    // Obtener el id del último hotel creado
+    const hotelsResponse = await apiClient.get('/api/v1/hotel');
+    const hotels = hotelsResponse.data;
+    const lastHotel = hotels[hotels.length - 1];
+    const lastHotelId = lastHotel ? lastHotel.id : null;
+    if (!lastHotelId) {
+      cardError.value = 'No se pudo obtener el hotel.';
+      processing.value = false;
+      return;
+    }
     const { startDate, endDate } = getStartAndEndDate();
     const payload = {
-      hotelId: props.hotelId,
+      hotelId: lastHotelId, // Usar el id del último hotel creado
       subscriptionPlanId: props.subscriptionPlan.id,
       status: 'ACTIVE',
       startDate,

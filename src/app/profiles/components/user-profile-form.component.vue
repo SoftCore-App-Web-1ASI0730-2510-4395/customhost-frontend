@@ -1,22 +1,22 @@
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form @submit.prevent="handleSubmit" class="user-profile-form-wrapper">
     <div>
-      <label>Nombre:</label>
-      <input v-model="form.firstName" required />
+      <label class="user-profile-label">Nombre:</label>
+      <input v-model="form.firstName" required class="user-profile-input" />
     </div>
     <div>
-      <label>Apellido:</label>
-      <input v-model="form.lastName" required />
+      <label class="user-profile-label">Apellido:</label>
+      <input v-model="form.lastName" required class="user-profile-input" />
     </div>
     <div>
-      <label>Email:</label>
-      <input v-model="form.email" type="email" required />
+      <label class="user-profile-label">Email:</label>
+      <input v-model="form.email" type="email" required class="user-profile-input" />
     </div>
     <div>
-      <label>Teléfono:</label>
-      <input v-model="form.phone" required />
+      <label class="user-profile-label">Teléfono:</label>
+      <input v-model="form.phone" required class="user-profile-input" />
     </div>
-    <button type="submit">Crear Perfil</button>
+    <button type="submit" class="user-profile-btn">Crear Perfil</button>
     <div v-if="error" style="color:red">{{ error }}</div>
   </form>
 </template>
@@ -72,3 +72,69 @@ const handleSubmit = async () => {
   }
 };
 </script>
+
+<style scoped>
+.user-profile-form-wrapper {
+  max-width: 420px;
+  margin: 2.5rem auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px 0 rgba(34, 197, 94, 0.13);
+  padding: 2.2rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.user-profile-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #22c55e;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+.user-profile-label {
+  font-size: 1.13rem;
+  font-weight: 700;
+  color: #166534;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.5px;
+  display: block;
+}
+.user-profile-input {
+  font-size: 1.18rem !important;
+  padding: 1rem 1.2rem !important;
+  border-radius: 10px !important;
+  border: 1.5px solid #bbf7d0 !important;
+  background: #f8fafc !important;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.07);
+  margin-bottom: 0.2rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.user-profile-input:focus {
+  border: 1.5px solid #22c55e !important;
+  box-shadow: 0 0 0 2px #bbf7d088;
+}
+.user-profile-btn {
+  background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
+  border: none;
+  padding: 0.85rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.13);
+  color: #fff;
+  margin-top: 1.2rem;
+}
+.user-profile-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.18);
+}
+@media screen and (max-width: 600px) {
+  .user-profile-form-wrapper {
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+    margin-top: 1.2rem;
+  }
+}
+</style>

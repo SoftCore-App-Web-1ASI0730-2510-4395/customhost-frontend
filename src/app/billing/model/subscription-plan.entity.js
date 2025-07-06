@@ -9,4 +9,3 @@ export default class SubscriptionPlan {
     this.currency = currency;
   }
 }
-

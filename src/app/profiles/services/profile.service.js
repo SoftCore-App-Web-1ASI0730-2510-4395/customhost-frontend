@@ -35,3 +35,11 @@ export const createProfile = async (profileData) => {
         throw error;
     }
 };
+
+export const getProfilesByHotelId = async (hotelId) => {
+  const response = await apiClient.get(`${API_URL}/hotel/${hotelId}`);
+  if (Array.isArray(response.data)) {
+    return response.data.map(p => new Profile(p));
+  }
+  return response.data ? [new Profile(response.data)] : [];
+};

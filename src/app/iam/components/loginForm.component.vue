@@ -42,20 +42,20 @@ function goToRegister() {
 
     <form @submit.prevent="handleSubmit" class="login-form">
       <div class="field">
-        <label for="usernameLogin" class="block">Usuario</label>
+        <label for="usernameLogin" class="block">{{$t('login.usernameLabel')}}</label>
         <pv-input-text
             id="usernameLogin"
             v-model="username"
             :class="{'p-invalid': submitted && !username}"
             aria-describedby="usernameLogin-error"
             class="w-full"
-            placeholder="Usuario"
+            :placeholder="$t('login.usernamePlaceholder')"
         />
-        <small id="usernameLogin-error" class="p-error" v-if="submitted && !username">El usuario es requerido.</small>
+        <small id="usernameLogin-error" class="p-error" v-if="submitted && !username">{{$t('login.usernameRequired')}}</small>
       </div>
 
       <div class="field mt-4">
-        <label for="passwordLogin" class="block">Contraseña</label>
+        <label for="passwordLogin" class="block">{{$t('login.passwordLabel')}}</label>
         <pv-password
             id="passwordLogin"
             v-model="password"
@@ -64,16 +64,16 @@ function goToRegister() {
             toggleMask
             aria-describedby="passwordLogin-error"
             class="w-full"
-            placeholder="Contraseña"
+            :placeholder="$t('login.passwordPlaceholder')"
         />
-        <small id="passwordLogin-error" class="p-error" v-if="submitted && !password">La contraseña es requerida.</small>
+        <small id="passwordLogin-error" class="p-error" v-if="submitted && !password">{{$t('login.passwordRequired')}}</small>
       </div>
 
       <div class="flex justify-content-between align-items-center mt-4">
-        <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        <a href="#" class="forgot-password">{{$t('login.forgotPassword')}}</a>
         <pv-button
             type="submit"
-            label="Iniciar sesión"
+            :label="$t('login.title')"
             :loading="props.loading"
             :disabled="props.loading"
             class="login-button"
@@ -82,7 +82,7 @@ function goToRegister() {
 
       <div class="mt-4 text-center">
         <router-link to="/iam/register" class="register-link" @click.prevent="goToRegister">
-          ¿No tienes cuenta? Regístrate aquí
+          {{$t('login.noAccount')}}
         </router-link>
       </div>
     </form>

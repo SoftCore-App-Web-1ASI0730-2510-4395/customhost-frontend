@@ -46,7 +46,7 @@ async function handleRegistration(formData) {
     <div class="register-outer-center">
       <pv-card class="register-card">
         <template #title>
-          <h2 class="register-title">Registro</h2>
+          <h2 class="register-title">{{$t('register.title')}}</h2>
         </template>
         <template #content>
           <div class="register-form-content">

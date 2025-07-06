@@ -81,8 +81,8 @@ function handlePaymentSuccess() {
     <div class="register-hotel-form-container">
       <pv-card class="register-hotel-card">
         <template #title>
-          <h2 class="register-hotel-title">Registra tu Hotel en la Plataforma</h2>
-          <p class="register-hotel-subtitle">Completa el formulario para empezar a disfrutar de nuestros servicios y optimizar la gestión de tu establecimiento.</p>
+          <h2 class="register-hotel-title">{{$t('registerHotel.title')}}</h2>
+          <p class="register-hotel-subtitle">{{$t('registerHotel.subtitle')}}</p>
         </template>
         <template #content>
           <RegisterHotelForm

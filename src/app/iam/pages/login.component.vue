@@ -33,7 +33,7 @@ async function handleLogin(formData) {
   <div class="login-container">
     <pv-card class="login-card">
       <template #title>
-        <h2 class="login-title">Iniciar sesión</h2>
+        <h2 class="login-title">{{$t('login.title')}}</h2>
       </template>
       <template #content>
         <div class="login-form-content">

@@ -2,7 +2,7 @@
 
 import { getRoomById } from '../../crm/services/rooms.service.js';
 import { getHotelById } from '../../crm/services/hotels.service.js';
-import { createPayment, getAllPayments } from './payment.service.js';
+import { createPayment, getAllPayments, deleteSubscription } from './payment.service.js';
 import apiClient from '../../shared/services/api-service.js';
 
 // 👇 Importa servicio de bookings
@@ -169,5 +169,12 @@ export default {
      */
     async getAllPayments(paramurl) {
         return getAllPayments(paramurl);
+    },
+
+    /**
+     * Cancela una suscripción por ID
+     */
+    async cancelSubscription(subscriptionId) {
+        return await deleteSubscription(subscriptionId);
     }
 };

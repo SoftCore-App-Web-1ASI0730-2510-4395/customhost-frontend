@@ -136,7 +136,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '../../shared/composables/useAuth.js'
 import Card from 'primevue/card'
 import { getHotels } from '../../crm/services/hotels.service.js'
-import { getProfilesByHotelId } from '../services/profile.service.js'
+import { getProfilesByHotelId, cancelSubscription } from '../services/profile.service.js'
 import { getSubscription } from '../../billing/services/payment.service.js'
 
 const { user } = useAuth()
@@ -196,7 +196,7 @@ const eliminarSuscripcion = async () => {
   if (!subscription.value?.id) return
   loading.value = true
   try {
-    await deleteSubscription(subscription.value.id)
+    await cancelSubscription(subscription.value.id)
     subscription.value = null
   } catch (e) {
     error.value = 'No se pudo eliminar la suscripción.'

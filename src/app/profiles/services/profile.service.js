@@ -1,5 +1,6 @@
 import apiClient from '../../shared/services/api-service.js';
 import Profile from '../model/profile.entity.js';
+import paymentFacade from '../../billing/services/payment.facade.js';
 
 const API_URL = '/api/v1/profiles';
 
@@ -42,4 +43,12 @@ export const getProfilesByHotelId = async (hotelId) => {
     return response.data.map(p => new Profile(p));
   }
   return response.data ? [new Profile(response.data)] : [];
+};
+
+/**
+ * Cancela la suscripción de un hotel/usuario
+ * @param {string|number} subscriptionId
+ */
+export const cancelSubscription = async (subscriptionId) => {
+  return paymentFacade.cancelSubscription(subscriptionId);
 };

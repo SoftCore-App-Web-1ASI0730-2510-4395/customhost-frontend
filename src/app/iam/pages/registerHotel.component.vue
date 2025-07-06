@@ -31,6 +31,8 @@ async function handleRegistration(formData) {
       username: formData.username,
       password: formData.password
     });
+    // Guardar el userId del hotel creado
+    const userId = hotel?.id;
     hotelPassword.value = formData.password; // Guardar la contraseña
     // Login automático tras registro
     await AuthService.signIn({
@@ -43,7 +45,7 @@ async function handleRegistration(formData) {
       detail: `Hotel "${formData.hotelName}" registrado exitosamente. Ahora completa los datos de tu hotel.`,
       life: 3000
     });
-    registeredHotel.value = { ...hotel, name: formData.hotelName };
+    registeredHotel.value = { ...hotel, name: formData.hotelName, userId };
     showEditDetails.value = true;
 
   } catch (error) {
@@ -76,6 +78,7 @@ function handlePaymentSuccess() {
 
 <template>
   <div class="register-hotel-container">
+    <!-- Header eliminado como solicitaste -->
     <div class="register-hotel-image-container">
       <img src="/src/assets/img/auth_hotel_img.jpg" alt="Registro de Hoteles - Fondo" class="register-hotel-image" />
     </div>
@@ -155,26 +158,35 @@ function handlePaymentSuccess() {
 
 .register-hotel-card {
   width: 100%;
-  max-width: 500px; /* Ancho base para el card */
-  border-radius: 14px; /* Bordes un poco más redondeados */
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* Sombra más pronunciada */
-  padding: 1.5rem; /* Padding interno del card */
+  max-width: 500px;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(34,197,94,0.13);
+  padding: 2.2rem 2rem 2rem 2rem;
+  background: #fff;
+  border: 1.5px solid #bbf7d0;
 }
 
 .register-hotel-title {
-  font-size: 1.9rem; /* Tamaño de título ajustado */
-  color: var(--color-secondary, #263238);
+  font-size: 2.1rem;
+  color: #22c55e;
   margin-bottom: 0.75rem;
   text-align: center;
-  font-weight: 600;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
 .register-hotel-subtitle {
-  font-size: 0.95rem;
-  color: var(--text-color-secondary, #57606f);
-  margin-bottom: 2rem; /* Más espacio después del subtítulo */
+  font-size: 1.08rem;
+  color: #166534;
+  margin-bottom: 2rem;
   text-align: center;
-  line-height: 1.6;
+  line-height: 1.7;
+  font-weight: 600;
+  background: #e7fbe9;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  box-shadow: 0 2px 8px rgba(34,197,94,0.07);
+  letter-spacing: 0.2px;
 }
 
 /* Se eliminan los estilos del formulario de aquí, ya que se movieron a registerHotelForm.component.vue */
@@ -197,7 +209,7 @@ function handlePaymentSuccess() {
   }
   .register-hotel-card {
     max-width: 550px;
-    padding: 2rem; /* Más padding en el card en pantallas grandes */
+    padding: 2.5rem 2.5rem 2.5rem 2.5rem;
   }
 }
 

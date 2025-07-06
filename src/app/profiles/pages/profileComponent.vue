@@ -1,98 +1,135 @@
 <template>
   <div class="p-4">
-    <!-- ADMIN -->
-    <template v-if="userRole === 'ADMIN'">
-      <div class="hotel-title text-xl font-bold mb-4">
-        {{ admin.hotelName }} - Perfil del Administrador
-      </div>
-      <Card class="mb-5">
-        <template #title>Datos Personales</template>
-        <template #content>
-          <ul class="list-none p-0 m-0">
-            <li class="flex align-items-center mb-3">
-              <i class="pi pi-user text-xl mr-3 text-primary"></i>
-              <span><strong>Nombre:</strong> {{ fullName }}</span>
-            </li>
-            <li class="flex align-items-center mb-3">
-              <i class="pi pi-envelope text-xl mr-3 text-primary"></i>
-              <span><strong>Email:</strong> {{ admin.email }}</span>
-            </li>
-            <li class="flex align-items-center mb-3">
-              <i class="pi pi-phone text-xl mr-3 text-primary"></i>
-              <span><strong>Teléfono:</strong> {{ admin.phone }}</span>
-            </li>
-            <li class="flex align-items-center">
-              <i class="pi pi-briefcase text-xl mr-3 text-primary"></i>
-              <span><strong>Departamento:</strong> {{ admin.department }}</span>
-            </li>
-          </ul>
+    <div v-if="loading" class="text-center py-8">
+      <span>Cargando perfil...</span>
+    </div>
+    <template v-else>
+      <!-- ADMIN -->
+      <template v-if="userRole === 'ADMIN'">
+        <div class="hotel-title text-xl font-bold mb-4">
+          {{ hotel?.name || 'Hotel' }} - Perfil del Administrador
+        </div>
+        <Card class="mb-5">
+          <template #title>Datos Personales</template>
+          <template #content>
+            <ul class="list-none p-0 m-0">
+              <li class="flex align-items-center mb-3">
+                <i class="pi pi-user text-xl mr-3 text-primary"></i>
+                <span><strong>Nombre:</strong> {{ fullName }}</span>
+              </li>
+              <li class="flex align-items-center mb-3">
+                <i class="pi pi-envelope text-xl mr-3 text-primary"></i>
+                <span><strong>Email:</strong> {{ profile?.email }}</span>
+              </li>
+              <li class="flex align-items-center mb-3">
+                <i class="pi pi-phone text-xl mr-3 text-primary"></i>
+                <span><strong>Teléfono:</strong> {{ profile?.phone }}</span>
+              </li>
+            </ul>
+          </template>
+        </Card>
+        <Card>
+          <template #title>
+            <span class="hotel-name-title">{{ hotel?.name || 'Hotel' }}</span>
+          </template>
+          <template #subtitle>
+            <i class="pi pi-map-marker text-primary mr-2"></i>
+            <span class="hotel-address">{{ hotel?.address || '' }}</span>
+          </template>
+          <template #content>
+            <ul class="hotel-info-list">
+              <li class="hotel-info-item">
+                <span class="icon-wrapper" :style="{ background: getHotelStatusColor(hotel?.status) + '22' }">
+                  <i :class="['pi', getHotelStatusIcon(hotel?.status), 'text-xl']" :style="{ color: getHotelStatusColor(hotel?.status) }"></i>
+                </span>
+                <span><strong>Estado:</strong> <span class="hotel-status">{{ formatHotelStatus(hotel?.status) }}</span></span>
+              </li>
+              <li class="hotel-info-item">
+                <i class="pi pi-home text-xl mr-2 text-info"></i>
+                <span><strong>Totales:</strong> <span class="hotel-data">{{ hotel?.totalRooms ?? 0 }}</span></span>
+              </li>
+              <li class="hotel-info-item">
+                <i class="pi pi-lock-open text-xl mr-2 text-danger"></i>
+                <span><strong>Ocupadas:</strong> <span class="hotel-data">{{ hotel?.occupiedRooms ?? 0 }}</span></span>
+              </li>
+              <li class="hotel-info-item">
+                <i class="pi pi-refresh text-xl mr-2 text-warning"></i>
+                <span><strong>Limpieza:</strong> <span class="hotel-data">{{ hotel?.cleaningRooms ?? 0 }}</span></span>
+              </li>
+              <li class="hotel-info-item">
+                <i class="pi pi-wrench text-xl mr-2 text-secondary"></i>
+                <span><strong>Mantenimiento:</strong> <span class="hotel-data">{{ hotel?.maintenanceRooms ?? 0 }}</span></span>
+              </li>
+            </ul>
+          </template>
+        </Card>
+        <Card class="mt-5">
+          <template #title>Suscripción</template>
+          <template #content>
+            <div v-if="subscription" class="flex align-items-center">
+              <i class="pi pi-check-circle text-success text-2xl mr-3"></i>
+              <div>
+                <div class="font-bold">Activo hasta: {{ new Date(subscription.endDate).toLocaleDateString() }}</div>
+              </div>
+              <Button v-if="userRole === 'ADMIN'" icon="pi pi-times" class="p-button-danger ml-auto cancelar-btn fancy-cancel-btn" @click="eliminarSuscripcion">
+                <span class="btn-label">Cancelar suscripción</span>
+              </Button>
+            </div>
+            <div v-else class="text-center text-gray-500 py-4">
+              Sin suscripción activa.
+            </div>
+          </template>
+        </Card>
+      </template>
+      <!-- STAFF o GUEST -->
+      <template v-else-if="userRole === 'STAFF' || userRole === 'GUEST'">
+        <div class="hotel-title text-xl font-bold mb-4">
+          Perfil de {{ userRole === 'STAFF' ? 'Staff' : 'Huésped' }}
+        </div>
+        <Card class="mb-5">
+          <template #title>Datos Personales</template>
+          <template #content>
+            <ul class="list-none p-0 m-0">
+              <li class="flex align-items-center mb-3">
+                <i class="pi pi-user text-xl mr-3 text-primary"></i>
+                <span><strong>Nombre:</strong> {{ profile?.firstName }} {{ profile?.lastName }}</span>
+              </li>
+              <li class="flex align-items-center mb-3">
+                <i class="pi pi-envelope text-xl mr-3 text-primary"></i>
+                <span><strong>Email:</strong> {{ profile?.email }}</span>
+              </li>
+              <li class="flex align-items-center mb-3">
+                <i class="pi pi-phone text-xl mr-3 text-primary"></i>
+                <span><strong>Teléfono:</strong> {{ profile?.phone }}</span>
+              </li>
+            </ul>
+          </template>
+        </Card>
+        <!-- Si quieres mostrar más info para STAFF, puedes dejar el resto igual -->
+        <Card v-if="userRole === 'STAFF'">
+          <template #title>Hoteles Asociados</template>
+          <template #content>
+            <ul class="list-none p-0 m-0">
+              <li v-for="hotel in associatedHotels" :key="hotel.id" class="mb-4">
+                <div class="font-bold">{{ hotel?.name }}</div>
+                <div><i class="pi pi-map-marker mr-2"></i>{{ hotel?.address }}</div>
+                <div><i class="pi pi-envelope mr-2"></i>{{ hotel?.email }}</div>
+                <div><i class="pi pi-phone mr-2"></i>{{ hotel?.phone }}</div>
+                <div><i :class="getHotelStatusIcon(hotel?.status)" class="mr-2" :style="{ color: getHotelStatusColor(hotel?.status) }"></i>{{ formatHotelStatus(hotel?.status) }}</div>
+              </li>
+              <li v-if="associatedHotels.length === 0">No tienes hoteles asociados.</li>
+            </ul>
+          </template>
+        </Card>
+        <template v-else-if="userRole === 'GUEST'">
+          <!-- Se elimina la visualización del perfil para GUEST -->
         </template>
-      </Card>
-      <Card>
-        <template #title>{{ admin.hotelName }}</template>
-        <template #subtitle>{{ admin.hotelAddress }}</template>
-        <template #content>
-          <ul class="list-none p-0 m-0">
-            <li class="flex align-items-center mb-3">
-              <i :class="getHotelStatusIcon(admin.hotelStatus)" class="text-xl mr-3" :style="{ color: getHotelStatusColor(admin.hotelStatus) }"></i>
-              <span><strong>Estado del hotel:</strong> {{ formatHotelStatus(admin.hotelStatus) }}</span>
-            </li>
-            <li class="flex align-items-center mb-3">
-              <i class="pi pi-home text-xl mr-3 text-info"></i>
-              <span><strong>Habitaciones totales:</strong> {{ admin.totalRooms }}</span>
-            </li>
-            <li class="flex align-items-center mb-3">
-              <i class="pi pi-lock-open text-xl mr-3 text-danger"></i>
-              <span><strong>Ocupadas:</strong> {{ admin.occupiedRooms }}</span>
-            </li>
-            <li class="flex align-items-center mb-3">
-              <i class="pi pi-refresh text-xl mr-3 text-warning"></i>
-              <span><strong>En limpieza:</strong> {{ admin.cleaningRooms }}</span>
-            </li>
-            <li class="flex align-items-center">
-              <i class="pi pi-wrench text-xl mr-3 text-secondary"></i>
-              <span><strong>Mantenimiento:</strong> {{ admin.maintenanceRooms }}</span>
-            </li>
-          </ul>
-        </template>
-      </Card>
-    </template>
-
-    <!-- STAFF o GUEST -->
-    <template v-else-if="userRole === 'STAFF' || userRole === 'GUEST'">
-      <div class="hotel-title text-xl font-bold mb-4">
-        Perfil de {{ userRole === 'STAFF' ? 'Staff' : 'Huésped' }}
-      </div>
-      <Card class="mb-5">
-        <template #title>Datos Personales</template>
-        <template #content>
-          <ul class="list-none p-0 m-0">
-            <li class="flex align-items-center mb-3">
-              <i class="pi pi-user text-xl mr-3 text-primary"></i>
-              <span><strong>Nombre:</strong> {{ user?.username || 'Usuario' }}</span>
-            </li>
-            <li class="flex align-items-center mb-3">
-              <i class="pi pi-envelope text-xl mr-3 text-primary"></i>
-              <span><strong>Email:</strong> {{ user?.email || 'Sin email' }}</span>
-            </li>
-          </ul>
-        </template>
-      </Card>
-      <Card>
-        <template #title>Hoteles Asociados</template>
-        <template #content>
-          <ul class="list-none p-0 m-0">
-            <li v-for="hotel in associatedHotels" :key="hotel.id" class="mb-4">
-              <div class="font-bold">{{ hotel.name }}</div>
-              <div><i class="pi pi-map-marker mr-2"></i>{{ hotel.address }}</div>
-              <div><i class="pi pi-envelope mr-2"></i>{{ hotel.email }}</div>
-              <div><i class="pi pi-phone mr-2"></i>{{ hotel.phone }}</div>
-              <div><i :class="getHotelStatusIcon(hotel.status)" class="mr-2" :style="{ color: getHotelStatusColor(hotel.status) }"></i>{{ formatHotelStatus(hotel.status) }}</div>
-            </li>
-            <li v-if="associatedHotels.length === 0">No tienes hoteles asociados.</li>
-          </ul>
-        </template>
-      </Card>
+      </template>
+      <template v-else>
+        <div class="text-red-500 text-center py-4">
+          Rol de usuario no reconocido.
+        </div>
+      </template>
     </template>
   </div>
 </template>
@@ -102,52 +139,96 @@ import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '../../shared/composables/useAuth.js'
 import Card from 'primevue/card'
 import { getHotels } from '../../crm/services/hotels.service.js'
-import { getProfilesByEmail } from '../services/profile.service.js'
+import { getProfilesByHotelId, cancelSubscription, getProfileByUserId } from '../services/profile.service.js'
+import { getSubscription } from '../../billing/services/payment.service.js'
 
 const { user } = useAuth()
 const userRole = computed(() => user.value?.role)
 
-const admin = ref({
-  id: 3,
-  firstName: user.value?.username || 'Usuario',
-  lastName: 'Perez',
-  email: user.value?.email || 'usuario@hotel.com',
-  phone: '+34600111222',
-  department: 'Management',
-  hotelName: 'Hotel Cheraton Center',
-  hotelAddress: 'Calle Gran Vía 123, Lima',
-  hotelStatus: 'active',
-  totalRooms: 6,
-  occupiedRooms: 2,
-  availableRooms: 3,
-  cleaningRooms: 1,
-  maintenanceRooms: 1
-})
-
-const fullName = computed(() => `${admin.value.firstName} ${admin.value.lastName}`)
-
-const associatedHotels = ref([])
+const hotel = ref(null)
+const profile = ref(null)
+const subscription = ref(null)
+const loading = ref(false)
+const error = ref('')
 
 onMounted(async () => {
-  if (userRole.value === 'STAFF' || userRole.value === 'GUEST') {
-    // Obtener los perfiles asociados al email del usuario
-    if (user.value?.email) {
-      const profiles = await getProfilesByEmail(user.value.email)
-      // Cada profile tiene un hotel asociado
-      associatedHotels.value = Array.isArray(profiles)
-        ? profiles.map(p => p.hotel).filter(Boolean)
-        : (profiles?.hotel ? [profiles.hotel] : [])
+  loading.value = true;
+  try {
+    // Obtener userId desde localStorage
+    let userId = null;
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      try {
+        const parsed = JSON.parse(userData);
+        userId = parsed.id;
+      } catch (e) {
+        console.error('No se pudo parsear userData para userId:', e);
+      }
     }
+    // Cargar perfil usando el endpoint /api/v1/profiles/userid/{userId} para todos los roles
+    if (userId) {
+      profile.value = await getProfileByUserId(userId);
+    }
+    // 1. Buscar el hotel por name usando el username del usuario autenticado
+    const allHotels = await getHotels()
+    console.log('Hoteles obtenidos:', allHotels)
+    hotel.value = allHotels.find(h => h.name === user.value?.username)
+    console.log('Hotel encontrado:', hotel.value)
+    // 2. Buscar el profile por hotelId
+    if (hotel.value?.id) {
+      const profiles = await getProfilesByHotelId(hotel.value.id)
+      console.log('Profiles obtenidos:', profiles)
+      profile.value = Array.isArray(profiles)
+        ? profiles.find(p => p.email === user.value?.email) || profiles[0]
+        : profiles
+      console.log('Profile encontrado:', profile.value)
+      // 3. Buscar la suscripción por hotelId
+      const subs = await getSubscription()
+      console.log('Subscripciones obtenidas:', subs)
+      // Asegurarse que subs es un array y buscar la suscripción correcta
+      let foundSubscription = null
+      if (Array.isArray(subs)) {
+        foundSubscription = subs.find(s => s.hotelId === hotel.value.id)
+      } else if (subs && subs.hotelId === hotel.value.id) {
+        foundSubscription = subs
+      }
+      subscription.value = foundSubscription
+      console.log('Suscripción encontrada:', subscription.value)
+      // Ya no se obtiene el plan, solo se muestra la fecha de fin
+    } else {
+      console.warn('No se encontró hotel con el username del usuario')
+    }
+  } catch (e) {
+    console.error('Error general en onMounted:', e)
+    error.value = 'Error al cargar los datos del perfil'
+  } finally {
+    loading.value = false
+    console.log('Finalizó onMounted')
   }
 })
+
+const fullName = computed(() => profile.value ? `${profile.value.firstName} ${profile.value.lastName}` : '')
+
+const eliminarSuscripcion = async () => {
+  if (!subscription.value?.id) return
+  loading.value = true
+  try {
+    await cancelSubscription(subscription.value.id)
+    subscription.value = null
+  } catch (e) {
+    error.value = 'No se pudo eliminar la suscripción.'
+  } finally {
+    loading.value = false
+  }
+}
 
 // Métodos auxiliares
 const formatHotelStatus = (status) => {
   const statuses = {
-    active: 'Activo',
-    inactive: 'Inactivo',
-    maintenance: 'Mantenimiento',
-    pending: 'Pendiente'
+    Active: 'Abierto',
+    Inactive: 'Inactivo',
+    Maintenance: 'Mantenimiento',
+    Pending: 'Pendiente'
   }
   return statuses[status] || status
 }
@@ -195,5 +276,74 @@ const getHotelStatusColor = (status) => {
 }
 .text-secondary {
   color: #9e9e9e;
+}
+.cancelar-btn {
+  font-weight: bold;
+  background-color: #f44336;
+  border-color: #f44336;
+}
+.fancy-cancel-btn {
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.3s;
+}
+.fancy-cancel-btn:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+}
+.hotel-name-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #1a237e;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px #e3e3e3;
+}
+.hotel-address {
+  display: flex;
+  align-items: center;
+  font-size: 1.08rem;
+  color: #444;
+  font-style: italic;
+  margin-bottom: 0.2rem;
+}
+.hotel-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.07);
+}
+.hotel-info-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0.4rem 0.2rem 0.4rem 0.2rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+.hotel-info-item:last-child {
+  border-bottom: none;
+}
+.hotel-status {
+  font-weight: bold;
+  color: #2196f3;
+  margin-left: 0.2rem;
+}
+.hotel-data {
+  font-weight: 600;
+  color: #333;
+  margin-left: 0.2rem;
+}
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  background: #e3e3e3;
 }
 </style>

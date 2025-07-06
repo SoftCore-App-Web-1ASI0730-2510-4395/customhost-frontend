@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import LanguageSwitcher from '../../public/components/languageSwitcher.component.vue';
 
 const props = defineProps({
   loading: {
@@ -45,92 +46,115 @@ function handleSubmit() {
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit" class="register-hotel-form">
-    <div class="field">
-      <label for="hotelNameForm" class="block">Nombre del Hotel</label>
-      <pv-input-text
-          id="hotelNameForm"
-          v-model="hotelName"
-          :class="{'p-invalid': submitted && !hotelName}"
-          aria-describedby="hotelNameForm-error"
-          class="w-full"
-          placeholder="Ingresa el nombre del hotel"
-      />
-      <small id="hotelNameForm-error" class="p-error" v-if="submitted && !hotelName">El nombre del hotel es requerido.</small>
+  <div class="register-hotel-form-wrapper">
+    <div class="register-hotel-lang-switcher">
+      <language-switcher />
     </div>
+    <form @submit.prevent="handleSubmit" class="register-hotel-form">
+      <div class="field">
+        <label for="hotelNameForm" class="block">Nombre del Hotel</label>
+        <pv-input-text
+            id="hotelNameForm"
+            v-model="hotelName"
+            :class="{'p-invalid': submitted && !hotelName}"
+            aria-describedby="hotelNameForm-error"
+            class="w-full"
+            placeholder="Ingresa el nombre del hotel"
+        />
+        <small id="hotelNameForm-error" class="p-error" v-if="submitted && !hotelName">El nombre del hotel es requerido.</small>
+      </div>
 
-    <div class="field mt-4">
-      <label for="usernameHotelForm" class="block">Nombre de usuario</label>
-      <pv-input-text
-          id="usernameHotelForm"
-          v-model="username"
-          :class="{'p-invalid': submitted && !username}"
-          aria-describedby="usernameHotelForm-error"
-          class="w-full"
-          placeholder="Ingresa el nombre de usuario del administrador"
-      />
-      <small id="usernameHotelForm-error" class="p-error" v-if="submitted && !username">El nombre de usuario es requerido.</small>
-    </div>
+      <div class="field mt-4">
+        <label for="usernameHotelForm" class="block">Nombre de usuario</label>
+        <pv-input-text
+            id="usernameHotelForm"
+            v-model="username"
+            :class="{'p-invalid': submitted && !username}"
+            aria-describedby="usernameHotelForm-error"
+            class="w-full"
+            placeholder="Ingresa el nombre de usuario del administrador"
+        />
+        <small id="usernameHotelForm-error" class="p-error" v-if="submitted && !username">El nombre de usuario es requerido.</small>
+      </div>
 
-    <div class="field mt-4">
-      <label for="passwordHotelForm" class="block">Contraseña</label>
-      <pv-password
-          id="passwordHotelForm"
-          v-model="password"
-          :class="{'p-invalid': submitted && !password}"
-          aria-describedby="passwordHotelForm-error"
-          class="w-full"
-          placeholder="Ingresa la contraseña"
-          toggleMask
-          :feedback="false"
-      />
-      <small id="passwordHotelForm-error" class="p-error" v-if="submitted && !password">La contraseña es requerida.</small>
-    </div>
+      <div class="field mt-4">
+        <label for="passwordHotelForm" class="block">Contraseña</label>
+        <pv-password
+            id="passwordHotelForm"
+            v-model="password"
+            :class="{'p-invalid': submitted && !password}"
+            aria-describedby="passwordHotelForm-error"
+            class="w-full"
+            placeholder="Ingresa la contraseña"
+            toggleMask
+            :feedback="false"
+        />
+        <small id="passwordHotelForm-error" class="p-error" v-if="submitted && !password">La contraseña es requerida.</small>
+      </div>
 
-    <div class="field mt-4">
-      <label for="passwordRepeatHotelForm" class="block">Confirmar contraseña</label>
-      <pv-password
-          id="passwordRepeatHotelForm"
-          v-model="passwordRepeat"
-          :class="{'p-invalid': submitted && !passwordRepeat}"
-          aria-describedby="passwordRepeatHotelForm-error"
-          class="w-full"
-          placeholder="Confirma la contraseña"
-          toggleMask
-          :feedback="false"
-      />
-      <small id="passwordRepeatHotelForm-error" class="p-error" v-if="submitted && !passwordRepeat">La confirmación de contraseña es requerida.</small>
-    </div>
+      <div class="field mt-4">
+        <label for="passwordRepeatHotelForm" class="block">Confirmar contraseña</label>
+        <pv-password
+            id="passwordRepeatHotelForm"
+            v-model="passwordRepeat"
+            :class="{'p-invalid': submitted && !passwordRepeat}"
+            aria-describedby="passwordRepeatHotelForm-error"
+            class="w-full"
+            placeholder="Confirma la contraseña"
+            toggleMask
+            :feedback="false"
+        />
+        <small id="passwordRepeatHotelForm-error" class="p-error" v-if="submitted && !passwordRepeat">La confirmación de contraseña es requerida.</small>
+      </div>
 
-    <pv-message severity="error" v-if="formErrorMessage" class="mt-3">{{ formErrorMessage }}</pv-message>
+      <pv-message severity="error" v-if="formErrorMessage" class="mt-3">{{ formErrorMessage }}</pv-message>
 
-    <div class="button-container mt-4">
-      <pv-button
-          type="submit"
-          label="Registrar Hotel"
-          class="w-full register-hotel-button"
-          :loading="loading"
-          :disabled="loading"
-      />
-    </div>
+      <div class="button-container mt-4">
+        <pv-button
+            type="submit"
+            label="Registrar Hotel"
+            class="w-full register-hotel-button"
+            :loading="loading"
+            :disabled="loading"
+        />
+      </div>
 
-    <div class="login-link-container mt-4">
-      <p class="text-center">
-        ¿Ya tienes una cuenta?
-        <router-link to="/iam/login" class="login-link">Iniciar sesión</router-link>
-      </p>
-    </div>
+      <div class="login-link-container mt-4">
+        <p class="text-center">
+          ¿Ya tienes una cuenta?
+          <router-link to="/iam/login" class="login-link">Iniciar sesión</router-link>
+        </p>
+      </div>
 
-    <div class="alternative-registration mt-3">
-      <p class="text-center">
-        ¿Eres un usuario común?
-        <router-link to="/iam/register" class="user-link">Regístrate como usuario</router-link>
-      </p>
-    </div>
-  </form>
+      <div class="alternative-registration mt-3">
+        <p class="text-center">
+          ¿Eres un usuario común?
+          <router-link to="/iam/register" class="user-link">Regístrate como usuario</router-link>
+        </p>
+      </div>
+    </form>
+  </div>
 </template>
 
 <style scoped>
+.register-hotel-form-wrapper {
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px 0 rgba(255, 107, 107, 0.13);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.register-hotel-lang-switcher {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
 .register-hotel-form {
   width: 100%;
 }

@@ -1,5 +1,6 @@
 import apiClient from '../../shared/services/api-service.js';
 import Profile from '../model/profile.entity.js';
+import paymentFacade from '../../billing/services/payment.facade.js';
 
 const API_URL = '/api/v1/profiles';
 
@@ -34,4 +35,25 @@ export const createProfile = async (profileData) => {
         console.error('Error al crear perfil:', error);
         throw error;
     }
+};
+
+export const getProfilesByHotelId = async (hotelId) => {
+  const response = await apiClient.get(`${API_URL}/hotel/${hotelId}`);
+  if (Array.isArray(response.data)) {
+    return response.data.map(p => new Profile(p));
+  }
+  return response.data ? [new Profile(response.data)] : [];
+};
+
+/**
+ * Cancela la suscripción de un hotel/usuario
+ * @param {string|number} subscriptionId
+ */
+export const cancelSubscription = async (subscriptionId) => {
+  return paymentFacade.cancelSubscription(subscriptionId);
+};
+
+export const getProfileByUserId = async (userId) => {
+  const response = await apiClient.get(`${API_URL}/userid/${userId}`);
+  return response.data ? new Profile(response.data) : null;
 };

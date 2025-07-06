@@ -240,47 +240,17 @@ export default {
           return;
         }
         // Cambia la URL para apuntar al backend real
-        const url = `http://localhost:5232/api/v1/crm/service-request/user/${userIdLocal}`;
-        console.log('[loadUserServiceRequests] Fetching:', url);
-        // Obtener token de localStorage
         let token = null;
         const userDataToken = localStorage.getItem('userData');
         if (userDataToken) {
           try {
             const parsed = JSON.parse(userDataToken);
             token = parsed.token;
-            console.log('[loadUserServiceRequests] Token obtenido:', token);
           } catch (e) {
             console.error('[loadUserServiceRequests] Error al parsear token:', e);
           }
         }
-        const fetchOptions = {
-          headers: token ? { 'Authorization': `Bearer ${token}`, 'accept': 'application/json' } : { 'accept': 'application/json' }
-        };
-        console.log('[loadUserServiceRequests] fetch options:', fetchOptions);
-        try {
-          const res = await fetch(url, fetchOptions);
-          console.log('[loadUserServiceRequests] Response:', res);
-          console.log('[loadUserServiceRequests] Response status:', res.status);
-          // Mostrar todos los headers recibidos
-          for (let pair of res.headers.entries()) {
-            console.log(`[loadUserServiceRequests] Response header: ${pair[0]}: ${pair[1]}`);
-          }
-          if (!res.ok) {
-            const errorText = await res.text();
-            console.error('[loadUserServiceRequests] Error response body:', errorText);
-            throw new Error('No se pudo cargar el historial');
-          }
-          const data = await res.json();
-          console.log('[loadUserServiceRequests] Data:', data);
-          serviceRequests.value = Array.isArray(data) ? data : [];
-        } catch (e) {
-          console.error('[loadUserServiceRequests] Error (catch):', e);
-          if (e instanceof TypeError) {
-            console.error('[loadUserServiceRequests] TypeError (posible CORS o red):', e.message);
-          }
-          serviceRequests.value = [];
-        }
+        serviceRequests.value = await GuestFacade.getGuestServiceRequestsFromApi(userIdLocal, token);
         console.log('[loadUserServiceRequests] serviceRequests.value:', serviceRequests.value);
       } catch (e) {
         console.error('[loadUserServiceRequests] Error:', e);

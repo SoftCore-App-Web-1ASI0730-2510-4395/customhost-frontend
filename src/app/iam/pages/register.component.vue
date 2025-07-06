@@ -1,4 +1,3 @@
-@ -1,130 +0,0 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -37,29 +36,59 @@ async function handleRegistration(formData) {
 </script>
 
 <template>
-  <div class="login-container"> <!-- Usando clases de login para consistencia -->
-    <div class="login-image-container">
-      <img src="/src/assets/img/auth_img.jpg" alt="Register Background" class="login-image" />
+  <div>
+    <div class="sticky-header-simple">
+      <div class="flex gap-3 justify-content-center align-items-center py-3 px-4" style="background: var(--color-secondary); color: var(--color-primary-light);">
+        <span class="font-semibold text-2xl">Custom Host</span>
+        <language-switcher />
+      </div>
     </div>
-    <div class="login-form-container">
-      <pv-card class="login-card">
-        <template #title>
-          <h2 class="login-title">Crear cuenta</h2>
-        </template>        <template #content>
-        <RegisterForm
-            :loading="isLoading"
-            @submit-registration="handleRegistration"
-        />
-        <!-- Mensaje de error general para la página -->
-        <pv-message severity="error" v-if="errorMessage && !isLoading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
-      </template>
-      </pv-card>
-      <pv-toast position="top-right" />
+    <div class="login-container">
+      <div class="login-image-container">
+        <img src="/src/assets/img/auth_img.jpg" alt="Register Background" class="login-image" />
+      </div>
+      <div class="login-form-container">
+        <div class="register-container">
+          <pv-card class="login-card">
+            <template #title>
+            </template>
+            <template #content>
+              <RegisterForm
+                  :loading="isLoading"
+                  @submit-registration="handleRegistration"
+              />
+              <!-- Mensaje de error general para la página -->
+              <pv-message severity="error" v-if="errorMessage && !isLoading" class="mt-3 page-error-message">{{ errorMessage }}</pv-message>
+            </template>
+          </pv-card>
+          <pv-toast position="top-right" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.sticky-header-simple {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+body, .app-layout, #app {
+  padding-top: 64px !important;
+}
+span {
+  font-family: "Anta", sans-serif;
+  letter-spacing: max(1px, 0.1vw);
+}
+.no-image-header .login-image-container {
+  display: none !important;
+}
 /* Estilos copiados de login.component.vue para consistencia visual */
 .login-container {
   display: flex;
@@ -107,6 +136,45 @@ async function handleRegistration(formData) {
 
 /* Estilos específicos del formulario se movieron a registerForm.component.vue */
 
+.register-container {
+  max-width: 430px;
+  margin: 2.5rem auto 2.5rem auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px 0 rgba(34, 197, 94, 0.13);
+  padding: 2.5rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.register-title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #22c55e;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+.register-subtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #166534;
+  text-align: center;
+  margin-bottom: 0.2rem;
+}
+.register-description {
+  text-align: center;
+  color: #6b7280;
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+}
+.page-error-message {
+  margin-top: 1rem;
+  color: #ef4444;
+  text-align: center;
+  font-weight: 600;
+}
+
 /* Media query para pantallas más grandes */
 @media screen and (min-width: 768px) {
   .login-container {
@@ -131,9 +199,5 @@ async function handleRegistration(formData) {
   .login-card {
     max-width: 550px; /* Aún más espacio si es necesario */
   }
-}
-
-.page-error-message {
-  margin-top: 1rem;
 }
 </style>

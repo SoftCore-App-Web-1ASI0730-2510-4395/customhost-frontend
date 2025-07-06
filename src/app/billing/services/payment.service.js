@@ -75,3 +75,24 @@ export const getAllPayments = async (paramurl) => {
         return [];
     }
 };
+
+// SUSCRIPCIONES
+export const getSubscription = async () => {
+    try {
+        const response = await apiClient.get('/api/v1/subscription');
+        return response.data;
+    } catch (error) {
+        console.error('Error obteniendo suscripciones:', error);
+        return [];
+    }
+};
+
+export const deleteSubscription = async (id) => {
+    try {
+        await apiClient.delete(`/api/v1/subscription/${id}`);
+        return true;
+    } catch (error) {
+        console.error('Error eliminando suscripción:', error);
+        throw error;
+    }
+};

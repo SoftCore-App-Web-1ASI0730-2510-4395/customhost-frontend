@@ -62,6 +62,8 @@
 import { ref, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { RoomDeviceManagementFacade } from '../../services/room-device-management.facade.js';
+import { roomDeviceService } from '../../services/staff/room-device.service.js';
+import { roomDevicePreferenceService } from '../../services/staff/room-device-preference.service.js';
 
 const { t } = useI18n();
 
@@ -76,9 +78,37 @@ const selectedDeviceConfig = ref(null);
 const preferences = ref({});
 
 const handleNext = async () => {
+  // 1. Crear la asignación del dispositivo a la habitación
   const device = availableDevices.value.find(d => d.id === form.value.iotDeviceId);
-  selectedDeviceConfig.value = device?.configSchema ?? {};
-  preferences.value = {};
+  const roomDeviceRes = await roomDeviceService.addRoomDevice({
+    roomId: form.value.roomId,
+    iotDeviceId: form.value.iotDeviceId,
+    status: form.value.status
+  });
+  const roomDeviceId = roomDeviceRes.data.id;
+
+  // 2. Obtener preferencias reales del dispositivo asignado
+  const prefsRes = await roomDevicePreferenceService.getPreferencesByRoomDeviceId(roomDeviceId);
+  // Si existen preferencias, usarlas; si no, usar configSchema por defecto
+  if (prefsRes && prefsRes.preferences) {
+    selectedDeviceConfig.value = device?.configSchema ?? {};
+    preferences.value = typeof prefsRes.preferences === 'string' ? JSON.parse(prefsRes.preferences) : prefsRes.preferences;
+  } else {
+    selectedDeviceConfig.value = device?.configSchema ?? {};
+    // Inicializar preferencias con valores por defecto del configSchema
+    preferences.value = {};
+    if (selectedDeviceConfig.value) {
+      Object.keys(selectedDeviceConfig.value).forEach(key => {
+        if (Array.isArray(selectedDeviceConfig.value[key])) {
+          preferences.value[key] = selectedDeviceConfig.value[key][0];
+        } else if (selectedDeviceConfig.value[key] === 'number') {
+          preferences.value[key] = 0;
+        } else {
+          preferences.value[key] = '';
+        }
+      });
+    }
+  }
 };
 
 const saveConfig = async () => {

@@ -1,11 +1,11 @@
-import { getRoomById } from '../../../crm/services/rooms.service.js';
+import { getRoomById } from '../../crm/services/rooms.service.js';
 import { getDevicesByRoom, updateRoomDevicePreferences, createRoomDevicePreference, getRoomDevicePreferenceByRoomDeviceId, getDeviceById } from './iot-device.service.js';
-import apiClient from '../../../shared/services/api-service.js';
+import apiClient from '../../shared/services/api-service.js';
 
 // Ajusta estas rutas según la ubicación real en tu proyecto
-import { getBookingsByUserId } from '../../../crm/services/booking.service.js'; // ⬅️ Confirmar ruta
-import { getUserById } from '../../../profiles/services/user.service.js'; // ⬅️ Confirmar ruta
-import { getHotelById } from '../../../crm/services/hotels.service.js';
+import { getBookingsByUserId } from '../../crm/services/booking.service.js'; // ⬅️ Confirmar ruta
+import { getUserById } from '../../profiles/services/user.service.js'; // ⬅️ Confirmar ruta
+import { getHotelById } from '../../crm/services/hotels.service.js';
 
 export default class GuestRoomDeviceFacade {
     constructor() {}

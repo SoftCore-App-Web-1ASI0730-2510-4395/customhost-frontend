@@ -133,8 +133,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import RoomCardComponent from '../components/guest/room-card.component.vue';
-import GuestRoomDeviceFacade from '../services/guest/guest-room-device.facade.js';
+import RoomCardComponent from '../components/room-card.component.vue';
+import GuestRoomDeviceFacade from '../services/guest-room-device.facade.js';
 import { RoomDeviceManagementFacade } from '../services/room-device-management.facade.js';
 import { getRoomsForUser } from '../../crm/services/booking.service.js';
 import { getHotelById } from '../../crm/services/hotels.service.js';
@@ -317,7 +317,7 @@ const saveRoomConfig = async () => {
         await facade.updateRoomDevicePreference(existingPref.id, payload);
         console.log('[saveRoomConfig] Preferencia actualizada correctamente');
       } catch (err) {
-        console.error('[saveRoomConfig] Error en PUT room-device-preferences:', err, 'Payload:', payload);
+        console.error('[saveRoomConfig] Error en PUT device-preferences:', err, 'Payload:', payload);
       }
     });
     await Promise.all(updatePromises);

@@ -23,18 +23,18 @@ const requestStaffComponent = () => import("../crm/pages/requestStaffComponent.v
 const customerRequestsComponent = () => import("../crm/pages/customerRequestsComponent.vue");
 const adminComponent = () => import("../billing/pages/adminComponent.vue");
 const bookingsTrackerComponent = () => import("../crm/pages/bookingsTrackerComponent.vue");
-const customerServiceComponent = () => import("../crm/pages/guests/create-service-request.component.vue");
+const customerServiceComponent = () => import("../crm/pages/create-service-request.component.vue");
 const loginComponent = () => import("../iam/pages/login.component.vue");
 const registerComponent = () => import("../iam/pages/register.component.vue");
 const notFoundComponent = () => import("../public/pages/page-not-found.component.vue");
 const profileComponent = () => import("../profiles/pages/profileComponent.vue");
 const registerHotelComponent = () => import("../iam/pages/registerHotel.component.vue");
 const RoomsListComponent = () => import("../crm/pages/rooms-listComponent.vue");
-const HotelRoomSelection = () => import("../crm/pages/guests/hotel-rooms-selection.component.vue");
+const HotelRoomSelection = () => import("../crm/pages/hotel-rooms-selection.component.vue");
 const RoomPreferencesComponent = () => import("../guest-experience/pages/guest-room-preference.component.vue");
-const notificationComponent = () => import("../crm/pages/guests/notification.component.vue");
+const notificationComponent = () => import("../crm/pages/notification.component.vue");
 const PaymentComponent = () => import("../billing/pages/payment.component.vue");
-const SelectDatesComponent = () => import("../crm/pages/guests/select-date.component.vue");
+const SelectDatesComponent = () => import("../crm/pages/select-date.component.vue");
 const guestHomePage = () => import("../public/pages/guest-home-page.component.vue");
 const staffHomePage = () => import("../public/pages/staff-home-page.component.vue");
 
@@ -116,7 +116,7 @@ const routes = [
                 meta: { title: 'rooms', requiresAuth: true }
             },
             {
-                path: 'guest/hotel-room-selection',
+                path: 'hotel-room-selection',
                 name: 'hotel-room-selection',
                 component: HotelRoomSelection,
                 meta: { title: 'hotel-room-selection', requiresAuth: true }
@@ -130,7 +130,7 @@ const routes = [
             },
 
             {
-                path: 'guest/notifications',
+                path: 'notifications',
                 name: 'notifications',
                 component: notificationComponent,
                 meta: { title: 'notifications', requiresAuth: true }

@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import GuestFacade from '../../services/guest.facade.js';
+import GuestFacade from '../services/guest.facade.js';
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 

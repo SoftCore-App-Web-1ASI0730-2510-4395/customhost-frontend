@@ -46,7 +46,7 @@
 
 <script>
 import { computed, ref, onMounted } from 'vue';
-import { getHotelById } from '../../services/hotels.service.js';
+import { getHotelById } from '../services/hotels.service.js';
 
 export default {
   name: 'BookingCard',

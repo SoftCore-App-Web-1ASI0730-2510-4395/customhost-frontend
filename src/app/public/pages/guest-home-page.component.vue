@@ -115,8 +115,8 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuth } from '../../shared/composables/useAuth.js';
 import { homeFacade } from '../services/home.facade.js';
-import NotificationCard from '../../crm/components/guests/notification-card.component.vue';
-import BookingCard from '../../crm/components/guests/booking-card.component.vue';
+import NotificationCard from '../../crm/components/notification-card.component.vue';
+import BookingCard from '../../crm/components/booking-card.component.vue';
 
 export default {
   components: { NotificationCard, BookingCard },

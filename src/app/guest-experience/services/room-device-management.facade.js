@@ -1,12 +1,12 @@
-import { iotDeviceService } from './staff/iot-device.service.js';
-import { roomDeviceService } from './staff/room-device.service.js';
-import { roomDevicePreferenceService } from './staff/room-device-preference.service.js';
+import { iotDeviceRoomsService } from './iot-device-rooms.service.js';
+import { roomDeviceService } from './room-device.service.js';
+import { roomDevicePreferenceService } from './room-device-preference.service.js';
 import * as roomService from '../../crm/services/rooms.service.js';
 import apiClient from '../../shared/services/api-service.js';
 
 export const RoomDeviceManagementFacade = {
     // IoT Devices
-    getAllIotDevices: () => iotDeviceService.getAllIotDevices(),
+    getAllIotDevices: () => iotDeviceRoomsService.getAllIotDevices(),
 
     // Rooms
     getRooms: () => roomService.getRooms(),

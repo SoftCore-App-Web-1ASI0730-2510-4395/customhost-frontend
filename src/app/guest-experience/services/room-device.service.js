@@ -1,6 +1,6 @@
-import apiClient from '../../../shared/services/api-service.js';
-import { iotDeviceService } from './iot-device.service.js';
-import * as roomService from '../../../crm/services/rooms.service.js';
+import apiClient from '../../shared/services/api-service.js';
+import { iotDeviceRoomsService } from './iot-device-rooms.service.js';
+import * as roomService from '../../crm/services/rooms.service.js';
 
 
 const API_URL = '/api/v1';
@@ -8,7 +8,7 @@ const API_URL = '/api/v1';
 export const roomDeviceService = {
 
     async addRoomDevice(roomDevice) {
-        return apiClient.post(`${API_URL}/room-devices`, roomDevice);
+        return apiClient.post(`${API_URL}/devices`, roomDevice);
     },
 
     resetRoomDeviceForm(form, selectedDeviceConfig, preferences) {
@@ -20,8 +20,8 @@ export const roomDeviceService = {
     },
 
     async getAvailableDevicesForRoom(roomId) {
-        const allDevices = await iotDeviceService.getAllIotDevices();
-        const roomDevicesRes = await apiClient.get(`${API_URL}/room-devices/room/${roomId}`);
+        const allDevices = await iotDeviceRoomsService.getAllIotDevices();
+        const roomDevicesRes = await apiClient.get(`${API_URL}/devices/room/${roomId}`);
         const usedDeviceTypes = new Set(roomDevicesRes.data.map(rd => {
             const device = allDevices.find(d => d.id === rd.ioTDeviceId);
             return device?.deviceType;
@@ -41,20 +41,20 @@ export const roomDeviceService = {
     },
 
     async updateRoomDeviceStatus(roomDeviceId, newStatus) {
-        const existing = await apiClient.get(`${API_URL}/room-devices/${roomDeviceId}`);
+        const existing = await apiClient.get(`${API_URL}/devices/${roomDeviceId}`);
         const updated = {
             ...existing.data,
             status: newStatus
         };
-        return apiClient.put(`${API_URL}/room-devices/${roomDeviceId}`, updated);
+        return apiClient.put(`${API_URL}/devices/${roomDeviceId}`, updated);
     },
 
     async deleteRoomDevice(roomDeviceId) {
-        return apiClient.delete(`${API_URL}/room-devices/${roomDeviceId}`);
+        return apiClient.delete(`${API_URL}/devices/${roomDeviceId}`);
     },
 
     async getDevicesForRoom(roomId) {
-        const response = await apiClient.get(`${API_URL}/room-devices/room/${roomId}`);
+        const response = await apiClient.get(`${API_URL}/devices/room/${roomId}`);
         return response.data;
     }
 

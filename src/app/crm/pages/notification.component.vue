@@ -22,8 +22,8 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import GuestFacade from '../../services/guest.facade.js';
-import NotificationCard from '../../components/guests/notification-card.component.vue';
+import GuestFacade from '../services/guest.facade.js';
+import NotificationCard from '../components/notification-card.component.vue';
 
 export default {
   components: { NotificationCard },

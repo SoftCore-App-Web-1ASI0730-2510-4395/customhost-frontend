@@ -93,7 +93,7 @@ const sidebar_items = computed(() => {
     },
     {
       name: t('sidebar_items.book-now'),
-      path: '/crm/guest/hotel-room-selection',
+      path: '/crm/hotel-room-selection',
       type: 'guest',
       icon: 'pi pi-building', // Mejor icono para habitaciones
     },
@@ -117,7 +117,7 @@ const sidebar_items = computed(() => {
     },
     {
       name: t('sidebar_items.notifications'),
-      path: '/crm/guest/notifications',
+      path: '/crm/notifications',
       type: 'guest',
       icon: 'pi pi-cog'
     },

@@ -36,7 +36,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import RoomCardComponent from './room-card.component.vue';
-import GuestRoomDeviceFacade from '../../services/guest/guest-room-device.facade.js';
+import GuestRoomDeviceFacade from '../../services/guest-room-device.facade.js';
 
 // Instancia del facade
 const facade = new GuestRoomDeviceFacade();

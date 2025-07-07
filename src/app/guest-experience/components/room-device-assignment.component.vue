@@ -61,9 +61,9 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { RoomDeviceManagementFacade } from '../../services/room-device-management.facade.js';
-import { roomDeviceService } from '../../services/staff/room-device.service.js';
-import { roomDevicePreferenceService } from '../../services/staff/room-device-preference.service.js';
+import { RoomDeviceManagementFacade } from '../services/room-device-management.facade.js';
+import { roomDeviceService } from '../services/room-device.service.js';
+import { roomDevicePreferenceService } from '../services/room-device-preference.service.js';
 
 const { t } = useI18n();
 

@@ -1,7 +1,7 @@
-// src/guest-experience/services/iot-device.service.js
+// src/guest-experience/services/iot-device-rooms.service.js
 
-import apiClient from '../../../shared/services/api-service.js';
-import { IotDevice } from '../../model/iot-device.entity.js';
+import apiClient from '../../shared/services/api-service.js';
+import { IotDevice } from '../model/iot-device.entity.js';
 
 const API_URL = '/api/v1/io-t-devices'; // Endpoint para dispositivos IoT
 

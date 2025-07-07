@@ -49,8 +49,8 @@
 <script>
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { getHotels } from '../../services/hotels.service';
-import { getRoomsByHotelId } from '../../services/rooms.service';
+import { getHotels } from '../services/hotels.service.js';
+import { getRoomsByHotelId } from '../services/rooms.service.js';
 
   export default {
   setup() {

@@ -33,7 +33,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import BookingCard from '../components/guests/booking-card.component.vue';
+import BookingCard from '../components/booking-card.component.vue';
 import GuestFacade from '../services/guest.facade.js';
 
 export default {

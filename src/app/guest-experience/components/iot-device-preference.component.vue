@@ -55,7 +55,7 @@
 <script setup>
 import { ref } from 'vue';
 import IoTDeviceEditConfig from './iot-device-edit-config.component.vue';
-import GuestRoomDeviceFacade from '../../services/guest/guest-room-device.facade.js';
+import GuestRoomDeviceFacade from '../services/guest-room-device.facade.js';
 
 const props = defineProps({
   device: {
